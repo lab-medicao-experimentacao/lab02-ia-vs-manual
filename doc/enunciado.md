@@ -80,7 +80,12 @@ Revise os dados coletados, identifique outliers, e aplique os testes estatístic
 
 ## 5. Relatório Final
 
-Documento com: (i) introdução com as hipóteses; (ii) metodologia detalhada o suficiente para permitir reprodução/replicação (ambiente, katas usados, assistente de IA e versão); (iii) resultados por RQ com as respostas estatísticas obtidas; (iv) discussão final; (v) o link do repositório/GitHub Projects do grupo.
+Documento com: 
+(i) introdução com as hipóteses; 
+(ii) metodologia detalhada o suficiente para permitir reprodução/replicação (ambiente, katas usados, assistente de IA e versão); 
+(iii) resultados por RQ com as respostas estatísticas obtidas; 
+(iv) discussão final; 
+(v) o link do repositório/GitHub Projects do grupo.
 
 Link do repositório/GitHub Projects: `<preencher>`
 
