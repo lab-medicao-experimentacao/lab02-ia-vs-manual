@@ -69,18 +69,31 @@ Consolidar os trials oficiais:
 docker compose run --rm lab python scripts/trial.py export
 ```
 
-Use `--include-practice` apenas para conferir registros de prática. O CSV inclui estados e valores ausentes, sem descartar automaticamente ocorrências. As métricas estruturais serão adicionadas pelo integrante 2 sobre `final/katas/<kata>/src/main/java`.
+Use `--include-practice` apenas para conferir registros de prática. O CSV inclui estados e valores ausentes, sem descartar automaticamente ocorrências.
+
+## Métricas estruturais
+
+```bash
+docker compose run --rm lab python scripts/metrics.py collect --trial results/<trial_id>
+docker compose run --rm lab python scripts/metrics.py collect-all
+```
+
+Calcula complexidade ciclomática média por método (PMD), percentual de linhas
+duplicadas (CPD) e LOC sobre `final/katas/<kata>/src/main/java` de cada trial, e grava
+`results/<trial_id>/metrics.json`. `collect-all` processa todos os trials com código
+final preservado, pulando os que já têm `metrics.json` (use `--force` para recalcular).
+Regras, limiares e fórmulas usados estão documentados em [doc/metricas.md](doc/metricas.md).
 
 `results/` é ignorado pelo Git para evitar commits acidentais de práticas e arquivos de build. Para entregar uma tentativa oficial revisada, adicione explicitamente seu JSON, código, logs/relatórios e resumo com `git add -f <caminhos>`. Não é necessário versionar arquivos compilados em `target/classes`. Referencie a Issue do trial no commit.
 
 ## Divisão da estrutura
 
 - `scripts/trial.py`: cronômetro, testes e coleta JSON/CSV — integrante 1.
-- `scripts/prepare.py`, `Dockerfile`, `compose.yaml` e `pom.xml`: base de ambiente já criada; continuidade com o integrante 2.
+- `scripts/prepare.py`, `scripts/metrics.py`, `Dockerfile`, `compose.yaml` e `pom.xml`: ambiente e coleta de métricas estruturais — integrante 2.
 - `katas/kata-01` a `kata-04`: espaços para exercícios e testes — integrante 3.
 - `katas/smoke`: exercício provisório fora da amostra.
-- `tests/`: testes do ciclo de vida do cronômetro.
+- `tests/`: testes do ciclo de vida do cronômetro e da coleta de métricas.
 
-PMD e CPD estão instalados e disponíveis via `docker compose run --rm lab pmd --help`. Regras de complexidade, limiar de duplicação, cálculo de percentuais e LOC ainda serão implementados/validados pelo integrante 2. O Docker completo não significa que a coleta estrutural já esteja pronta.
+PMD e CPD estão instalados e disponíveis via `docker compose run --rm lab pmd --help`. Regras de complexidade, limiar de duplicação, cálculo de percentuais e LOC estão implementados em `scripts/metrics.py` e documentados em [doc/metricas.md](doc/metricas.md).
 
 A integração interpreta os [relatórios do Maven Surefire](https://maven.apache.org/components/surefire-archives/surefire-3.5.4/maven-surefire-plugin/usage.html). A instalação do analisador segue a [distribuição e CLI do PMD 7](https://pmd.github.io/pmd/pmd_userdocs_migrating_to_pmd7.html).
