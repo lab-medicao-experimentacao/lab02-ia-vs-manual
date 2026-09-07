@@ -1,0 +1,10 @@
+services:
+  lab:
+    build: .
+    init: true
+    working_dir: /workspace
+    environment:
+      MAVEN_OPTS: -Dmaven.repo.local=/workspace/.m2/repository
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - .:/workspace
