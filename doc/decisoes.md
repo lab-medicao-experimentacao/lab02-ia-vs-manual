@@ -248,9 +248,9 @@ Será seguida a divisão sugerida pelo professor para a S01:
 
 | Integrante | Responsabilidade |
 |---|---|
-| Integrante 1 — Joaquim | Script de cronometragem e coleta de tempo, documentação de uso e integração com resultados dos testes |
-| Integrante 2 | Ambiente Docker e execução/coleta de métricas estáticas |
-| Integrante 3 | Pesquisa e validação dos katas, hipóteses e ameaças à validade; contribuição de código, como testes dos katas |
+| Integrante 1 — Joaquim Guilherme de Carvalho Vilela Silva | Script de cronometragem e coleta de tempo, documentação de uso e integração com resultados dos testes |
+| Integrante 2 — Vitor Costa Vianna | Ambiente Docker e execução/coleta de métricas estáticas |
+| Integrante 3 — Gabriel Nogueira Vieira Resende | Pesquisa e validação dos katas, hipóteses e ameaças à validade; contribuição de código, como testes dos katas |
 | Todos | Revisão conjunta do desenho experimental |
 
 Cada integrante deve ser Assignee de pelo menos uma Issue com artefato de código commitado em **cada sprint**. Commits devem referenciar a Issue correspondente. Cada trial terá uma Issue individual atribuída ao responsável. Cartões de desenho e preparação devem constar no GitHub Projects.
@@ -264,6 +264,6 @@ As decisões acima orientam a implementação. Ainda deverão ser concretizados 
 - ~~Prompt inicial, exercício e duração da familiarização.~~ **Concluído** — ver §3.1 e §4.1.
 - Comandos, esquema dos registros, captura no limite e cálculo das métricas.
 - Protocolo estatístico detalhado, especialmente censura e agregação por participante.
-- Identificação A/B/C, agenda, Issues e link do repositório/GitHub Projects.
+- ~~Identificação A/B/C~~ (**Concluído** — ver §4); agenda, Issues e link do repositório/GitHub Projects.
 
 Essas pendências devem ser resolvidas antes dos trials oficiais para evitar decisões influenciadas pelos resultados.
