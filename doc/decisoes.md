@@ -21,14 +21,54 @@ As imagens devem estar construídas, as dependências baixadas e o ambiente veri
 
 ## 2. Exercícios e testes
 
-- Serão selecionados na internet **4 katas de boa qualidade e pouco conhecidos**, evitando clássicos muito difundidos.
-- A seleção combinará classificação de dificuldade e critérios comuns: conhecimentos exigidos, quantidade de regras, tamanho esperado da solução e adequação ao limite de 35 minutos.
-- Serão priorizados problemas de lógica, coleções e manipulação de dados, sem frameworks ou algoritmos especializados.
+- Foram selecionados **4 katas autorais de baixa indexação**, evitando clássicos muito difundidos (LeetCode/HackerRank/Codewars), para reduzir o risco de memorização pela IA.
+- A seleção combinou classificação de dificuldade e critérios comuns: conhecimentos exigidos, quantidade de regras, tamanho esperado da solução e adequação ao limite de 35 minutos.
+- Foram priorizados problemas de lógica, coleções e manipulação de dados/strings, sem frameworks ou algoritmos especializados.
 - Exercícios já resolvidos por algum integrante serão substituídos antes da execução.
-- Todos os testes de aceitação serão visíveis e executáveis desde o início do trial, iguais para todos os participantes de um mesmo kata e não poderão ser alterados.
+- Todos os testes de aceitação são visíveis e executáveis desde o início do trial, iguais para todos os participantes de um mesmo kata e não poderão ser alterados.
 - A preparação deverá evitar acesso antecipado aos próximos enunciados. A separação em módulos, por si só, não restringe esse acesso.
 
 A escolha de exercícios pouco conhecidos reduz, mas não elimina, o risco de memorização pela IA. A exposição do integrante que prepara os katas será documentada como ameaça à validade.
+
+### 2.1 Katas selecionados
+
+Cada kata é um módulo Maven em `katas/kata-0X`, com enunciado (`README.md`), código
+inicial em `src/main/java` (compila, mas falha propositalmente) e testes de aceitação
+JUnit 5 em `src/test/java`. Todos usam apenas a biblioteca padrão do Java 21 e o pacote
+padrão (sem `package`), seguindo `katas/smoke` como referência.
+
+| Kata | Título | Domínio | Fonte |
+|---|---|---|---|
+| kata-01 | Normalizador de Etiquetas | Parsing de string + coleções | Autoral do grupo (spec própria) |
+| kata-02 | Agrupador de Extrato | Agregação de dados | Autoral do grupo (spec própria) |
+| kata-03 | Compressor de Corridas | Codificação de string (variação de run-length) | Autoral do grupo (variação com regra própria) |
+| kata-04 | Validador de Agenda | Intervalos de tempo + lógica | Autoral do grupo (spec própria) |
+
+**Fontes e baixa indexação.** Os quatro katas são enunciados autorais do grupo, e não
+cópias de problemas catalogados. Quando a ideia subjacente é conhecida (por exemplo,
+codificação por corridas no kata-03), o enunciado adota uma regra própria (corridas de
+tamanho 1 permanecem literais, sem prefixo de contagem) e um contrato de entrada/saída
+específico, de modo que a especificação exata e os testes não estão indexados. Isso reduz
+a chance de a IA reproduzir uma solução memorizada em vez de efetivamente auxiliar.
+
+### 2.2 Justificativa de comparabilidade
+
+Os katas foram desenhados para dificuldade equivalente, adequada a um trial de 35 minutos:
+uma única classe de solução, entrada determinística, poucas regras e saída ordenada/definida,
+testável por asserções simples de JUnit. A tabela abaixo resume os critérios de comparabilidade.
+
+| Kata | Conhecimentos exigidos | Nº de regras | Tamanho esperado da solução | Nº de testes | Adequação a 35 min |
+|---|---|---|---|---|---|
+| kata-01 | Split, trim, lowercase, deduplicação preservando ordem | 5 | ~20–30 LOC | 8 | Sim |
+| kata-02 | Parsing `chave:valor`, agregação por soma, ordenação com desempate | 5 | ~25–35 LOC | 8 | Sim |
+| kata-03 | Varredura de corridas consecutivas, formatação condicional | 5 | ~25–35 LOC | 8 | Sim |
+| kata-04 | Parsing de horários `HH:MM`, detecção de sobreposição de intervalos, ordenação | 5 | ~30–40 LOC | 8 | Sim |
+
+Todos compartilham a mesma forma — *ler entrada → aplicar poucas regras → produzir saída
+ordenada/normalizada* — e a mesma faixa de esforço, mantendo a comparabilidade exigida pelo
+desenho crossover within-subject. Cada suíte tem 8 testes de aceitação; os casos de borda
+triviais (entrada vazia/nula) podem passar desde o início, mas a lógica central de cada kata
+começa vermelha, tornando o *time-to-green* uma medida significativa para a RQ1.
 
 ## 3. Tratamentos e consultas
 
@@ -127,7 +167,7 @@ Cada integrante deve ser Assignee de pelo menos uma Issue com artefato de códig
 
 As decisões acima orientam a implementação. Ainda deverão ser concretizados e documentados:
 
-- Os quatro exercícios, suas fontes e a justificativa de comparabilidade.
+- ~~Os quatro exercícios, suas fontes e a justificativa de comparabilidade.~~ **Concluído** — ver §2.1 e §2.2.
 - Versões exatas das ferramentas e confirmação do modelo/esforço do Claude para todos.
 - Prompt inicial, exercício e duração da familiarização.
 - Comandos, esquema dos registros, captura no limite e cálculo das métricas.
