@@ -28,7 +28,7 @@ As imagens devem estar construídas, as dependências baixadas e o ambiente veri
 - Todos os testes de aceitação são visíveis e executáveis desde o início do trial, iguais para todos os participantes de um mesmo kata e não poderão ser alterados.
 - A preparação deverá evitar acesso antecipado aos próximos enunciados. A separação em módulos, por si só, não restringe esse acesso.
 
-A escolha de exercícios pouco conhecidos reduz, mas não elimina, o risco de memorização pela IA. A exposição do integrante que prepara os katas será documentada como ameaça à validade.
+A escolha de exercícios pouco conhecidos reduz, mas não elimina, o risco de memorização pela IA. A exposição do integrante que prepara os katas está documentada como ameaça à validade em §8.
 
 ### 2.1 Katas selecionados
 
@@ -138,7 +138,60 @@ Ferramentas escolhidas: **PMD para complexidade, CPD para duplicação e coleta 
 
 Antes da coleta oficial, o protocolo analítico deverá formalizar a agregação dos dois trials de cada tratamento por participante, o tratamento de censura e ocorrências técnicas, o nível de significância e os critérios dos testes. O Wilcoxon comum não trata censura diretamente; sua aplicação ao tempo exige definir claramente o que será comparado e as limitações. Ausência de significância não será interpretada como equivalência dos tratamentos.
 
-## 8. Armazenamento e preservação
+## 8. Ameaças à validade
+
+Consolidação das ameaças à validade do experimento, conforme o item H do Passo 1 do
+[enunciado](enunciado.md). Várias já aparecem, de forma dispersa, em outras seções; aqui
+são reunidas com a mitigação adotada e o risco residual.
+
+### 8.1 Memorização pela IA (validade interna)
+
+Se um kata for muito conhecido, a IA pode reproduzir uma solução vista no treinamento em
+vez de efetivamente auxiliar, inflando artificialmente o efeito do tratamento com IA.
+
+- **Mitigação:** uso de 4 katas autorais de baixa indexação, com specs e testes próprios; onde a ideia subjacente é conhecida, adota-se uma regra própria e um contrato de I/O específico (ver §2, §2.1). Registro do resumo de perguntas à IA por trial (§3) permite inspecionar sinais de resposta memorizada.
+- **Risco residual:** a baixa indexação reduz, mas não elimina, o risco; ideias fundamentais podem estar implicitamente no treinamento da IA.
+
+### 8.2 Exposição prévia de quem prepara os katas (validade interna)
+
+O integrante que redige/prepara os katas conhece os enunciados e soluções antes do trial,
+o que o beneficiaria indevidamente ao resolvê-los.
+
+- **Mitigação:** a preparação ocorre antes de o participante acessar o enunciado e antes da medição; enunciados, soluções e dificuldades só são compartilhados após todos concluírem os trials oficiais (§4). A distribuição A/B/C será registrada antes da execução.
+- **Risco residual:** a exposição de quem prepara não é totalmente eliminável; deve ser considerada na leitura dos resultados individuais desse integrante.
+
+### 8.3 Efeito de aprendizado entre katas (validade interna)
+
+Resolver katas em sequência pode gerar aprendizado (ferramenta, ambiente, padrões de
+problema) que se transfere para os katas seguintes, confundindo-se com o efeito do tratamento.
+
+- **Mitigação:** desenho crossover within-subject com **ordem contrabalanceada** entre integrantes (§4), de modo que a posição de cada kata e de cada tratamento varie entre os participantes; familiarização padronizada antes dos trials oficiais, cujos resultados não entram na análise (§4).
+- **Risco residual:** com apenas três participantes, o contrabalanceamento não é completo (distribuição 2:1 por kata, §4), então o efeito de aprendizado não é totalmente neutralizado.
+
+### 8.4 Familiaridade prévia com a ferramenta de IA (validade de construção)
+
+Diferenças na experiência prévia de cada integrante com o Claude podem afetar o desempenho
+no tratamento com IA, independentemente do efeito real da ferramenta.
+
+- **Mitigação:** mesmo assistente, modelo e configuração em todos os trials, com prompt inicial padronizado (§3); exercício de familiarização padronizado antes dos trials oficiais (§4).
+- **Risco residual:** a familiarização reduz, mas não uniformiza, a habilidade prévia com a ferramenta.
+
+### 8.5 Vazamento de solução já vista (validade interna)
+
+Um integrante pode ter resolvido antes um exercício equivalente, ou consultar uma solução
+específica durante o trial, contaminando a medição.
+
+- **Mitigação:** exercícios já resolvidos por algum integrante serão substituídos antes da execução (§2); consulta a soluções específicas do kata é proibida nos dois tratamentos, permitindo-se apenas documentação, fóruns e tutoriais (§3).
+- **Risco residual:** o cumprimento da regra de não consultar soluções depende de conduta e não é tecnicamente forçado.
+
+### 8.6 Baixo poder estatístico (validade de conclusão)
+
+Com três participantes e 12 trials, a capacidade inferencial é muito limitada.
+
+- **Mitigação:** uso de mediana e IQR e do teste não paramétrico de Wilcoxon pareado, consistente com o desenho within-subject (§6, §7); os 12 trials não serão tratados como 12 participantes independentes.
+- **Risco residual:** ausência de significância não poderá ser interpretada como equivalência dos tratamentos; conclusões terão caráter exploratório.
+
+## 9. Armazenamento e preservação
 
 Será criada uma pasta exclusiva por tentativa, identificada por participante, kata e tratamento, contendo:
 
@@ -150,7 +203,7 @@ Será criada uma pasta exclusiva por tentativa, identificada por participante, k
 
 As métricas poderão ser calculadas após o trial, sobre o código preservado. Tentativas anteriores não serão sobrescritas. Um script produzirá o **CSV consolidado a partir dos JSONs individuais**.
 
-## 9. Responsabilidades e rastreabilidade
+## 10. Responsabilidades e rastreabilidade
 
 Será seguida a divisão sugerida pelo professor para a S01:
 
@@ -163,7 +216,7 @@ Será seguida a divisão sugerida pelo professor para a S01:
 
 Cada integrante deve ser Assignee de pelo menos uma Issue com artefato de código commitado em **cada sprint**. Commits devem referenciar a Issue correspondente. Cada trial terá uma Issue individual atribuída ao responsável. Cartões de desenho e preparação devem constar no GitHub Projects.
 
-## 10. Pendências de preparação
+## 11. Pendências de preparação
 
 As decisões acima orientam a implementação. Ainda deverão ser concretizados e documentados:
 
