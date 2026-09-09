@@ -82,7 +82,32 @@ começa vermelha, tornando o *time-to-green* uma medida significativa para a RQ1
 | Consultas nos dois tratamentos | Documentação, fóruns e tutoriais permitidos; busca ou consulta de soluções específicas do kata proibida |
 | Tratamento sem IA | Assistentes de IA desativados; consultas permitidas não autorizam o uso de respostas de IA |
 
-O mesmo assistente, modelo e configuração deverão ser utilizados em todos os trials com IA. Não haverá troca de assistente durante uma tentativa. O texto do prompt inicial será definido na preparação.
+O mesmo assistente, modelo e configuração deverão ser utilizados em todos os trials com IA. Não haverá troca de assistente durante uma tentativa.
+
+### 3.1 Prompt inicial padronizado
+
+Todo trial com IA começa com **uma nova conversa** e o mesmo prompt inicial, colado sem
+alterações. O nome do kata (`kata-01` … `kata-04`) é o único trecho ajustado por trial.
+Após enviar o prompt inicial e colar o enunciado, a interação é livre, respeitando as
+regras de consulta do §3 (proibida a busca de soluções específicas do kata).
+
+> Você vai me ajudar a resolver um kata de programação em Java 21, sob um limite de
+> tempo de 35 minutos. Contexto e regras:
+>
+> - A solução fica em uma única classe no pacote padrão (sem `package`), em
+>   `src/main/java`; os testes de aceitação JUnit 5 já existem e não podem ser alterados.
+> - Só posso usar a biblioteca padrão do Java 21, sem dependências externas.
+> - Meu objetivo é fazer todos os testes de aceitação passarem (ficar "verde") no menor
+>   tempo possível.
+> - Não busque nem reproduza uma solução pronta específica deste exercício; ajude com
+>   raciocínio, esclarecimento das regras, implementação e correção de erros.
+>
+> A seguir vou colar o enunciado do kata e, quando houver, as mensagens de erro dos
+> testes. Responda de forma objetiva e voltada à implementação.
+
+O texto acima é fixo para os três integrantes. O resumo das perguntas efetivamente
+enviadas é registrado por trial após o encerramento do cronômetro (`perguntas.md`),
+conforme §3 e §9.
 
 ## 4. Distribuição e sessões
 
@@ -100,8 +125,22 @@ Essa distribuição alterna tratamentos, inclui ambos para cada kata e mantém d
 - Duas sessões por integrante: rodadas 1–2 e rodadas 3–4.
 - Intervalo fixo de **10 minutos** entre os trials de uma sessão, fora da medição.
 - Até 2h20 de execução por integrante, mais intervalos e preparação.
-- Familiarização padronizada antes dos trials oficiais, com exercício extra para praticar Docker, testes, cronômetro e Claude. Esses resultados não entrarão na análise.
+- Familiarização padronizada antes dos trials oficiais (ver §4.1). Esses resultados não entrarão na análise.
 - Enunciados, soluções, prompts e dificuldades só serão compartilhados após todos concluírem os trials oficiais. Dúvidas operacionais podem ser discutidas sem revelar conteúdo dos katas.
+
+### 4.1 Exercício e duração da familiarização
+
+- **Exercício:** o módulo `katas/smoke` (implementar `Sum.add(a, b)` para retornar
+  `a + b`), que está fora da amostra oficial e serve apenas para praticar o fluxo. Ver
+  [README](../README.md) ("Validar um trial provisório").
+- **Duração:** até **10 minutos por integrante**, com `--practice` (limite reduzido,
+  fora do time-box oficial de 35 min). O objetivo é praticar, não medir.
+- **Cobertura:** cada integrante executa uma vez o fluxo completo — iniciar o cronômetro
+  pelo `scripts/trial.py`, editar na IDE, rodar os testes pelo Maven no Docker e observar
+  a detecção de sucesso/censura — e, quem fará trials com IA, abre uma conversa no Claude
+  e aplica o prompt inicial padronizado (§3.1) uma vez, para conhecer a interface.
+- **Descarte:** os resultados da familiarização não entram na análise; o `smoke` exige
+  `--practice` e o cronômetro recusa iniciar os katas oficiais enquanto não tiverem testes.
 
 ## 5. Cronometragem e ocorrências
 
@@ -222,7 +261,7 @@ As decisões acima orientam a implementação. Ainda deverão ser concretizados 
 
 - ~~Os quatro exercícios, suas fontes e a justificativa de comparabilidade.~~ **Concluído** — ver §2.1 e §2.2.
 - Versões exatas das ferramentas e confirmação do modelo/esforço do Claude para todos.
-- Prompt inicial, exercício e duração da familiarização.
+- ~~Prompt inicial, exercício e duração da familiarização.~~ **Concluído** — ver §3.1 e §4.1.
 - Comandos, esquema dos registros, captura no limite e cálculo das métricas.
 - Protocolo estatístico detalhado, especialmente censura e agregação por participante.
 - Identificação A/B/C, agenda, Issues e link do repositório/GitHub Projects.
