@@ -75,7 +75,7 @@ começa vermelha, tornando o *time-to-green* uma medida significativa para a RQ1
 | Item | Decisão |
 |---|---|
 | Tratamento com IA | Claude pelo navegador |
-| Modelo e esforço informados | “Sonnet 5”, esforço “alto”: nomenclatura e disponibilidade ainda devem ser confirmadas na interface |
+| Modelo e esforço | **Sonnet 5**, esforço **High** — confirmado na interface do Claude e disponível no plano gratuito para os três integrantes |
 | Conversa | Nova conversa por trial, sem histórico de tentativas anteriores |
 | Prompts | Prompt inicial padronizado, seguido de interação livre |
 | Evidência de uso | Resumo das perguntas enviadas, vinculado ao trial e redigido após o encerramento do cronômetro |
@@ -260,7 +260,7 @@ Cada integrante deve ser Assignee de pelo menos uma Issue com artefato de códig
 As decisões acima orientam a implementação. Ainda deverão ser concretizados e documentados:
 
 - ~~Os quatro exercícios, suas fontes e a justificativa de comparabilidade.~~ **Concluído** — ver §2.1 e §2.2.
-- Versões exatas das ferramentas e confirmação do modelo/esforço do Claude para todos.
+- ~~Versões exatas das ferramentas e confirmação do modelo/esforço do Claude para todos.~~ **Concluído** — versões no [README](../README.md); modelo/esforço do Claude confirmado em §3 (Sonnet 5, esforço High, disponível no plano gratuito para os três).
 - ~~Prompt inicial, exercício e duração da familiarização.~~ **Concluído** — ver §3.1 e §4.1.
 - Comandos, esquema dos registros, captura no limite e cálculo das métricas.
 - Protocolo estatístico detalhado, especialmente censura e agregação por participante.
