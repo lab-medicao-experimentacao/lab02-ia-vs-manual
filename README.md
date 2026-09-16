@@ -35,7 +35,7 @@ O comando inicia o relógio e mostra o enunciado. Edite `katas/smoke/src/main/ja
 - Digite `incidente descrição do problema` ou use Ctrl+C para registrar uma interrupção técnica. Não há pausa ou repetição automática.
 - Para testes automatizados sem terminal, `--auto-test` dispara uma execução inicial; não repete automaticamente testes que falharam.
 
-O `smoke` serve apenas para verificar infraestrutura. Restaure seu código inicial após a prática. Os quatro módulos oficiais estão vazios e o cronômetro recusa iniciá-los enquanto não tiverem testes.
+O `smoke` serve apenas para verificar infraestrutura. Restaure seu código inicial após a prática. Os seis módulos oficiais (`kata-01` a `kata-06`) já têm enunciado, código inicial e testes; o cronômetro recusa iniciar um módulo enquanto não tiver testes.
 
 ## Trial oficial
 
@@ -90,7 +90,7 @@ Regras, limiares e fórmulas usados estão documentados em [doc/metricas.md](doc
 
 - `scripts/trial.py`: cronômetro, testes e coleta JSON/CSV — integrante 1.
 - `scripts/prepare.py`, `scripts/metrics.py`, `Dockerfile`, `compose.yaml` e `pom.xml`: ambiente e coleta de métricas estruturais — integrante 2.
-- `katas/kata-01` a `kata-04`: espaços para exercícios e testes — integrante 3.
+- `katas/kata-01` a `kata-06`: espaços para exercícios e testes — integrante 3.
 - `katas/smoke`: exercício provisório fora da amostra.
 - `tests/`: testes do ciclo de vida do cronômetro e da coleta de métricas.
 

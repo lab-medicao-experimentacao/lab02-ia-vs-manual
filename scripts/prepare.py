@@ -10,7 +10,7 @@ from trial import ROOT, snapshot, summarize, utc
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument(
     "--kata",
-    choices=["smoke", "kata-01", "kata-02", "kata-03", "kata-04"],
+    choices=["smoke", "kata-01", "kata-02", "kata-03", "kata-04", "kata-05", "kata-06"],
     required=True,
 )
 args = parser.parse_args()

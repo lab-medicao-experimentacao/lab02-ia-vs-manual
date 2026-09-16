@@ -21,7 +21,7 @@ As imagens devem estar construídas, as dependências baixadas e o ambiente veri
 
 ## 2. Exercícios e testes
 
-- Foram selecionados **4 katas autorais de baixa indexação**, evitando clássicos muito difundidos (LeetCode/HackerRank/Codewars), para reduzir o risco de memorização pela IA.
+- Foram selecionados **6 katas autorais de baixa indexação**, evitando clássicos muito difundidos (LeetCode/HackerRank/Codewars), para reduzir o risco de memorização pela IA.
 - A seleção combinou classificação de dificuldade e critérios comuns: conhecimentos exigidos, quantidade de regras, tamanho esperado da solução e adequação ao limite de 35 minutos.
 - Foram priorizados problemas de lógica, coleções e manipulação de dados/strings, sem frameworks ou algoritmos especializados.
 - Exercícios já resolvidos por algum integrante serão substituídos antes da execução.
@@ -43,8 +43,10 @@ padrão (sem `package`), seguindo `katas/smoke` como referência.
 | kata-02 | Agrupador de Extrato | Agregação de dados | Autoral do grupo (spec própria) |
 | kata-03 | Compressor de Corridas | Codificação de string (variação de run-length) | Autoral do grupo (variação com regra própria) |
 | kata-04 | Validador de Agenda | Intervalos de tempo + lógica | Autoral do grupo (spec própria) |
+| kata-05 | Mascarador de Contatos | Validação e mascaramento de string | Autoral do grupo (spec própria) |
+| kata-06 | Encadeador de Trechos | Encadeamento por chave (hashmap) + detecção de ciclo | Autoral do grupo (spec própria) |
 
-**Fontes e baixa indexação.** Os quatro katas são enunciados autorais do grupo, e não
+**Fontes e baixa indexação.** Os seis katas são enunciados autorais do grupo, e não
 cópias de problemas catalogados. Quando a ideia subjacente é conhecida (por exemplo,
 codificação por corridas no kata-03), o enunciado adota uma regra própria (corridas de
 tamanho 1 permanecem literais, sem prefixo de contagem) e um contrato de entrada/saída
@@ -63,6 +65,8 @@ testável por asserções simples de JUnit. A tabela abaixo resume os critérios
 | kata-02 | Parsing `chave:valor`, agregação por soma, ordenação com desempate | 5 | ~25–35 LOC | 8 | Sim |
 | kata-03 | Varredura de corridas consecutivas, formatação condicional | 5 | ~25–35 LOC | 8 | Sim |
 | kata-04 | Parsing de horários `HH:MM`, detecção de sobreposição de intervalos, ordenação | 5 | ~30–40 LOC | 8 | Sim |
+| kata-05 | Parsing `tipo:valor`, validação de formato (e-mail/telefone), mascaramento condicional | 5 | ~25–35 LOC | 8 | Sim |
+| kata-06 | Parsing `origem-destino`, filtragem por chave (hashmap), encadeamento sequencial, detecção de ciclo | 5 | ~30–40 LOC | 8 | Sim |
 
 Todos compartilham a mesma forma — *ler entrada → aplicar poucas regras → produzir saída
 ordenada/normalizada* — e a mesma faixa de esforço, mantendo a comparabilidade exigida pelo
@@ -87,7 +91,7 @@ O mesmo assistente, modelo e configuração deverão ser utilizados em todos os 
 ### 3.1 Prompt inicial padronizado
 
 Todo trial com IA começa com **uma nova conversa** e o mesmo prompt inicial, colado sem
-alterações. O nome do kata (`kata-01` … `kata-04`) é o único trecho ajustado por trial.
+alterações. O nome do kata (`kata-01` … `kata-06`) é o único trecho ajustado por trial.
 Após enviar o prompt inicial e colar o enunciado, a interação é livre, respeitando as
 regras de consulta do §3 (proibida a busca de soluções específicas do kata).
 
@@ -111,20 +115,22 @@ conforme §3 e §9.
 
 ## 4. Distribuição e sessões
 
-Cada integrante resolverá os quatro katas uma vez, com dois trials por tratamento: **12 trials no total**.
+Cada integrante resolverá os seis katas uma vez, com três trials por tratamento: **18 trials no total**.
 
 | Rodada | Integrante A | Integrante B | Integrante C |
 |---|---|---|---|
 | 1 | K1 sem IA | K1 com IA | K2 sem IA |
 | 2 | K2 com IA | K2 sem IA | K3 com IA |
 | 3 | K3 sem IA | K3 com IA | K4 sem IA |
-| 4 | K4 com IA | K4 sem IA | K1 com IA |
+| 4 | K4 com IA | K4 sem IA | K5 com IA |
+| 5 | K5 sem IA | K5 com IA | K6 sem IA |
+| 6 | K6 com IA | K6 sem IA | K1 com IA |
 
-Essa distribuição alterna tratamentos, inclui ambos para cada kata e mantém dois trials por tratamento para cada participante. Com três participantes, a distribuição por kata é de 2 para 1; o contrabalanceamento não é completo. Os nomes correspondentes a A, B e C serão registrados antes da execução.
+Essa distribuição estende a regra usada para os 4 katas originais (A e B compartilham a kata da rodada com tratamento oposto; C resolve a kata seguinte, na mesma fase de tratamento de A) para as 6 rodadas. Ela alterna tratamentos, inclui ambos para cada kata e mantém três trials por tratamento para cada participante. Com três participantes, a distribuição por kata é de 2 para 1; o contrabalanceamento não é completo. Os nomes correspondentes a A, B e C serão registrados antes da execução.
 
-- Duas sessões por integrante: rodadas 1–2 e rodadas 3–4.
+- Três sessões por integrante: rodadas 1–2, 3–4 e 5–6.
 - Intervalo fixo de **10 minutos** entre os trials de uma sessão, fora da medição.
-- Até 2h20 de execução por integrante, mais intervalos e preparação.
+- Até 3h30 de execução por integrante, mais intervalos e preparação.
 - Familiarização padronizada antes dos trials oficiais (ver §4.1). Esses resultados não entrarão na análise.
 - Enunciados, soluções, prompts e dificuldades só serão compartilhados após todos concluírem os trials oficiais. Dúvidas operacionais podem ser discutidas sem revelar conteúdo dos katas.
 
@@ -173,9 +179,9 @@ Ferramentas escolhidas: **PMD para complexidade, CPD para duplicação e coleta 
 - Comparação pareada por participante e **Wilcoxon pareado**, conforme orientação do enunciado.
 - Hipóteses direcionais para RQ1/RQ2 e não direcionais para RQ3.
 - Identificação explícita dos tempos censurados, acompanhada da quantidade de conclusões por tratamento. Um registro de 35 minutos sem sucesso não representa tempo de conclusão.
-- Discussão da capacidade inferencial muito limitada com apenas três participantes; os 12 trials não serão tratados como 12 participantes independentes.
+- Discussão da capacidade inferencial muito limitada com apenas três participantes; os 18 trials não serão tratados como 18 participantes independentes.
 
-Antes da coleta oficial, o protocolo analítico deverá formalizar a agregação dos dois trials de cada tratamento por participante, o tratamento de censura e ocorrências técnicas, o nível de significância e os critérios dos testes. O Wilcoxon comum não trata censura diretamente; sua aplicação ao tempo exige definir claramente o que será comparado e as limitações. Ausência de significância não será interpretada como equivalência dos tratamentos.
+Antes da coleta oficial, o protocolo analítico deverá formalizar a agregação dos três trials de cada tratamento por participante, o tratamento de censura e ocorrências técnicas, o nível de significância e os critérios dos testes. O Wilcoxon comum não trata censura diretamente; sua aplicação ao tempo exige definir claramente o que será comparado e as limitações. Ausência de significância não será interpretada como equivalência dos tratamentos.
 
 ## 8. Ameaças à validade
 
@@ -188,7 +194,7 @@ são reunidas com a mitigação adotada e o risco residual.
 Se um kata for muito conhecido, a IA pode reproduzir uma solução vista no treinamento em
 vez de efetivamente auxiliar, inflando artificialmente o efeito do tratamento com IA.
 
-- **Mitigação:** uso de 4 katas autorais de baixa indexação, com specs e testes próprios; onde a ideia subjacente é conhecida, adota-se uma regra própria e um contrato de I/O específico (ver §2, §2.1). Registro do resumo de perguntas à IA por trial (§3) permite inspecionar sinais de resposta memorizada.
+- **Mitigação:** uso de 6 katas autorais de baixa indexação, com specs e testes próprios; onde a ideia subjacente é conhecida, adota-se uma regra própria e um contrato de I/O específico (ver §2, §2.1). Registro do resumo de perguntas à IA por trial (§3) permite inspecionar sinais de resposta memorizada.
 - **Risco residual:** a baixa indexação reduz, mas não elimina, o risco; ideias fundamentais podem estar implicitamente no treinamento da IA.
 
 ### 8.2 Exposição prévia de quem prepara os katas (validade interna)
@@ -225,9 +231,9 @@ específica durante o trial, contaminando a medição.
 
 ### 8.6 Baixo poder estatístico (validade de conclusão)
 
-Com três participantes e 12 trials, a capacidade inferencial é muito limitada.
+Com três participantes e 18 trials, a capacidade inferencial é muito limitada.
 
-- **Mitigação:** uso de mediana e IQR e do teste não paramétrico de Wilcoxon pareado, consistente com o desenho within-subject (§6, §7); os 12 trials não serão tratados como 12 participantes independentes.
+- **Mitigação:** uso de mediana e IQR e do teste não paramétrico de Wilcoxon pareado, consistente com o desenho within-subject (§6, §7); os 18 trials não serão tratados como 18 participantes independentes.
 - **Risco residual:** ausência de significância não poderá ser interpretada como equivalência dos tratamentos; conclusões terão caráter exploratório.
 
 ## 9. Armazenamento e preservação

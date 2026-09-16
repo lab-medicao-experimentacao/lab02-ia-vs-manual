@@ -335,7 +335,7 @@ def main():
     run_parser.add_argument("--participant", required=True)
     run_parser.add_argument(
         "--kata",
-        choices=["kata-01", "kata-02", "kata-03", "kata-04", "smoke"],
+        choices=["kata-01", "kata-02", "kata-03", "kata-04", "kata-05", "kata-06", "smoke"],
         required=True,
     )
     run_parser.add_argument("--treatment", choices=["com-ia", "sem-ia"], required=True)

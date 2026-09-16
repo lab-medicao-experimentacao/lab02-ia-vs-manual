@@ -13,6 +13,8 @@
         <module>katas/kata-02</module>
         <module>katas/kata-03</module>
         <module>katas/kata-04</module>
+        <module>katas/kata-05</module>
+        <module>katas/kata-06</module>
         <module>katas/smoke</module>
     </modules>
 
