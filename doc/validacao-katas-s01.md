@@ -2,8 +2,8 @@
 
 Registro da validação da issue **#19** — *Validar cronômetro e coletor de métricas
 sobre os katas oficiais*. O objetivo foi confirmar a integração fim a fim de
-`scripts/prepare.py`, `scripts/trial.py` e `scripts/metrics.py` sobre os quatro katas
-oficiais (kata-01 a kata-04), e não apenas sobre o módulo `smoke`, antes da execução
+`scripts/prepare.py`, `scripts/trial.py` e `scripts/metrics.py` sobre os seis katas
+oficiais (kata-01 a kata-06), e não apenas sobre o módulo `smoke`, antes da execução
 oficial da S02.
 
 Toda a validação rodou dentro do contêiner Docker (`docker compose run --rm lab ...`),
@@ -29,6 +29,8 @@ stub); a preparação valida o ambiente, não a solução.
 | kata-02 | OK | `results/environment-kata-02.json` |
 | kata-03 | OK | `results/environment-kata-03.json` |
 | kata-04 | OK | `results/environment-kata-04.json` |
+| kata-05 | OK | `results/environment-kata-05.json` |
+| kata-06 | OK | `results/environment-kata-06.json` |
 
 ## Etapa 2 — `trial.py` (cronômetro e captura)
 
@@ -52,6 +54,8 @@ Contagens de teste capturadas na avaliação final (RQ2 — qualidade funcional)
 | kata-02 | 8 | 2 | 6 | 25,0% |
 | kata-03 | 8 | 1 | 7 | 12,5% |
 | kata-04 | 8 | 3 | 5 | 37,5% |
+| kata-05 | 8 | 2 | 6 | 25,0% |
+| kata-06 | 8 | 4 | 4 | 50,0% |
 
 As contagens conferem com a verificação local via Maven, confirmando que a leitura dos
 relatórios do Surefire funciona sobre os katas oficiais.
@@ -68,6 +72,8 @@ reportou violações com `Errors:0`.
 | kata-02 | 6 | 1,0 | 1 | 0,0% |
 | kata-03 | 5 | 1,0 | 1 | 0,0% |
 | kata-04 | 6 | 1,0 | 1 | 0,0% |
+| kata-05 | 6 | 1,0 | 1 | 0,0% |
+| kata-06 | 6 | 1,0 | 1 | 0,0% |
 
 Os valores são baixos porque foram medidos sobre o **stub** (código inicial), não sobre
 uma solução real. O que a validação confirma é que a coleta de LOC, complexidade
@@ -76,7 +82,7 @@ sobre os katas oficiais.
 
 ## Conclusão
 
-A integração fim a fim está confirmada sobre os quatro katas oficiais:
+A integração fim a fim está confirmada sobre os seis katas oficiais:
 
 - `prepare.py` valida o ambiente offline para cada kata;
 - `trial.py` conduz o trial cronometrado, preserva o código final e captura tempo,
