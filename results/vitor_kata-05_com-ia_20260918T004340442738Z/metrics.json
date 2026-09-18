@@ -1,0 +1,26 @@
+{
+  "source": "/workspace/results/vitor_kata-05_com-ia_20260918T004340442738Z/final/katas/kata-05/src/main/java",
+  "collected_at": "2026-09-18T00:53:58.770931+00:00",
+  "loc": {
+    "total": 45,
+    "per_file": {
+      "ContactMasker.java": 45
+    }
+  },
+  "complexity": {
+    "per_method": [
+      8,
+      4,
+      2
+    ],
+    "method_count": 3,
+    "average": 4.666666666666667
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "vitor_kata-05_com-ia_20260918T004340442738Z",
+  "kata": "kata-05"
+}
