@@ -2,6 +2,7 @@
 **/__pycache__/
 .env
 .m2/
+notas/
 
 # Resultados experimentais: ignore tudo por padrão e libere apenas evidências.
 results/*
