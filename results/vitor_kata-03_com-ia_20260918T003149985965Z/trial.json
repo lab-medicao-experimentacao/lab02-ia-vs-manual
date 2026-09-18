@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "trial_id": "vitor_kata-03_com-ia_20260918T003149985965Z",
+  "participant": "vitor",
+  "kata": "kata-03",
+  "treatment": "com-ia",
+  "practice": false,
+  "limit_seconds": 2100,
+  "status": "completed",
+  "started_at": "2026-09-18T00:31:50.018738+00:00",
+  "ended_at": "2026-09-18T00:32:11.278919+00:00",
+  "elapsed_seconds": 21.157897790000334,
+  "censored": false,
+  "time_to_green_seconds": 21.157897790000334,
+  "runs": [
+    {
+      "exit_code": 0,
+      "tests": {
+        "total": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 8,
+        "failed": 0,
+        "success_percent": 100.0
+      },
+      "classification": "success",
+      "elapsed_seconds": 21.157897790000334,
+      "snapshot": "runs/001/katas/kata-03"
+    }
+  ],
+  "final_evaluation": {
+    "exit_code": 0,
+    "tests": {
+      "total": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "failed": 0,
+      "success_percent": 100.0
+    },
+    "classification": "success",
+    "elapsed_seconds": 21.157897790000334,
+    "snapshot": "runs/001/katas/kata-03"
+  },
+  "incident": null
+}
