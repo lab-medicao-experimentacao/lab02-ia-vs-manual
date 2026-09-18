@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "trial_id": "A_kata-06_comia",
+  "participant": "gabriel",
+  "kata": "kata-06",
+  "treatment": "com-ia",
+  "practice": false,
+  "limit_seconds": 2100,
+  "status": "completed",
+  "started_at": "2026-09-18T02:16:00.847019+00:00",
+  "ended_at": "2026-09-18T02:19:59.123303+00:00",
+  "elapsed_seconds": 238.273365654999,
+  "censored": false,
+  "time_to_green_seconds": 238.273365654999,
+  "runs": [
+    {
+      "exit_code": 0,
+      "tests": {
+        "total": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 8,
+        "failed": 0,
+        "success_percent": 100.0
+      },
+      "classification": "success",
+      "elapsed_seconds": 238.273365654999,
+      "snapshot": "runs/001/katas/kata-06"
+    }
+  ],
+  "final_evaluation": {
+    "exit_code": 0,
+    "tests": {
+      "total": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "failed": 0,
+      "success_percent": 100.0
+    },
+    "classification": "success",
+    "elapsed_seconds": 238.273365654999,
+    "snapshot": "runs/001/katas/kata-06"
+  },
+  "incident": null
+}
