@@ -1,0 +1,42 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< br.puc.lab02:kata-04 >------------------------
+[INFO] Building kata-04 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ kata-04 ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ kata-04 ---
+[INFO] skip non existing resourceDirectory /workspace/results/A_kata-04_comia/runs/001/katas/kata-04/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ kata-04 ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ kata-04 ---
+[INFO] skip non existing resourceDirectory /workspace/results/A_kata-04_comia/runs/001/katas/kata-04/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ kata-04 ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 21] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ kata-04 ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ScheduleValidatorTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in ScheduleValidatorTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.524 s
+[INFO] Finished at: 2026-09-18T01:11:18Z
+[INFO] ------------------------------------------------------------------------
