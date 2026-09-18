@@ -1,0 +1,24 @@
+{
+  "source": "/workspace/results/joaquim_vilela_kata-01_com-ia_20260918T003546014662Z/final/katas/kata-01/src/main/java",
+  "collected_at": "2026-09-18T00:53:03.683342+00:00",
+  "loc": {
+    "total": 21,
+    "per_file": {
+      "TagNormalizer.java": 21
+    }
+  },
+  "complexity": {
+    "per_method": [
+      6
+    ],
+    "method_count": 1,
+    "average": 6.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "joaquim_vilela_kata-01_com-ia_20260918T003546014662Z",
+  "kata": "kata-01"
+}
