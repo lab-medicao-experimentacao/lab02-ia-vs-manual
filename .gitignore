@@ -1,6 +1,21 @@
 **/target/
 **/__pycache__/
 .env
+.m2/
+
+# Resultados experimentais: ignore tudo por padrão e libere apenas evidências.
 results/*
 !results/.gitkeep
-.m2/
+!results/consolidado.csv
+!results/*/
+results/**/*
+!results/**/
+
+# Metadados e registros de cada trial.
+!results/*/trial.json
+!results/*/environment.json
+!results/*/perguntas.md
+!results/*/metrics.json
+
+# Código final necessário para auditoria e recálculo das métricas.
+!results/*/final/katas/*/src/main/java/**/*.java
