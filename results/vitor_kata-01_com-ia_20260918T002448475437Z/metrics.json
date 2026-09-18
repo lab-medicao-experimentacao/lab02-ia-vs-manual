@@ -1,0 +1,24 @@
+{
+  "source": "/workspace/results/vitor_kata-01_com-ia_20260918T002448475437Z/final/katas/kata-01/src/main/java",
+  "collected_at": "2026-09-18T00:27:06.706073+00:00",
+  "loc": {
+    "total": 18,
+    "per_file": {
+      "TagNormalizer.java": 18
+    }
+  },
+  "complexity": {
+    "per_method": [
+      4
+    ],
+    "method_count": 1,
+    "average": 4.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "vitor_kata-01_com-ia_20260918T002448475437Z",
+  "kata": "kata-01"
+}
