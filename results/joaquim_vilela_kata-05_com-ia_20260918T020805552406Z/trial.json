@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "trial_id": "joaquim_vilela_kata-05_com-ia_20260918T020805552406Z",
+  "participant": "joaquim_vilela",
+  "kata": "kata-05",
+  "treatment": "com-ia",
+  "practice": false,
+  "limit_seconds": 2100,
+  "status": "completed",
+  "started_at": "2026-09-18T02:08:05.558499+00:00",
+  "ended_at": "2026-09-18T02:11:47.496561+00:00",
+  "elapsed_seconds": 221.91150693300006,
+  "censored": false,
+  "time_to_green_seconds": 221.91150693300006,
+  "runs": [
+    {
+      "exit_code": 0,
+      "tests": {
+        "total": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 8,
+        "failed": 0,
+        "success_percent": 100.0
+      },
+      "classification": "success",
+      "elapsed_seconds": 221.91150693300006,
+      "snapshot": "runs/001/katas/kata-05"
+    }
+  ],
+  "final_evaluation": {
+    "exit_code": 0,
+    "tests": {
+      "total": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "failed": 0,
+      "success_percent": 100.0
+    },
+    "classification": "success",
+    "elapsed_seconds": 221.91150693300006,
+    "snapshot": "runs/001/katas/kata-05"
+  },
+  "incident": null
+}

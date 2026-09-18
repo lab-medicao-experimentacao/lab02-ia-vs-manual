@@ -1,0 +1,24 @@
+{
+  "source": "/workspace/results/joaquim_vilela_kata-05_com-ia_20260918T020805552406Z/final/katas/kata-05/src/main/java",
+  "collected_at": "2026-09-18T02:12:54.745574+00:00",
+  "loc": {
+    "total": 38,
+    "per_file": {
+      "ContactMasker.java": 38
+    }
+  },
+  "complexity": {
+    "per_method": [
+      13
+    ],
+    "method_count": 1,
+    "average": 13.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "joaquim_vilela_kata-05_com-ia_20260918T020805552406Z",
+  "kata": "kata-05"
+}
