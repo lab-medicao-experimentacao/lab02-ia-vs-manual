@@ -1,0 +1,24 @@
+{
+  "source": "/workspace/results/vitor_kata-04_sem-ia_20260924T002813093564Z/final/katas/kata-04/src/main/java",
+  "collected_at": "2026-09-24T00:42:26.541302+00:00",
+  "loc": {
+    "total": 40,
+    "per_file": {
+      "ScheduleValidator.java": 40
+    }
+  },
+  "complexity": {
+    "per_method": [
+      12
+    ],
+    "method_count": 1,
+    "average": 12.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "vitor_kata-04_sem-ia_20260924T002813093564Z",
+  "kata": "kata-04"
+}

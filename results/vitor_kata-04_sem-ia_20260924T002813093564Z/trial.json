@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "trial_id": "vitor_kata-04_sem-ia_20260924T002813093564Z",
+  "participant": "vitor",
+  "kata": "kata-04",
+  "treatment": "sem-ia",
+  "practice": false,
+  "limit_seconds": 2100,
+  "status": "completed",
+  "started_at": "2026-09-24T00:28:13.108831+00:00",
+  "ended_at": "2026-09-24T00:36:56.811256+00:00",
+  "elapsed_seconds": 1523.70,
+  "censored": false,
+  "time_to_green_seconds": 1523.70,
+  "runs": [
+    {
+      "exit_code": 1,
+      "tests": {
+        "total": 8,
+        "failures": 4,
+        "errors": 1,
+        "skipped": 0,
+        "passed": 3,
+        "failed": 5,
+        "success_percent": 37.5
+      },
+      "classification": "tests_failed",
+      "elapsed_seconds": 225.40826321200007,
+      "snapshot": "runs/001/katas/kata-04"
+    },
+    {
+      "exit_code": 1,
+      "tests": {
+        "total": 8,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 6,
+        "failed": 2,
+        "success_percent": 75.0
+      },
+      "classification": "tests_failed",
+      "elapsed_seconds": 300.86696729000005,
+      "snapshot": "runs/002/katas/kata-04"
+    },
+    {
+      "exit_code": 1,
+      "tests": {
+        "total": 8,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 6,
+        "failed": 2,
+        "success_percent": 75.0
+      },
+      "classification": "tests_failed",
+      "elapsed_seconds": 382.98103565199995,
+      "snapshot": "runs/003/katas/kata-04"
+    },
+    {
+      "exit_code": 1,
+      "tests": {
+        "total": 8,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 6,
+        "failed": 2,
+        "success_percent": 75.0
+      },
+      "classification": "tests_failed",
+      "elapsed_seconds": 627.69650558600006,
+      "snapshot": "runs/004/katas/kata-04"
+    },
+    {
+      "exit_code": 0,
+      "tests": {
+        "total": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 8,
+        "failed": 0,
+        "success_percent": 100.0
+      },
+      "classification": "success",
+      "elapsed_seconds": 1523.70,
+      "snapshot": "runs/005/katas/kata-04"
+    }
+  ],
+  "final_evaluation": {
+    "exit_code": 0,
+    "tests": {
+      "total": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "failed": 0,
+      "success_percent": 100.0
+    },
+    "classification": "success",
+    "elapsed_seconds": 1523.70,
+    "snapshot": "runs/005/katas/kata-04"
+  },
+  "incident": null
+}
