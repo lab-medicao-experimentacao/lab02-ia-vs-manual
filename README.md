@@ -17,7 +17,7 @@ No Windows, prefira executar no WSL2 com Docker integrado.
 
 A preparação baixa dependências, executa testes numa cópia temporária e verifica a execução offline. Os testes do `smoke` falham propositalmente: o objetivo é verificar o ambiente, não resolver o exercício. Uma falha de compilação ou ausência de relatórios impede concluir a preparação. Repita a preparação para cada kata quando seus testes estiverem disponíveis. Essa atividade acontece **antes de o participante acessar o enunciado e antes da medição**; deve ser conduzida por quem prepara o ambiente.
 
-Versões: Temurin 21.0.7, Maven 3.9.9, Python 3.12.11, JUnit 5.13.4, Surefire 3.5.4 e PMD/CPD 7.17.0. As imagens base são fixadas por digest. A preparação registra as versões efetivamente executadas em `results/environment-<kata>.json`. Use a mesma imagem construída para o trio; pacotes do sistema instalados por apt não constituem um build bit a bit reproduzível.
+Versões: Temurin 21.0.7, Maven 3.9.9, Python 3.12.11, JUnit 5.13.4, Surefire 3.5.4, PMD/CPD 7.17.0, pandas 2.2.3 e numpy 2.1.3 (`requirements.txt`). As imagens base são fixadas por digest. A preparação registra as versões efetivamente executadas em `results/environment-<kata>.json`. Use a mesma imagem construída para o trio; pacotes do sistema instalados por apt não constituem um build bit a bit reproduzível.
 
 ## Validar um trial provisório
 
