@@ -1,0 +1,26 @@
+{
+  "source": "/workspace/results/vitor_kata-06_sem-ia_20260924T004538662549Z/final/katas/kata-06/src/main/java",
+  "collected_at": "2026-09-24T01:06:16.368456+00:00",
+  "loc": {
+    "total": 59,
+    "per_file": {
+      "RouteChainer.java": 59
+    }
+  },
+  "complexity": {
+    "per_method": [
+      14,
+      7,
+      4
+    ],
+    "method_count": 3,
+    "average": 8.333333333333334
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "vitor_kata-06_sem-ia_20260924T004538662549Z",
+  "kata": "kata-06"
+}
