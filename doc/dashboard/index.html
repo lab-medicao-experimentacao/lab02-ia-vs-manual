@@ -1,0 +1,1746 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IA vs. Manual — Dashboard</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
+  --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
+  --border: rgba(11,11,11,0.10);
+  --sem-ia: #eb6834; --com-ia: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
+    --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255,255,255,0.10);
+    --sem-ia: #d95926; --com-ia: #3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
+  --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255,255,255,0.10);
+  --sem-ia: #d95926; --com-ia: #3987e5;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+main { max-width: 1080px; margin: 0 auto; padding: 40px 24px 64px; }
+header { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end;
+  padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.eyebrow { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.1; margin: 6px 0 8px; font-weight: 650; }
+.lede { color: var(--ink-2); margin: 0; max-width: 56ch; }
+.hero { text-align: right; }
+.hero-value { font-size: clamp(48px, 8vw, 88px); font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+.hero-text { color: var(--ink-2); }
+.hero-text small { display: block; color: var(--muted); font-size: 12px; }
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 28px 0 8px; }
+.tiles.two { grid-template-columns: repeat(2, 1fr); }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.tile-label { color: var(--muted); font-size: 12px; }
+.tile-value { font-size: 28px; font-weight: 650; margin: 2px 0; }
+.tile-value .of, .tile-value .unit { color: var(--muted); font-size: 16px; font-weight: 500; }
+.tile-detail { color: var(--ink-2); font-size: 13px; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.dot.sem { background: var(--sem-ia); } .dot.com { background: var(--com-ia); }
+section { margin-top: 48px; }
+.rq { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .08em; }
+h2 { font-size: 22px; margin: 4px 0 6px; font-weight: 650; }
+.question { color: var(--ink-2); margin: 0 0 16px; max-width: 70ch; }
+figure { margin: 16px 0 0; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 12px 8px; }
+figcaption { color: var(--ink-2); font-size: 13px; padding: 0 8px 4px; }
+figcaption strong { color: var(--ink); }
+svg.chart { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+svg.chart text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif !important; }
+svg.chart .pt { cursor: default; }
+svg.chart .pt:hover path, svg.chart .pt:hover use { stroke: var(--ink) !important; stroke-width: 2px !important; }
+.empty { color: var(--ink-2); background: var(--surface); border: 1px dashed var(--axis);
+  border-radius: 12px; padding: 14px 16px; margin: 12px 0 0; }
+.notes { margin-top: 48px; border-left: 3px solid var(--sem-ia); padding: 4px 16px; }
+.notes h3 { font-size: 14px; margin: 0 0 4px; }
+.notes ul { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr:hover { background: var(--grid); }
+footer { margin-top: 40px; color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+button.theme { font: inherit; color: var(--ink-2); background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+@media (max-width: 760px) {
+  main { padding: 24px 16px 48px; }
+  header { grid-template-columns: 1fr; }
+  .hero { text-align: left; }
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div>
+    <div class="eyebrow">LAB02 · Experimento controlado</div>
+    <h1>IA vs. codificação manual</h1>
+    <p class="lede">Cada participante resolveu seis katas em Java, metade com assistente de IA e metade sem,
+    em ordem contrabalanceada. Resultado de cada trial: tempo até todos os testes passarem, defeitos e estrutura do código.</p>
+  </div>
+  <div class="hero">
+    <div class="hero-value">2,9×</div>
+    <div class="hero-text">mais rápido com IA<small>razão entre as medianas de tempo</small></div>
+  </div>
+</header>
+
+<div class="tiles"><div class="tile"><div class="tile-label">Trials analisados</div><div class="tile-value">15<span class="of">/18</span></div><div class="tile-detail">6 sem IA · 9 com IA</div></div><div class="tile"><div class="tile-label">Mediana sem IA</div><div class="tile-value">10,6 <span class="unit">min</span></div><div class="tile-detail"><span class="dot sem"></span>até todos os testes passarem</div></div><div class="tile"><div class="tile-label">Mediana com IA</div><div class="tile-value">3,7 <span class="unit">min</span></div><div class="tile-detail"><span class="dot com"></span>até todos os testes passarem</div></div><div class="tile"><div class="tile-label">Censurados</div><div class="tile-value">0</div><div class="tile-detail">atingiram 35 min sem passar</div></div></div>
+
+<section>
+  <div class="rq">RQ1 · TEMPO</div>
+  <h2>A IA reduz o tempo para resolver a tarefa?</h2>
+  <p class="question">Tempo até todos os testes passarem, em minutos. Pontos vazados são trials censurados (limite de 35 min).
+  Passe o mouse sobre um ponto para ver o trial.</p>
+  <figure><svg class="chart" role="img" aria-label="Distribuição do tempo até verde por tratamento" xmlns:xlink="http://www.w3.org/1999/xlink" width="576pt" height="187.2pt" viewBox="0 0 576 187.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 187.2 
+L 576 187.2 
+L 576 0 
+L 0 0 
+L 0 187.2 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 48.95 139.86 
+L 566.28 139.86 
+L 566.28 9.72 
+L 48.95 9.72 
+L 48.95 139.86 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 48.95 139.86 
+L 48.95 9.72 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_1">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="48.95" y="157.718281" transform="rotate(-0 48.95 157.718281)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <path d="M 146.020533 139.86 
+L 146.020533 9.72 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_2">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="146.020533" y="157.718281" transform="rotate(-0 146.020533 157.718281)">5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <path d="M 243.091067 139.86 
+L 243.091067 9.72 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_3">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="243.091067" y="157.718281" transform="rotate(-0 243.091067 157.718281)">10</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <path d="M 340.1616 139.86 
+L 340.1616 9.72 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_4">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="340.1616" y="157.718281" transform="rotate(-0 340.1616 157.718281)">15</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <path d="M 437.232134 139.86 
+L 437.232134 9.72 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_5">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="437.232134" y="157.718281" transform="rotate(-0 437.232134 157.718281)">20</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <path d="M 534.302667 139.86 
+L 534.302667 9.72 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_6">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="534.302667" y="157.718281" transform="rotate(-0 534.302667 157.718281)">25</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="fill: var(--ink-2); font: 12px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="307.615" y="173.604063" transform="rotate(-0 307.615 173.604063)">minutos até todos os testes passarem</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="text_8">
+      <text style="fill: var(--ink-2); font: 10px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="45.45" y="36.931088" transform="rotate(-0 45.45 36.931088)">Com IA</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="text_9">
+      <text style="fill: var(--ink-2); font: 10px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="45.45" y="120.247349" transform="rotate(-0 45.45 120.247349)">Sem IA</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_7">
+    <path d="M 81.18308 15.635455 
+L 81.18308 50.628284 
+L 143.001805 50.628284 
+L 143.001805 15.635455 
+L 81.18308 15.635455 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_8">
+    <path d="M 81.18308 33.131869 
+L 55.796028 33.131869 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1"/>
+   </g>
+   <g id="line2d_9">
+    <path d="M 143.001805 33.131869 
+L 181.861912 33.131869 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1"/>
+   </g>
+   <g id="line2d_10">
+    <path d="M 55.796028 24.383662 
+L 55.796028 41.880077 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_11">
+    <path d="M 181.861912 24.383662 
+L 181.861912 41.880077 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_12">
+    <path d="M 151.40872 98.951716 
+L 151.40872 133.944545 
+L 389.386087 133.944545 
+L 389.386087 98.951716 
+L 151.40872 98.951716 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_13">
+    <path d="M 151.40872 116.448131 
+L 80.034637 116.448131 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1"/>
+   </g>
+   <g id="line2d_14">
+    <path d="M 389.386087 116.448131 
+L 541.971239 116.448131 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1"/>
+   </g>
+   <g id="line2d_15">
+    <path d="M 80.034637 107.699923 
+L 80.034637 125.196338 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_16">
+    <path d="M 541.971239 107.699923 
+L 541.971239 125.196338 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--axis); stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_17">
+    <path d="M 120.753561 15.635455 
+L 120.753561 50.628284 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--ink); stroke-width: 2"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 254.092552 98.951716 
+L 254.092552 133.944545 
+" clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: var(--ink); stroke-width: 2"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 48.95 139.86 
+L 566.28 139.86 
+" style="fill: none; stroke: var(--axis); stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="tempo_distribuicao-dist-A_kata-01_semia" class="pt"><title>gabriel · kata-01 · Sem IA
+1,6 min até verde</title>
+    <defs>
+     <path id="m74861bcae5" d="M 0 3.391165 
+C 0.899347 3.391165 1.761981 3.03385 2.397916 2.397916 
+C 3.03385 1.761981 3.391165 0.899347 3.391165 0 
+C 3.391165 -0.899347 3.03385 -1.761981 2.397916 -2.397916 
+C 1.761981 -3.03385 0.899347 -3.391165 0 -3.391165 
+C -0.899347 -3.391165 -1.761981 -3.03385 -2.397916 -2.397916 
+C -3.03385 -1.761981 -3.391165 -0.899347 -3.391165 0 
+C -3.391165 0.899347 -3.03385 1.761981 -2.397916 2.397916 
+C -1.761981 3.03385 -0.899347 3.391165 0 3.391165 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="80.034637" y="104.783854" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-A_kata-03_semia" class="pt"><title>gabriel · kata-03 · Sem IA
+4,0 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="126.188185" y="119.2009" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-A_kata-05_semia" class="pt"><title>gabriel · kata-05 · Sem IA
+9,2 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="227.070325" y="110.289393" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-vitor_kata-02_sem-ia_20260924T000843697771Z" class="pt"><title>vitor · kata-02 · Sem IA
+12,0 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="281.114778" y="124.706438" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-vitor_kata-04_sem-ia_20260924T002813093564Z" class="pt"><title>vitor · kata-04 · Sem IA
+25,4 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="541.971239" y="115.794931" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-vitor_kata-06_sem-ia_20260924T004538662549Z" class="pt"><title>vitor · kata-06 · Sem IA
+19,4 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="425.476523" y="106.883424" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-A_kata-02_comia" class="pt"><title>gabriel · kata-02 · Com IA
+0,7 min até verde</title>
+    <defs>
+     <path id="m60f7a953e0" d="M 0 3.391165 
+C 0.899347 3.391165 1.761981 3.03385 2.397916 2.397916 
+C 3.03385 1.761981 3.391165 0.899347 3.391165 0 
+C 3.391165 -0.899347 3.03385 -1.761981 2.397916 -2.397916 
+C 1.761981 -3.03385 0.899347 -3.391165 0 -3.391165 
+C -0.899347 -3.391165 -1.761981 -3.03385 -2.397916 -2.397916 
+C -3.03385 -1.761981 -3.391165 -0.899347 -3.391165 0 
+C -3.391165 0.899347 -3.03385 1.761981 -2.397916 2.397916 
+C -1.761981 3.03385 -0.899347 3.391165 0 3.391165 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="62.961675" y="21.467593" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-A_kata-04_comia" class="pt"><title>gabriel · kata-04 · Com IA
+3,1 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="108.214353" y="35.884639" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-A_kata-06_comia" class="pt"><title>gabriel · kata-06 · Com IA
+4,0 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="126.047742" y="26.973131" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-joaquim_vilela_kata-01_com-ia_20260918T003546014662Z" class="pt"><title>joaquim_vilela · kata-01 · Com IA
+5,4 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="154.609949" y="41.390177" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-joaquim_vilela_kata-03_com-ia_20260918T010625012442Z" class="pt"><title>joaquim_vilela · kata-03 · Com IA
+4,8 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="143.001805" y="32.47867" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-joaquim_vilela_kata-05_com-ia_20260918T020805552406Z" class="pt"><title>joaquim_vilela · kata-05 · Com IA
+3,7 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="120.753561" y="23.567163" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-vitor_kata-01_com-ia_20260918T002448475437Z" class="pt"><title>vitor · kata-01 · Com IA
+1,7 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="81.18308" y="37.984208" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-vitor_kata-03_com-ia_20260918T003149985965Z" class="pt"><title>vitor · kata-03 · Com IA
+0,4 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="55.796028" y="29.072701" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_distribuicao-dist-vitor_kata-05_com-ia_20260918T004340442738Z" class="pt"><title>vitor · kata-05 · Com IA
+6,8 min até verde</title>
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m60f7a953e0" x="181.861912" y="43.489747" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p41db3fb0ac">
+   <rect x="48.95" y="9.72" width="517.33" height="130.14"/>
+  </clipPath>
+ </defs>
+</svg>
+<figcaption><strong>Distribuição.</strong> Cada ponto é um trial; a caixa mostra mediana e quartis dos concluídos.</figcaption></figure>
+  <figure><svg class="chart" role="img" aria-label="Mediana de tempo por participante, sem IA e com IA" xmlns:xlink="http://www.w3.org/1999/xlink" width="576pt" height="273.6pt" viewBox="0 0 576 273.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 273.6 
+L 576 273.6 
+L 576 0 
+L 0 0 
+L 0 273.6 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 60.48 250.3 
+L 566.28 250.3 
+L 566.28 11.119119 
+L 60.48 11.119119 
+L 60.48 250.3 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="text_1">
+      <text style="fill: var(--ink-2); font: 10px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="114.288511" y="261.398438" transform="rotate(-0 114.288511 261.398438)">Sem IA</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="text_2">
+      <text style="fill: var(--ink-2); font: 10px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="329.522553" y="261.398438" transform="rotate(-0 329.522553 261.398438)">Com IA</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_1">
+      <path d="M 60.48 250.3 
+L 566.28 250.3 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_3">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="254.479141" transform="rotate(-0 50.98 254.479141)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_2">
+      <path d="M 60.48 220.816908 
+L 566.28 220.816908 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_4">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="224.996049" transform="rotate(-0 50.98 224.996049)">2,5</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_3">
+      <path d="M 60.48 191.333816 
+L 566.28 191.333816 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_5">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="195.512957" transform="rotate(-0 50.98 195.512957)">5</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_4">
+      <path d="M 60.48 161.850724 
+L 566.28 161.850724 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_6">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="166.029865" transform="rotate(-0 50.98 166.029865)">7,5</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_5">
+      <path d="M 60.48 132.367632 
+L 566.28 132.367632 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_7">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="136.546773" transform="rotate(-0 50.98 136.546773)">10</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_6">
+      <path d="M 60.48 102.88454 
+L 566.28 102.88454 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_8">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="107.063681" transform="rotate(-0 50.98 107.063681)">12,5</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_7">
+      <path d="M 60.48 73.401448 
+L 566.28 73.401448 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_9">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="77.580589" transform="rotate(-0 50.98 77.580589)">15</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_8">
+      <path d="M 60.48 43.918356 
+L 566.28 43.918356 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_10">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="48.097497" transform="rotate(-0 50.98 48.097497)">17,5</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_9">
+      <path d="M 60.48 14.435264 
+L 566.28 14.435264 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_11">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="50.98" y="18.614405" transform="rotate(-0 50.98 18.614405)">20</text>
+     </g>
+    </g>
+    <g id="text_12">
+     <text style="fill: var(--ink-2); font: 12px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="19.992188" y="130.709559" transform="rotate(-90 19.992188 130.709559)">mediana de minutos até verde</text>
+    </g>
+   </g>
+   <g id="line2d_10">
+    <path d="M 114.288511 203.381117 
+L 329.522553 214.299448 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--axis); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_11">
+    <path d="M 114.288511 21.576293 
+L 329.522553 230.719787 
+" clip-path="url(#p676c01f369)" style="fill: none; stroke: var(--axis); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 60.48 250.3 
+L 60.48 11.119119 
+" style="fill: none; stroke: var(--axis); stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="tempo_participante-part-gabriel-sem-ia" class="pt"><title>gabriel · Sem IA
+mediana 4,0 min</title>
+    <defs>
+     <path id="mf0fcbd5da0" d="M 0 4.1833 
+C 1.109424 4.1833 2.173559 3.742521 2.95804 2.95804 
+C 3.742521 2.173559 4.1833 1.109424 4.1833 0 
+C 4.1833 -1.109424 3.742521 -2.173559 2.95804 -2.95804 
+C 2.173559 -3.742521 1.109424 -4.1833 0 -4.1833 
+C -1.109424 -4.1833 -2.173559 -3.742521 -2.95804 -2.95804 
+C -3.742521 -2.173559 -4.1833 -1.109424 -4.1833 0 
+C -4.1833 1.109424 -3.742521 2.173559 -2.95804 2.95804 
+C -2.173559 3.742521 -1.109424 4.1833 0 4.1833 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#p676c01f369)">
+     <use xlink:href="#mf0fcbd5da0" x="114.288511" y="203.381117" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_participante-part-gabriel-com-ia" class="pt"><title>gabriel · Com IA
+mediana 3,1 min</title>
+    <defs>
+     <path id="mf96ab409ec" d="M 0 4.1833 
+C 1.109424 4.1833 2.173559 3.742521 2.95804 2.95804 
+C 3.742521 2.173559 4.1833 1.109424 4.1833 0 
+C 4.1833 -1.109424 3.742521 -2.173559 2.95804 -2.95804 
+C 2.173559 -3.742521 1.109424 -4.1833 0 -4.1833 
+C -1.109424 -4.1833 -2.173559 -3.742521 -2.95804 -2.95804 
+C -3.742521 -2.173559 -4.1833 -1.109424 -4.1833 0 
+C -4.1833 1.109424 -3.742521 2.173559 -2.95804 2.95804 
+C -2.173559 3.742521 -1.109424 4.1833 0 4.1833 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#p676c01f369)">
+     <use xlink:href="#mf96ab409ec" x="329.522553" y="214.299448" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_participante-part-joaquim_vilela-com-ia" class="pt"><title>joaquim_vilela · Com IA
+mediana 4,8 min</title>
+    <g clip-path="url(#p676c01f369)">
+     <use xlink:href="#mf96ab409ec" x="329.522553" y="193.167564" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_participante-part-vitor-sem-ia" class="pt"><title>vitor · Sem IA
+mediana 19,4 min</title>
+    <g clip-path="url(#p676c01f369)">
+     <use xlink:href="#mf0fcbd5da0" x="114.288511" y="21.576293" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_participante-part-vitor-com-ia" class="pt"><title>vitor · Com IA
+mediana 1,7 min</title>
+    <g clip-path="url(#p676c01f369)">
+     <use xlink:href="#mf96ab409ec" x="329.522553" y="230.719787" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="text_13">
+    <text style="fill: var(--ink); font: 9px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: start" x="346.741277" y="216.962886" transform="rotate(-0 346.741277 216.962886)">gabriel · 1,3× mais rápido</text>
+   </g>
+   <g id="text_14">
+    <text style="fill: var(--muted); font: 9px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: start" x="346.741277" y="195.705845" transform="rotate(-0 346.741277 195.705845)">joaquim_vilela · só com IA, sem par</text>
+   </g>
+   <g id="text_15">
+    <text style="fill: var(--ink); font: 9px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: start" x="346.741277" y="233.383225" transform="rotate(-0 346.741277 233.383225)">vitor · 11,7× mais rápido</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p676c01f369">
+   <rect x="60.48" y="11.119119" width="505.8" height="239.180881"/>
+  </clipPath>
+ </defs>
+</svg>
+<figcaption><strong>Por participante.</strong> Cada linha liga a mediana sem IA à mediana com IA da mesma pessoa.</figcaption></figure>
+  <figure><svg class="chart" role="img" aria-label="Tempo até verde por kata e tratamento" xmlns:xlink="http://www.w3.org/1999/xlink" width="576pt" height="259.2pt" viewBox="0 0 576 259.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 259.2 
+L 576 259.2 
+L 576 0 
+L 0 0 
+L 0 259.2 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 55.16 212.22 
+L 566.28 212.22 
+L 566.28 27.864 
+L 55.16 27.864 
+L 55.16 212.22 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 55.16 212.22 
+L 55.16 27.864 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_1">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="55.16" y="230.078281" transform="rotate(-0 55.16 230.078281)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <path d="M 151.065304 212.22 
+L 151.065304 27.864 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_2">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="151.065304" y="230.078281" transform="rotate(-0 151.065304 230.078281)">5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <path d="M 246.970609 212.22 
+L 246.970609 27.864 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_3">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="246.970609" y="230.078281" transform="rotate(-0 246.970609 230.078281)">10</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <path d="M 342.875913 212.22 
+L 342.875913 27.864 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_4">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="342.875913" y="230.078281" transform="rotate(-0 342.875913 230.078281)">15</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <path d="M 438.781217 212.22 
+L 438.781217 27.864 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_5">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="438.781217" y="230.078281" transform="rotate(-0 438.781217 230.078281)">20</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <path d="M 534.686521 212.22 
+L 534.686521 27.864 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_6">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="534.686521" y="230.078281" transform="rotate(-0 534.686521 230.078281)">25</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="fill: var(--ink-2); font: 12px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="310.72" y="245.484062" transform="rotate(-0 310.72 245.484062)">minutos até verde</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="text_8">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="49.884044" transform="rotate(-0 51.66 49.884044)">kata-01</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="text_9">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="79.618883" transform="rotate(-0 51.66 79.618883)">kata-02</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="text_10">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="109.353721" transform="rotate(-0 51.66 109.353721)">kata-03</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="text_11">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="139.08856" transform="rotate(-0 51.66 139.08856)">kata-04</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="text_12">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="168.823399" transform="rotate(-0 51.66 168.823399)">kata-05</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="text_13">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="198.558237" transform="rotate(-0 51.66 198.558237)">kata-06</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_7">
+    <path d="M 85.871499 45.704903 
+L 123.278885 45.704903 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_8">
+    <path d="M 284.537885 75.439742 
+L 69.00348 75.439742 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_9">
+    <path d="M 131.471022 105.174581 
+L 105.00333 105.174581 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_10">
+    <path d="M 542.26304 134.909419 
+L 113.712947 134.909419 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_11">
+    <path d="M 231.142179 164.644258 
+L 156.28904 164.644258 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_12">
+    <path d="M 427.16672 194.379097 
+L 131.332265 194.379097 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_13">
+    <path d="M 85.871499 52.246568 
+L 85.871499 39.163239 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_14">
+    <path d="M 123.278885 52.246568 
+L 123.278885 39.163239 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_15">
+    <path d="M 284.537885 81.981406 
+L 284.537885 68.898077 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_16">
+    <path d="M 69.00348 81.981406 
+L 69.00348 68.898077 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_17">
+    <path d="M 131.471022 111.716245 
+L 131.471022 98.632916 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 105.00333 111.716245 
+L 105.00333 98.632916 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_19">
+    <path d="M 542.26304 141.451084 
+L 542.26304 128.367755 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_20">
+    <path d="M 113.712947 141.451084 
+L 113.712947 128.367755 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_21">
+    <path d="M 231.142179 171.185923 
+L 231.142179 158.102594 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_22">
+    <path d="M 156.28904 171.185923 
+L 156.28904 158.102594 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_23">
+    <path d="M 427.16672 200.920761 
+L 427.16672 187.837432 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_24">
+    <path d="M 131.332265 200.920761 
+L 131.332265 187.837432 
+" clip-path="url(#pf8605ae96b)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 55.16 212.22 
+L 566.28 212.22 
+" style="fill: none; stroke: var(--axis); stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="tempo_kata-kata-A_kata-01_semia" class="pt"><title>gabriel · kata-01 · Sem IA
+1,60</title>
+    <defs>
+     <path id="m74861bcae5" d="M 0 3.391165 
+C 0.899347 3.391165 1.761981 3.03385 2.397916 2.397916 
+C 3.03385 1.761981 3.391165 0.899347 3.391165 0 
+C 3.391165 -0.899347 3.03385 -1.761981 2.397916 -2.397916 
+C 1.761981 -3.03385 0.899347 -3.391165 0 -3.391165 
+C -0.899347 -3.391165 -1.761981 -3.03385 -2.397916 -2.397916 
+C -3.03385 -1.761981 -3.391165 -0.899347 -3.391165 0 
+C -3.391165 0.899347 -3.03385 1.761981 -2.397916 2.397916 
+C -1.761981 3.03385 -0.899347 3.391165 0 3.391165 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="85.871499" y="45.704903" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-joaquim_vilela_kata-01_com-ia_20260918T003546014662Z" class="pt"><title>joaquim_vilela · kata-01 · Com IA
+5,44</title>
+    <defs>
+     <path id="m60f7a953e0" d="M 0 3.391165 
+C 0.899347 3.391165 1.761981 3.03385 2.397916 2.397916 
+C 3.03385 1.761981 3.391165 0.899347 3.391165 0 
+C 3.391165 -0.899347 3.03385 -1.761981 2.397916 -2.397916 
+C 1.761981 -3.03385 0.899347 -3.391165 0 -3.391165 
+C -0.899347 -3.391165 -1.761981 -3.03385 -2.397916 -2.397916 
+C -3.03385 -1.761981 -3.391165 -0.899347 -3.391165 0 
+C -3.391165 0.899347 -3.03385 1.761981 -2.397916 2.397916 
+C -1.761981 3.03385 -0.899347 3.391165 0 3.391165 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="159.551613" y="45.704903" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-vitor_kata-01_com-ia_20260918T002448475437Z" class="pt"><title>vitor · kata-01 · Com IA
+1,66</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="87.006156" y="45.704903" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-vitor_kata-02_sem-ia_20260924T000843697771Z" class="pt"><title>vitor · kata-02 · Sem IA
+11,96</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="284.537885" y="75.439742" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-A_kata-02_comia" class="pt"><title>gabriel · kata-02 · Com IA
+0,72</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="69.00348" y="75.439742" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-A_kata-03_semia" class="pt"><title>gabriel · kata-03 · Sem IA
+3,98</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="131.471022" y="105.174581" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-joaquim_vilela_kata-03_com-ia_20260918T010625012442Z" class="pt"><title>joaquim_vilela · kata-03 · Com IA
+4,84</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="148.082812" y="105.174581" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-vitor_kata-03_com-ia_20260918T003149985965Z" class="pt"><title>vitor · kata-03 · Com IA
+0,35</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="61.923849" y="105.174581" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-vitor_kata-04_sem-ia_20260924T002813093564Z" class="pt"><title>vitor · kata-04 · Sem IA
+25,39</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="542.26304" y="134.909419" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-A_kata-04_comia" class="pt"><title>gabriel · kata-04 · Com IA
+3,05</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="113.712947" y="134.909419" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-A_kata-05_semia" class="pt"><title>gabriel · kata-05 · Sem IA
+9,17</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="231.142179" y="164.644258" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-joaquim_vilela_kata-05_com-ia_20260918T020805552406Z" class="pt"><title>joaquim_vilela · kata-05 · Com IA
+3,70</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="126.101635" y="164.644258" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-vitor_kata-05_com-ia_20260918T004340442738Z" class="pt"><title>vitor · kata-05 · Com IA
+6,85</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="186.476445" y="164.644258" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-vitor_kata-06_sem-ia_20260924T004538662549Z" class="pt"><title>vitor · kata-06 · Sem IA
+19,39</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="427.16672" y="194.379097" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="tempo_kata-kata-A_kata-06_comia" class="pt"><title>gabriel · kata-06 · Com IA
+3,97</title>
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m60f7a953e0" x="131.332265" y="194.379097" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+  </g>
+  <g id="legend_1">
+   <g id="line2d_25">
+    <defs>
+     <path id="mea39fb6861" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: var(--sem-ia)"/>
+    </defs>
+    <g>
+     <use xlink:href="#mea39fb6861" x="26.66" y="14.408281" style="fill: var(--sem-ia); stroke: var(--sem-ia)"/>
+    </g>
+   </g>
+   <g id="text_14">
+    <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: start" x="40.96" y="18.258281" transform="rotate(-0 40.96 18.258281)">Sem IA</text>
+   </g>
+   <g id="line2d_26">
+    <defs>
+     <path id="mee0c3eb87c" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: var(--com-ia)"/>
+    </defs>
+    <g>
+     <use xlink:href="#mee0c3eb87c" x="103.892031" y="14.408281" style="fill: var(--com-ia); stroke: var(--com-ia)"/>
+    </g>
+   </g>
+   <g id="text_15">
+    <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: start" x="118.192031" y="18.258281" transform="rotate(-0 118.192031 18.258281)">Com IA</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pf8605ae96b">
+   <rect x="55.16" y="27.864" width="511.12" height="184.356"/>
+  </clipPath>
+ </defs>
+</svg>
+<figcaption><strong>Por kata.</strong> Cada ponto é um trial; o traço colorido marca a mediana do tratamento e a barra cinza liga as duas medianas.</figcaption></figure>
+</section>
+
+<section>
+  <div class="rq">RQ2 · DEFEITOS</div>
+  <h2>A IA reduz a quantidade de testes falhando?</h2>
+  <p class="question">Avaliação final de cada trial: proporção que terminou com todos os testes passando e total de testes falhando.</p>
+  <div class="tiles two"><div class="tile"><div class="tile-label">Sucesso sem IA</div><div class="tile-value">100%</div><div class="tile-detail">0 testes falhando no total</div></div><div class="tile"><div class="tile-label">Sucesso com IA</div><div class="tile-value">100%</div><div class="tile-detail">0 testes falhando no total</div></div></div>
+  <p class="empty">Todos os trials terminaram com todos os testes passando: não há diferença de defeitos a desenhar por enquanto.</p>
+</section>
+
+<section>
+  <div class="rq">RQ3 · ESTRUTURA</div>
+  <h2>A IA altera a complexidade ou a duplicação do código?</h2>
+  <p class="question">Métricas do PMD/CPD sobre o código final de cada trial. Mediana da complexidade média por método:
+  <strong>7,7 → 7,0</strong> (sem IA → com IA).</p>
+  <figure><svg class="chart" role="img" aria-label="Métricas estruturais por kata e tratamento" xmlns:xlink="http://www.w3.org/1999/xlink" width="604.8pt" height="259.2pt" viewBox="0 0 604.8 259.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 259.2 
+L 604.8 259.2 
+L 604.8 0 
+L 0 0 
+L 0 259.2 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 55.16 211.86 
+L 317.724059 211.86 
+L 317.724059 30.456 
+L 55.16 30.456 
+L 55.16 211.86 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 55.16 211.86 
+L 55.16 30.456 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_1">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="55.16" y="229.718281" transform="rotate(-0 55.16 229.718281)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <path d="M 109.975044 211.86 
+L 109.975044 30.456 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_2">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="109.975044" y="229.718281" transform="rotate(-0 109.975044 229.718281)">5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <path d="M 164.790087 211.86 
+L 164.790087 30.456 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_3">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="164.790087" y="229.718281" transform="rotate(-0 164.790087 229.718281)">10</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <path d="M 219.605131 211.86 
+L 219.605131 30.456 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_4">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="219.605131" y="229.718281" transform="rotate(-0 219.605131 229.718281)">15</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <path d="M 274.420174 211.86 
+L 274.420174 30.456 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_5">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="274.420174" y="229.718281" transform="rotate(-0 274.420174 229.718281)">20</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="fill: var(--ink-2); font: 12px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="186.442029" y="245.604062" transform="rotate(-0 186.442029 245.604062)">Complexidade ciclomática média/método</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="text_7">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="52.190366" transform="rotate(-0 51.66 52.190366)">kata-01</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="text_8">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="81.449076" transform="rotate(-0 51.66 81.449076)">kata-02</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="text_9">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="110.707786" transform="rotate(-0 51.66 110.707786)">kata-03</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="text_10">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="139.966495" transform="rotate(-0 51.66 139.966495)">kata-04</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="text_11">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="169.225205" transform="rotate(-0 51.66 169.225205)">kata-05</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="text_12">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: end" x="51.66" y="198.483915" transform="rotate(-0 51.66 198.483915)">kata-06</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_6">
+    <path d="M 109.975044 48.011226 
+L 109.975044 48.011226 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_7">
+    <path d="M 164.790087 77.269935 
+L 175.753096 77.269935 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_8">
+    <path d="M 131.901061 106.528645 
+L 131.901061 106.528645 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_9">
+    <path d="M 186.716105 135.787355 
+L 153.827079 135.787355 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_10">
+    <path d="M 128.246725 165.046065 
+L 151.99991 165.046065 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_11">
+    <path d="M 146.518406 194.304774 
+L 307.309201 194.304774 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_12">
+    <path d="M 109.975044 54.448142 
+L 109.975044 41.57431 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_13">
+    <path d="M 109.975044 54.448142 
+L 109.975044 41.57431 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_14">
+    <path d="M 164.790087 83.706852 
+L 164.790087 70.833019 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_15">
+    <path d="M 175.753096 83.706852 
+L 175.753096 70.833019 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_16">
+    <path d="M 131.901061 112.965561 
+L 131.901061 100.091729 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_17">
+    <path d="M 131.901061 112.965561 
+L 131.901061 100.091729 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 186.716105 142.224271 
+L 186.716105 129.350439 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_19">
+    <path d="M 153.827079 142.224271 
+L 153.827079 129.350439 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_20">
+    <path d="M 128.246725 171.482981 
+L 128.246725 158.609148 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_21">
+    <path d="M 151.99991 171.482981 
+L 151.99991 158.609148 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_22">
+    <path d="M 146.518406 200.74169 
+L 146.518406 187.867858 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_23">
+    <path d="M 307.309201 200.74169 
+L 307.309201 187.867858 
+" clip-path="url(#pbd5683b647)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 55.16 211.86 
+L 317.724059 211.86 
+" style="fill: none; stroke: var(--axis); stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="estrutura-est-complexity_avg-A_kata-01_semia" class="pt"><title>gabriel · kata-01 · Sem IA
+5,00</title>
+    <defs>
+     <path id="m74861bcae5" d="M 0 3.391165 
+C 0.899347 3.391165 1.761981 3.03385 2.397916 2.397916 
+C 3.03385 1.761981 3.391165 0.899347 3.391165 0 
+C 3.391165 -0.899347 3.03385 -1.761981 2.397916 -2.397916 
+C 1.761981 -3.03385 0.899347 -3.391165 0 -3.391165 
+C -0.899347 -3.391165 -1.761981 -3.03385 -2.397916 -2.397916 
+C -3.03385 -1.761981 -3.391165 -0.899347 -3.391165 0 
+C -3.391165 0.899347 -3.03385 1.761981 -2.397916 2.397916 
+C -1.761981 3.03385 -0.899347 3.391165 0 3.391165 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="109.975044" y="48.011226" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-joaquim_vilela_kata-01_com-ia_20260918T003546014662Z" class="pt"><title>joaquim_vilela · kata-01 · Com IA
+6,00</title>
+    <defs>
+     <path id="m60f7a953e0" d="M 0 3.391165 
+C 0.899347 3.391165 1.761981 3.03385 2.397916 2.397916 
+C 3.03385 1.761981 3.391165 0.899347 3.391165 0 
+C 3.391165 -0.899347 3.03385 -1.761981 2.397916 -2.397916 
+C 1.761981 -3.03385 0.899347 -3.391165 0 -3.391165 
+C -0.899347 -3.391165 -1.761981 -3.03385 -2.397916 -2.397916 
+C -3.03385 -1.761981 -3.391165 -0.899347 -3.391165 0 
+C -3.391165 0.899347 -3.03385 1.761981 -2.397916 2.397916 
+C -1.761981 3.03385 -0.899347 3.391165 0 3.391165 
+z
+" style="stroke: var(--surface); stroke-width: 1.2"/>
+    </defs>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="120.938052" y="48.011226" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-vitor_kata-01_com-ia_20260918T002448475437Z" class="pt"><title>vitor · kata-01 · Com IA
+4,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="99.012035" y="48.011226" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-vitor_kata-02_sem-ia_20260924T000843697771Z" class="pt"><title>vitor · kata-02 · Sem IA
+10,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="164.790087" y="77.269935" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-A_kata-02_comia" class="pt"><title>gabriel · kata-02 · Com IA
+11,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="175.753096" y="77.269935" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-A_kata-03_semia" class="pt"><title>gabriel · kata-03 · Sem IA
+7,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="131.901061" y="106.528645" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-joaquim_vilela_kata-03_com-ia_20260918T010625012442Z" class="pt"><title>joaquim_vilela · kata-03 · Com IA
+7,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="131.901061" y="106.528645" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-vitor_kata-03_com-ia_20260918T003149985965Z" class="pt"><title>vitor · kata-03 · Com IA
+7,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="131.901061" y="106.528645" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-vitor_kata-04_sem-ia_20260924T002813093564Z" class="pt"><title>vitor · kata-04 · Sem IA
+12,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="186.716105" y="135.787355" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-A_kata-04_comia" class="pt"><title>gabriel · kata-04 · Com IA
+9,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="153.827079" y="135.787355" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-A_kata-05_semia" class="pt"><title>gabriel · kata-05 · Sem IA
+6,67</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="128.246725" y="165.046065" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-joaquim_vilela_kata-05_com-ia_20260918T020805552406Z" class="pt"><title>joaquim_vilela · kata-05 · Com IA
+13,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="197.679113" y="165.046065" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-vitor_kata-05_com-ia_20260918T004340442738Z" class="pt"><title>vitor · kata-05 · Com IA
+4,67</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="106.320707" y="165.046065" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-vitor_kata-06_sem-ia_20260924T004538662549Z" class="pt"><title>vitor · kata-06 · Sem IA
+8,33</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="146.518406" y="194.304774" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-complexity_avg-A_kata-06_comia" class="pt"><title>gabriel · kata-06 · Com IA
+23,00</title>
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m60f7a953e0" x="307.309201" y="194.304774" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_4">
+    <path d="M 330.909059 211.86 
+L 593.473118 211.86 
+L 593.473118 30.456 
+L 330.909059 30.456 
+L 330.909059 211.86 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_6">
+     <g id="line2d_24">
+      <path d="M 330.909059 211.86 
+L 330.909059 30.456 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_13">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="330.909059" y="229.718281" transform="rotate(-0 330.909059 229.718281)">0</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_25">
+      <path d="M 394.910048 211.86 
+L 394.910048 30.456 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_14">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="394.910048" y="229.718281" transform="rotate(-0 394.910048 229.718281)">20</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_26">
+      <path d="M 458.911038 211.86 
+L 458.911038 30.456 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_15">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="458.911038" y="229.718281" transform="rotate(-0 458.911038 229.718281)">40</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_27">
+      <path d="M 522.912027 211.86 
+L 522.912027 30.456 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_16">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="522.912027" y="229.718281" transform="rotate(-0 522.912027 229.718281)">60</text>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_28">
+      <path d="M 586.913016 211.86 
+L 586.913016 30.456 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--grid); stroke-width: 0.6; stroke-linecap: round"/>
+     </g>
+     <g id="text_17">
+      <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="586.913016" y="229.718281" transform="rotate(-0 586.913016 229.718281)">80</text>
+     </g>
+    </g>
+    <g id="text_18">
+     <text style="fill: var(--ink-2); font: 12px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: middle" x="462.191088" y="245.124062" transform="rotate(-0 462.191088 245.124062)">LOC</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4">
+    <g id="ytick_7"/>
+    <g id="ytick_8"/>
+    <g id="ytick_9"/>
+    <g id="ytick_10"/>
+    <g id="ytick_11"/>
+    <g id="ytick_12"/>
+   </g>
+   <g id="line2d_29">
+    <path d="M 404.510197 48.011226 
+L 393.310024 48.011226 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_30">
+    <path d="M 449.310889 77.269935 
+L 471.711236 77.269935 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_31">
+    <path d="M 407.710246 106.528645 
+L 414.110345 106.528645 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_32">
+    <path d="M 458.911038 135.787355 
+L 554.912522 135.787355 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_33">
+    <path d="M 545.312373 165.046065 
+L 463.711112 165.046065 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_34">
+    <path d="M 519.711978 194.304774 
+L 583.712967 194.304774 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--axis); stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_35">
+    <path d="M 404.510197 54.448142 
+L 404.510197 41.57431 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_36">
+    <path d="M 393.310024 54.448142 
+L 393.310024 41.57431 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_37">
+    <path d="M 449.310889 83.706852 
+L 449.310889 70.833019 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_38">
+    <path d="M 471.711236 83.706852 
+L 471.711236 70.833019 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_39">
+    <path d="M 407.710246 112.965561 
+L 407.710246 100.091729 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_40">
+    <path d="M 414.110345 112.965561 
+L 414.110345 100.091729 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_41">
+    <path d="M 458.911038 142.224271 
+L 458.911038 129.350439 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_42">
+    <path d="M 554.912522 142.224271 
+L 554.912522 129.350439 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_43">
+    <path d="M 545.312373 171.482981 
+L 545.312373 158.609148 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_44">
+    <path d="M 463.711112 171.482981 
+L 463.711112 158.609148 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_45">
+    <path d="M 519.711978 200.74169 
+L 519.711978 187.867858 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--sem-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_46">
+    <path d="M 583.712967 200.74169 
+L 583.712967 187.867858 
+" clip-path="url(#p1a283c82eb)" style="fill: none; stroke: var(--com-ia); stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 330.909059 211.86 
+L 593.473118 211.86 
+" style="fill: none; stroke: var(--axis); stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="estrutura-est-loc_total-A_kata-01_semia" class="pt"><title>gabriel · kata-01 · Sem IA
+23,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="404.510197" y="48.011226" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-joaquim_vilela_kata-01_com-ia_20260918T003546014662Z" class="pt"><title>joaquim_vilela · kata-01 · Com IA
+21,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="398.110098" y="48.011226" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-vitor_kata-01_com-ia_20260918T002448475437Z" class="pt"><title>vitor · kata-01 · Com IA
+18,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="388.509949" y="48.011226" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-vitor_kata-02_sem-ia_20260924T000843697771Z" class="pt"><title>vitor · kata-02 · Sem IA
+37,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="449.310889" y="77.269935" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-A_kata-02_comia" class="pt"><title>gabriel · kata-02 · Com IA
+44,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="471.711236" y="77.269935" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-A_kata-03_semia" class="pt"><title>gabriel · kata-03 · Sem IA
+24,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="407.710246" y="106.528645" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-joaquim_vilela_kata-03_com-ia_20260918T010625012442Z" class="pt"><title>joaquim_vilela · kata-03 · Com IA
+26,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="414.110345" y="106.528645" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-vitor_kata-03_com-ia_20260918T003149985965Z" class="pt"><title>vitor · kata-03 · Com IA
+26,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="414.110345" y="106.528645" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-vitor_kata-04_sem-ia_20260924T002813093564Z" class="pt"><title>vitor · kata-04 · Sem IA
+40,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="458.911038" y="135.787355" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-A_kata-04_comia" class="pt"><title>gabriel · kata-04 · Com IA
+70,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="554.912522" y="135.787355" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-A_kata-05_semia" class="pt"><title>gabriel · kata-05 · Sem IA
+67,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="545.312373" y="165.046065" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-joaquim_vilela_kata-05_com-ia_20260918T020805552406Z" class="pt"><title>joaquim_vilela · kata-05 · Com IA
+38,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="452.510939" y="165.046065" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-vitor_kata-05_com-ia_20260918T004340442738Z" class="pt"><title>vitor · kata-05 · Com IA
+45,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="474.911285" y="165.046065" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-vitor_kata-06_sem-ia_20260924T004538662549Z" class="pt"><title>vitor · kata-06 · Sem IA
+59,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="519.711978" y="194.304774" style="fill: var(--sem-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="estrutura-est-loc_total-A_kata-06_comia" class="pt"><title>gabriel · kata-06 · Com IA
+79,00</title>
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m60f7a953e0" x="583.712967" y="194.304774" style="fill: var(--com-ia); stroke: var(--surface); stroke-width: 1.2"/>
+    </g>
+   </g>
+  </g>
+  <g id="legend_1">
+   <g id="line2d_47">
+    <defs>
+     <path id="mea39fb6861" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: var(--sem-ia)"/>
+    </defs>
+    <g>
+     <use xlink:href="#mea39fb6861" x="26.948" y="14.408281" style="fill: var(--sem-ia); stroke: var(--sem-ia)"/>
+    </g>
+   </g>
+   <g id="text_19">
+    <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: start" x="41.248" y="18.258281" transform="rotate(-0 41.248 18.258281)">Sem IA</text>
+   </g>
+   <g id="line2d_48">
+    <defs>
+     <path id="mee0c3eb87c" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: var(--com-ia)"/>
+    </defs>
+    <g>
+     <use xlink:href="#mee0c3eb87c" x="104.180031" y="14.408281" style="fill: var(--com-ia); stroke: var(--com-ia)"/>
+    </g>
+   </g>
+   <g id="text_20">
+    <text style="fill: var(--ink-2); font: 11px 'Arial', 'DejaVu Sans', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif; text-anchor: start" x="118.480031" y="18.258281" transform="rotate(-0 118.480031 18.258281)">Com IA</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pbd5683b647">
+   <rect x="55.16" y="30.456" width="262.564059" height="181.404"/>
+  </clipPath>
+  <clipPath id="p1a283c82eb">
+   <rect x="330.909059" y="30.456" width="262.564059" height="181.404"/>
+  </clipPath>
+ </defs>
+</svg>
+<figcaption><strong>Por kata.</strong> Cada ponto é um trial; a barra liga as medianas dos tratamentos.</figcaption></figure>
+  <p class="empty">Duplicação (%): 0 em todos os trials (painel omitido).</p>
+</section>
+
+<aside class="notes"><h3>Dados incompletos</h3><ul><li><strong>joaquim_vilela</strong> ainda não tem trials <strong>Sem IA</strong>: fica sem par nas comparações por participante.</li></ul></aside>
+
+<section>
+  <div class="rq">DADOS</div>
+  <h2>Todos os trials</h2>
+  <div class="table-wrap"><table><thead><tr><th>Participante</th><th>Kata</th><th>Tratamento</th><th>Estado</th><th class=num>Min. até verde</th><th class=num>Falhando</th><th class=num>LOC</th><th class=num>Complex. média</th><th class=num>Dupl. %</th></tr></thead><tbody><tr title="A_kata-01_semia"><td>gabriel</td><td>kata-01</td><td>Sem IA</td><td>completed</td><td class="num">1,6</td><td class="num">0</td><td class="num">23</td><td class="num">5,00</td><td class="num">0,0</td></tr><tr title="A_kata-02_comia"><td>gabriel</td><td>kata-02</td><td>Com IA</td><td>completed</td><td class="num">0,7</td><td class="num">0</td><td class="num">44</td><td class="num">11,00</td><td class="num">0,0</td></tr><tr title="A_kata-03_semia"><td>gabriel</td><td>kata-03</td><td>Sem IA</td><td>completed</td><td class="num">4,0</td><td class="num">0</td><td class="num">24</td><td class="num">7,00</td><td class="num">0,0</td></tr><tr title="A_kata-04_comia"><td>gabriel</td><td>kata-04</td><td>Com IA</td><td>completed</td><td class="num">3,1</td><td class="num">0</td><td class="num">70</td><td class="num">9,00</td><td class="num">0,0</td></tr><tr title="A_kata-05_semia"><td>gabriel</td><td>kata-05</td><td>Sem IA</td><td>completed</td><td class="num">9,2</td><td class="num">0</td><td class="num">67</td><td class="num">6,67</td><td class="num">0,0</td></tr><tr title="A_kata-06_comia"><td>gabriel</td><td>kata-06</td><td>Com IA</td><td>completed</td><td class="num">4,0</td><td class="num">0</td><td class="num">79</td><td class="num">23,00</td><td class="num">0,0</td></tr><tr title="joaquim_vilela_kata-01_com-ia_20260918T003546014662Z"><td>joaquim_vilela</td><td>kata-01</td><td>Com IA</td><td>completed</td><td class="num">5,4</td><td class="num">0</td><td class="num">21</td><td class="num">6,00</td><td class="num">0,0</td></tr><tr title="joaquim_vilela_kata-03_com-ia_20260918T010625012442Z"><td>joaquim_vilela</td><td>kata-03</td><td>Com IA</td><td>completed</td><td class="num">4,8</td><td class="num">0</td><td class="num">26</td><td class="num">7,00</td><td class="num">0,0</td></tr><tr title="joaquim_vilela_kata-05_com-ia_20260918T020805552406Z"><td>joaquim_vilela</td><td>kata-05</td><td>Com IA</td><td>completed</td><td class="num">3,7</td><td class="num">0</td><td class="num">38</td><td class="num">13,00</td><td class="num">0,0</td></tr><tr title="vitor_kata-01_com-ia_20260918T002448475437Z"><td>vitor</td><td>kata-01</td><td>Com IA</td><td>completed</td><td class="num">1,7</td><td class="num">0</td><td class="num">18</td><td class="num">4,00</td><td class="num">0,0</td></tr><tr title="vitor_kata-02_sem-ia_20260924T000843697771Z"><td>vitor</td><td>kata-02</td><td>Sem IA</td><td>completed</td><td class="num">12,0</td><td class="num">0</td><td class="num">37</td><td class="num">10,00</td><td class="num">0,0</td></tr><tr title="vitor_kata-03_com-ia_20260918T003149985965Z"><td>vitor</td><td>kata-03</td><td>Com IA</td><td>completed</td><td class="num">0,4</td><td class="num">0</td><td class="num">26</td><td class="num">7,00</td><td class="num">0,0</td></tr><tr title="vitor_kata-04_sem-ia_20260924T002813093564Z"><td>vitor</td><td>kata-04</td><td>Sem IA</td><td>completed</td><td class="num">25,4</td><td class="num">0</td><td class="num">40</td><td class="num">12,00</td><td class="num">0,0</td></tr><tr title="vitor_kata-05_com-ia_20260918T004340442738Z"><td>vitor</td><td>kata-05</td><td>Com IA</td><td>completed</td><td class="num">6,8</td><td class="num">0</td><td class="num">45</td><td class="num">4,67</td><td class="num">0,0</td></tr><tr title="vitor_kata-06_sem-ia_20260924T004538662549Z"><td>vitor</td><td>kata-06</td><td>Sem IA</td><td>completed</td><td class="num">19,4</td><td class="num">0</td><td class="num">59</td><td class="num">8,33</td><td class="num">0,0</td></tr></tbody></table></div>
+</section>
+
+<footer>
+  <span>Gerado por <code>scripts/dashboard.py</code> em 24/09/2026 20:43. Somente estatística descritiva.</span>
+  <button class="theme" type="button" id="theme">Alternar tema</button>
+</footer>
+</main>
+<script>
+(function () {
+  var root = document.documentElement, key = "lab02-theme";
+  try { var saved = localStorage.getItem(key); if (saved) root.dataset.theme = saved; } catch (e) {}
+  document.getElementById("theme").addEventListener("click", function () {
+    var dark = root.dataset.theme ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem(key, root.dataset.theme); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>

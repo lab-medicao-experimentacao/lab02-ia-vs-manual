@@ -17,7 +17,7 @@ No Windows, prefira executar no WSL2 com Docker integrado.
 
 A preparação baixa dependências, executa testes numa cópia temporária e verifica a execução offline. Os testes do `smoke` falham propositalmente: o objetivo é verificar o ambiente, não resolver o exercício. Uma falha de compilação ou ausência de relatórios impede concluir a preparação. Repita a preparação para cada kata quando seus testes estiverem disponíveis. Essa atividade acontece **antes de o participante acessar o enunciado e antes da medição**; deve ser conduzida por quem prepara o ambiente.
 
-Versões: Temurin 21.0.7, Maven 3.9.9, Python 3.12.11, JUnit 5.13.4, Surefire 3.5.4, PMD/CPD 7.17.0, pandas 2.2.3 e numpy 2.1.3 (`requirements.txt`). As imagens base são fixadas por digest. A preparação registra as versões efetivamente executadas em `results/environment-<kata>.json`. Use a mesma imagem construída para o trio; pacotes do sistema instalados por apt não constituem um build bit a bit reproduzível.
+Versões: Temurin 21.0.7, Maven 3.9.9, Python 3.12.11, JUnit 5.13.4, Surefire 3.5.4, PMD/CPD 7.17.0, pandas 2.2.3, numpy 2.1.3, Matplotlib 3.9.2 e Seaborn 0.13.2 (`requirements.txt`). As imagens base são fixadas por digest. A preparação registra as versões efetivamente executadas em `results/environment-<kata>.json`. Use a mesma imagem construída para o trio; pacotes do sistema instalados por apt não constituem um build bit a bit reproduzível.
 
 ## Validar um trial provisório
 
@@ -77,7 +77,26 @@ Carregar o CSV consolidado num DataFrame único (tipos convertidos, práticas de
 docker compose run --rm lab python scripts/dataset.py
 ```
 
-Em outro script: `from dataset import load; df = load()`. Dependências Python (pandas, numpy) estão fixadas em `requirements.txt` e instaladas na imagem; rode `docker compose build` após atualizá-las.
+Em outro script: `from dataset import load; df = load()`. Dependências Python (pandas, numpy, Matplotlib, Seaborn) estão fixadas em `requirements.txt` e instaladas na imagem; rode `docker compose build` após atualizá-las.
+
+## Dashboard
+
+```bash
+docker compose run --rm lab python scripts/dashboard.py
+```
+
+Gera `doc/dashboard/index.html` (página única, abre direto no navegador, sem servidor nem internet) e cada gráfico em `.svg` e `.png` para o relatório. Compara os tratamentos em tempo (RQ1), sucesso/testes falhando (RQ2) e métricas estruturais (RQ3). Apenas estatística descritiva. Rode `metrics.py collect-all` e `trial.py export` antes para usar dados atualizados.
+
+O que o diferencia de um notebook com gráficos padrão:
+
+- **Gráficos escolhidos pela pergunta, não pelo hábito.** Além da distribuição (pontos sobre boxplot fino), um *slope chart* liga a mediana sem IA à com IA de cada participante — a mesma lógica pareada do Wilcoxon — e *dumbbell charts* por kata mostram se o efeito se mantém em cada exercício, no tempo e na estrutura.
+- **Número de destaque e cartões de resumo** no topo: razão entre as medianas de tempo, medianas por tratamento, trials analisados sobre os previstos e censurados.
+- **Tooltip por trial**: passar o mouse sobre qualquer ponto mostra participante, kata, tratamento e valor.
+- **Modo claro e escuro**: o SVG do Matplotlib é embutido com as cores trocadas por variáveis CSS, então o mesmo gráfico acompanha o tema do sistema (ou o botão "Alternar tema") sem ser redesenhado.
+- **Cores acessíveis**: laranja (sem IA) e azul (com IA) validadas para daltonismo (protan/deutan/tritan) e contraste nos dois temas; a identidade nunca depende só da cor (rótulos no eixo, legenda e tooltip).
+- **Sem gráfico vazio**: quando um indicador não varia (hoje, 100% de sucesso e 0% de duplicação em todos os trials), a página mostra uma nota no lugar do gráfico; o gráfico volta automaticamente quando houver diferença.
+- **Transparência sobre os dados**: um bloco "Dados incompletos" lista participantes sem par e trials sem métricas, e some quando os dados estiverem completos; a tabela com todos os trials fica no fim da página.
+- **Detalhes de acabamento**: números no formato brasileiro (vírgula decimal), layout responsivo até a largura de celular e figuras determinísticas (mesmos dados, mesmo SVG).
 
 ## Métricas estruturais
 
