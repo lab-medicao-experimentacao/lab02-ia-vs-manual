@@ -131,7 +131,7 @@ L 109.975044 48.011226
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_7">
-    <path d="M 164.790087 77.269935 
+    <path d="M 170.271592 77.269935 
 L 175.753096 77.269935 
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -141,7 +141,7 @@ L 131.901061 106.528645
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_9">
-    <path d="M 186.716105 135.787355 
+    <path d="M 164.790087 135.787355 
 L 153.827079 135.787355 
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -151,7 +151,7 @@ L 151.99991 165.046065
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_11">
-    <path d="M 146.518406 194.304774 
+    <path d="M 199.506282 194.304774 
 L 307.309201 194.304774 
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -166,8 +166,8 @@ L 109.975044 41.57431
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_14">
-    <path d="M 164.790087 83.706852 
-L 164.790087 70.833019 
+    <path d="M 170.271592 83.706852 
+L 170.271592 70.833019 
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_15">
@@ -186,8 +186,8 @@ L 131.901061 100.091729
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_18">
-    <path d="M 186.716105 142.224271 
-L 186.716105 129.350439 
+    <path d="M 164.790087 142.224271 
+L 164.790087 129.350439 
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_19">
@@ -206,8 +206,8 @@ L 151.99991 158.609148
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_22">
-    <path d="M 146.518406 200.74169 
-L 146.518406 187.867858 
+    <path d="M 199.506282 200.74169 
+L 199.506282 187.867858 
 " clip-path="url(#pbd5683b647)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_23">
@@ -261,6 +261,11 @@ z
      <use xlink:href="#m60f7a953e0" x="99.012035" y="48.011226" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
+   <g id="est-complexity_avg-joaquim_vilela_kata-02_sem-ia_20260924T222719702498Z">
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="175.753096" y="77.269935" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
    <g id="est-complexity_avg-vitor_kata-02_sem-ia_20260924T000843697771Z">
     <g clip-path="url(#pbd5683b647)">
      <use xlink:href="#m74861bcae5" x="164.790087" y="77.269935" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
@@ -286,6 +291,11 @@ z
      <use xlink:href="#m60f7a953e0" x="131.901061" y="106.528645" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
+   <g id="est-complexity_avg-joaquim_vilela_kata-04_sem-ia_20260924T224514601804Z">
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="142.86407" y="135.787355" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
    <g id="est-complexity_avg-vitor_kata-04_sem-ia_20260924T002813093564Z">
     <g clip-path="url(#pbd5683b647)">
      <use xlink:href="#m74861bcae5" x="186.716105" y="135.787355" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
@@ -309,6 +319,11 @@ z
    <g id="est-complexity_avg-vitor_kata-05_com-ia_20260918T004340442738Z">
     <g clip-path="url(#pbd5683b647)">
      <use xlink:href="#m60f7a953e0" x="106.320707" y="165.046065" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="est-complexity_avg-joaquim_vilela_kata-06_sem-ia_20260924T230216201071Z">
+    <g clip-path="url(#pbd5683b647)">
+     <use xlink:href="#m74861bcae5" x="252.494157" y="194.304774" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="est-complexity_avg-vitor_kata-06_sem-ia_20260924T004538662549Z">
@@ -401,7 +416,7 @@ L 393.310024 48.011226
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_30">
-    <path d="M 449.310889 77.269935 
+    <path d="M 465.311137 77.269935 
 L 471.711236 77.269935 
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -411,7 +426,7 @@ L 414.110345 106.528645
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_32">
-    <path d="M 458.911038 135.787355 
+    <path d="M 508.511804 135.787355 
 L 554.912522 135.787355 
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -436,8 +451,8 @@ L 393.310024 41.57431
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_37">
-    <path d="M 449.310889 83.706852 
-L 449.310889 70.833019 
+    <path d="M 465.311137 83.706852 
+L 465.311137 70.833019 
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_38">
@@ -456,8 +471,8 @@ L 414.110345 100.091729
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_41">
-    <path d="M 458.911038 142.224271 
-L 458.911038 129.350439 
+    <path d="M 508.511804 142.224271 
+L 508.511804 129.350439 
 " clip-path="url(#p1a283c82eb)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_42">
@@ -505,6 +520,11 @@ L 593.473118 211.86
      <use xlink:href="#m60f7a953e0" x="388.509949" y="48.011226" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
+   <g id="est-loc_total-joaquim_vilela_kata-02_sem-ia_20260924T222719702498Z">
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="481.311384" y="77.269935" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
    <g id="est-loc_total-vitor_kata-02_sem-ia_20260924T000843697771Z">
     <g clip-path="url(#p1a283c82eb)">
      <use xlink:href="#m74861bcae5" x="449.310889" y="77.269935" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
@@ -530,6 +550,11 @@ L 593.473118 211.86
      <use xlink:href="#m60f7a953e0" x="414.110345" y="106.528645" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
+   <g id="est-loc_total-joaquim_vilela_kata-04_sem-ia_20260924T224514601804Z">
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="558.112571" y="135.787355" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
    <g id="est-loc_total-vitor_kata-04_sem-ia_20260924T002813093564Z">
     <g clip-path="url(#p1a283c82eb)">
      <use xlink:href="#m74861bcae5" x="458.911038" y="135.787355" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
@@ -553,6 +578,11 @@ L 593.473118 211.86
    <g id="est-loc_total-vitor_kata-05_com-ia_20260918T004340442738Z">
     <g clip-path="url(#p1a283c82eb)">
      <use xlink:href="#m60f7a953e0" x="474.911285" y="165.046065" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="est-loc_total-joaquim_vilela_kata-06_sem-ia_20260924T230216201071Z">
+    <g clip-path="url(#p1a283c82eb)">
+     <use xlink:href="#m74861bcae5" x="519.711978" y="194.304774" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="est-loc_total-vitor_kata-06_sem-ia_20260924T004538662549Z">

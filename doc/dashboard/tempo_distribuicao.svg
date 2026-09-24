@@ -144,20 +144,20 @@ L 181.861912 41.880077
 " clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: #c3c2b7; stroke-width: 1.1; stroke-linecap: round"/>
    </g>
    <g id="line2d_12">
-    <path d="M 151.40872 98.951716 
-L 151.40872 133.944545 
-L 389.386087 133.944545 
-L 389.386087 98.951716 
-L 151.40872 98.951716 
+    <path d="M 227.070325 98.951716 
+L 227.070325 133.944545 
+L 425.476523 133.944545 
+L 425.476523 98.951716 
+L 227.070325 98.951716 
 " clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: #c3c2b7; stroke-width: 1.1; stroke-linecap: round"/>
    </g>
    <g id="line2d_13">
-    <path d="M 151.40872 116.448131 
+    <path d="M 227.070325 116.448131 
 L 80.034637 116.448131 
 " clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: #c3c2b7; stroke-width: 1.1"/>
    </g>
    <g id="line2d_14">
-    <path d="M 389.386087 116.448131 
+    <path d="M 425.476523 116.448131 
 L 541.971239 116.448131 
 " clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: #c3c2b7; stroke-width: 1.1"/>
    </g>
@@ -177,8 +177,8 @@ L 120.753561 50.628284
 " clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: #0b0b0b; stroke-width: 2"/>
    </g>
    <g id="line2d_18">
-    <path d="M 254.092552 98.951716 
-L 254.092552 133.944545 
+    <path d="M 314.390851 98.951716 
+L 314.390851 133.944545 
 " clip-path="url(#p41db3fb0ac)" style="fill: none; stroke: #0b0b0b; stroke-width: 2"/>
    </g>
    <g id="patch_3">
@@ -214,19 +214,34 @@ z
      <use xlink:href="#m74861bcae5" x="227.070325" y="110.289393" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
+   <g id="dist-joaquim_vilela_kata-02_sem-ia_20260924T222719702498Z">
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="372.211473" y="124.706438" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="dist-joaquim_vilela_kata-04_sem-ia_20260924T224514601804Z">
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="314.390851" y="115.794931" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="dist-joaquim_vilela_kata-06_sem-ia_20260924T230216201071Z">
+    <g clip-path="url(#p41db3fb0ac)">
+     <use xlink:href="#m74861bcae5" x="475.711987" y="106.883424" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
    <g id="dist-vitor_kata-02_sem-ia_20260924T000843697771Z">
     <g clip-path="url(#p41db3fb0ac)">
-     <use xlink:href="#m74861bcae5" x="281.114778" y="124.706438" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+     <use xlink:href="#m74861bcae5" x="281.114778" y="121.30047" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="dist-vitor_kata-04_sem-ia_20260924T002813093564Z">
     <g clip-path="url(#p41db3fb0ac)">
-     <use xlink:href="#m74861bcae5" x="541.971239" y="115.794931" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+     <use xlink:href="#m74861bcae5" x="541.971239" y="112.388962" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="dist-vitor_kata-06_sem-ia_20260924T004538662549Z">
     <g clip-path="url(#p41db3fb0ac)">
-     <use xlink:href="#m74861bcae5" x="425.476523" y="106.883424" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+     <use xlink:href="#m74861bcae5" x="425.476523" y="126.806008" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="dist-A_kata-02_comia">

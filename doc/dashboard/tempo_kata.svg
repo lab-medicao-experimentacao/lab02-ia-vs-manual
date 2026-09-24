@@ -141,7 +141,7 @@ L 123.278885 45.704903
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_8">
-    <path d="M 284.537885 75.439742 
+    <path d="M 329.539473 75.439742 
 L 69.00348 75.439742 
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -151,7 +151,7 @@ L 105.00333 105.174581
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_10">
-    <path d="M 542.26304 134.909419 
+    <path d="M 429.838777 134.909419 
 L 113.712947 134.909419 
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -161,7 +161,7 @@ L 156.28904 164.644258
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
    <g id="line2d_12">
-    <path d="M 427.16672 194.379097 
+    <path d="M 451.98294 194.379097 
 L 131.332265 194.379097 
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #c3c2b7; stroke-width: 3; stroke-linecap: round"/>
    </g>
@@ -176,8 +176,8 @@ L 123.278885 39.163239
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_15">
-    <path d="M 284.537885 81.981406 
-L 284.537885 68.898077 
+    <path d="M 329.539473 81.981406 
+L 329.539473 68.898077 
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_16">
@@ -196,8 +196,8 @@ L 105.00333 98.632916
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_19">
-    <path d="M 542.26304 141.451084 
-L 542.26304 128.367755 
+    <path d="M 429.838777 141.451084 
+L 429.838777 128.367755 
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_20">
@@ -216,8 +216,8 @@ L 156.28904 158.102594
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_23">
-    <path d="M 427.16672 200.920761 
-L 427.16672 187.837432 
+    <path d="M 451.98294 200.920761 
+L 451.98294 187.837432 
 " clip-path="url(#pf8605ae96b)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: round"/>
    </g>
    <g id="line2d_24">
@@ -271,6 +271,11 @@ z
      <use xlink:href="#m60f7a953e0" x="87.006156" y="45.704903" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
+   <g id="kata-joaquim_vilela_kata-02_sem-ia_20260924T222719702498Z">
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="374.54106" y="75.439742" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
    <g id="kata-vitor_kata-02_sem-ia_20260924T000843697771Z">
     <g clip-path="url(#pf8605ae96b)">
      <use xlink:href="#m74861bcae5" x="284.537885" y="75.439742" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
@@ -296,6 +301,11 @@ z
      <use xlink:href="#m60f7a953e0" x="61.923849" y="105.174581" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
+   <g id="kata-joaquim_vilela_kata-04_sem-ia_20260924T224514601804Z">
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="317.414514" y="134.909419" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
    <g id="kata-vitor_kata-04_sem-ia_20260924T002813093564Z">
     <g clip-path="url(#pf8605ae96b)">
      <use xlink:href="#m74861bcae5" x="542.26304" y="134.909419" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
@@ -319,6 +329,11 @@ z
    <g id="kata-vitor_kata-05_com-ia_20260918T004340442738Z">
     <g clip-path="url(#pf8605ae96b)">
      <use xlink:href="#m60f7a953e0" x="186.476445" y="164.644258" style="fill: #2a78d6; stroke: #fcfcfb; stroke-width: 1.2"/>
+    </g>
+   </g>
+   <g id="kata-joaquim_vilela_kata-06_sem-ia_20260924T230216201071Z">
+    <g clip-path="url(#pf8605ae96b)">
+     <use xlink:href="#m74861bcae5" x="476.79916" y="194.379097" style="fill: #eb6834; stroke: #fcfcfb; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="kata-vitor_kata-06_sem-ia_20260924T004538662549Z">
