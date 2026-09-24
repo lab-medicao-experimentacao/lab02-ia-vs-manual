@@ -71,6 +71,14 @@ docker compose run --rm lab python scripts/trial.py export
 
 Use `--include-practice` apenas para conferir registros de prática. O CSV inclui estados e valores ausentes, sem descartar automaticamente ocorrências. As métricas estruturais de `metrics.json` (LOC, complexidade, duplicação) entram como colunas; rode `metrics.py collect-all` antes para preenchê-las.
 
+Carregar o CSV consolidado num DataFrame único (tipos convertidos, práticas descartadas, ausentes como NaN) para análise e dashboard:
+
+```bash
+docker compose run --rm lab python scripts/dataset.py
+```
+
+Em outro script: `from dataset import load; df = load()`. Dependências Python (pandas, numpy) estão fixadas em `requirements.txt` e instaladas na imagem; rode `docker compose build` após atualizá-las.
+
 ## Métricas estruturais
 
 ```bash

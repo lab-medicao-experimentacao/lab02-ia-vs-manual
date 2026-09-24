@@ -23,6 +23,9 @@ RUN apt-get update \
     && rm /tmp/pmd.zip \
     && rm -rf /var/lib/apt/lists/*
 
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
 WORKDIR /workspace
 
 CMD ["python", "scripts/trial.py", "--help"]
