@@ -113,6 +113,14 @@ Regras, limiares e fórmulas usados estão documentados em [doc/metricas.md](doc
 
 `results/` é ignorado pelo Git para evitar commits acidentais de práticas e arquivos de build. Para entregar uma tentativa oficial revisada, adicione explicitamente seu JSON, código, logs/relatórios e resumo com `git add -f <caminhos>`. Não é necessário versionar arquivos compilados em `target/classes`. Referencie a Issue do trial no commit.
 
+## Análise RQ3 (estrutura)
+
+```bash
+docker compose run --rm lab python scripts/rq3.py
+```
+
+Agrega complexidade, duplicação e LOC por participante × tratamento (mediana dos 3 trials) e aplica Wilcoxon pareado bilateral (α = 0,05) sobre os pares, conforme [doc/protocolo-estatistico.md](doc/protocolo-estatistico.md). Grava `results/rq3.csv` e `results/rq3_pares.csv`; a leitura dos resultados está em [doc/rq3.md](doc/rq3.md). Requer `scipy` (rode `docker compose build` se a imagem for anterior).
+
 ## Divisão da estrutura
 
 - `scripts/trial.py`: cronômetro, testes e coleta JSON/CSV — integrante 1.
