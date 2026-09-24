@@ -1,0 +1,24 @@
+{
+  "source": "/workspace/results/vitor_kata-02_sem-ia_20260924T000843697771Z/final/katas/kata-02/src/main/java",
+  "collected_at": "2026-09-24T00:25:31.951762+00:00",
+  "loc": {
+    "total": 37,
+    "per_file": {
+      "LedgerGrouper.java": 37
+    }
+  },
+  "complexity": {
+    "per_method": [
+      10
+    ],
+    "method_count": 1,
+    "average": 10.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "vitor_kata-02_sem-ia_20260924T000843697771Z",
+  "kata": "kata-02"
+}

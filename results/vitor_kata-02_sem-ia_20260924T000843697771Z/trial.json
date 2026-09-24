@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "trial_id": "vitor_kata-02_sem-ia_20260924T000843697771Z",
+  "participant": "vitor",
+  "kata": "kata-02",
+  "treatment": "sem-ia",
+  "practice": false,
+  "limit_seconds": 2100,
+  "status": "completed",
+  "started_at": "2026-09-24T00:08:43.706235+00:00",
+  "ended_at": "2026-09-24T00:20:41.210498+00:00",
+  "elapsed_seconds": 717.5136562780001,
+  "censored": false,
+  "time_to_green_seconds": 717.5136562780001,
+  "runs": [
+    {
+      "exit_code": 1,
+      "tests": {
+        "total": 8,
+        "failures": 6,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 2,
+        "failed": 6,
+        "success_percent": 25.0
+      },
+      "classification": "tests_failed",
+      "elapsed_seconds": 421.910288858,
+      "snapshot": "runs/001/katas/kata-02"
+    },
+    {
+      "exit_code": 1,
+      "tests": {
+        "total": 8,
+        "failures": 6,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 2,
+        "failed": 6,
+        "success_percent": 25.0
+      },
+      "classification": "tests_failed",
+      "elapsed_seconds": 653.70473778,
+      "snapshot": "runs/002/katas/kata-02"
+    },
+    {
+      "exit_code": 0,
+      "tests": {
+        "total": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 8,
+        "failed": 0,
+        "success_percent": 100.0
+      },
+      "classification": "success",
+      "elapsed_seconds": 717.5136562780001,
+      "snapshot": "runs/003/katas/kata-02"
+    }
+  ],
+  "final_evaluation": {
+    "exit_code": 0,
+    "tests": {
+      "total": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "failed": 0,
+      "success_percent": 100.0
+    },
+    "classification": "success",
+    "elapsed_seconds": 717.5136562780001,
+    "snapshot": "runs/003/katas/kata-02"
+  },
+  "incident": null
+}
