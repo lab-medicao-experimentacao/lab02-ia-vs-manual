@@ -1,0 +1,26 @@
+{
+  "source": "/workspace/results/joaquim_vilela_kata-04_sem-ia_20260924T224514601804Z/final/katas/kata-04/src/main/java",
+  "collected_at": "2026-09-24T23:29:05.306909+00:00",
+  "loc": {
+    "total": 71,
+    "per_file": {
+      "ScheduleValidator.java": 71
+    }
+  },
+  "complexity": {
+    "per_method": [
+      15,
+      8,
+      1
+    ],
+    "method_count": 3,
+    "average": 8.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "joaquim_vilela_kata-04_sem-ia_20260924T224514601804Z",
+  "kata": "kata-04"
+}

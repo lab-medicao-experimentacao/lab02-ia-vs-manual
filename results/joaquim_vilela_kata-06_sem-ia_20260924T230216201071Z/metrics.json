@@ -1,0 +1,24 @@
+{
+  "source": "/workspace/results/joaquim_vilela_kata-06_sem-ia_20260924T230216201071Z/final/katas/kata-06/src/main/java",
+  "collected_at": "2026-09-24T23:29:13.280544+00:00",
+  "loc": {
+    "total": 59,
+    "per_file": {
+      "RouteChainer.java": 59
+    }
+  },
+  "complexity": {
+    "per_method": [
+      18
+    ],
+    "method_count": 1,
+    "average": 18.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "joaquim_vilela_kata-06_sem-ia_20260924T230216201071Z",
+  "kata": "kata-06"
+}
