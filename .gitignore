@@ -7,6 +7,7 @@ notas/
 # Resultados experimentais: ignore tudo por padrão e libere apenas evidências.
 results/*
 !results/.gitkeep
+!results/consolidado.csv
 !results/*/
 results/**/*
 !results/**/
