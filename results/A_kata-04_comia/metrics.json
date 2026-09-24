@@ -1,0 +1,25 @@
+{
+  "source": "/workspace/results/A_kata-04_comia/final/katas/kata-04/src/main/java",
+  "collected_at": "2026-09-24T01:14:53.887523+00:00",
+  "loc": {
+    "total": 70,
+    "per_file": {
+      "ScheduleValidator.java": 70
+    }
+  },
+  "complexity": {
+    "per_method": [
+      9,
+      9
+    ],
+    "method_count": 2,
+    "average": 9.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "A_kata-04_comia",
+  "kata": "kata-04"
+}

@@ -1,0 +1,26 @@
+{
+  "source": "/workspace/results/A_kata-05_semia/final/katas/kata-05/src/main/java",
+  "collected_at": "2026-09-24T01:14:58.505572+00:00",
+  "loc": {
+    "total": 67,
+    "per_file": {
+      "ContactMasker.java": 67
+    }
+  },
+  "complexity": {
+    "per_method": [
+      11,
+      4,
+      5
+    ],
+    "method_count": 3,
+    "average": 6.666666666666667
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "A_kata-05_semia",
+  "kata": "kata-05"
+}

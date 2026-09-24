@@ -1,0 +1,24 @@
+{
+  "source": "/workspace/results/A_kata-02_comia/final/katas/kata-02/src/main/java",
+  "collected_at": "2026-09-24T01:14:44.715859+00:00",
+  "loc": {
+    "total": 44,
+    "per_file": {
+      "LedgerGrouper.java": 44
+    }
+  },
+  "complexity": {
+    "per_method": [
+      11
+    ],
+    "method_count": 1,
+    "average": 11.0
+  },
+  "duplication": {
+    "minimum_tokens": 50,
+    "duplicated_loc": 0,
+    "percent": 0.0
+  },
+  "trial_id": "A_kata-02_comia",
+  "kata": "kata-02"
+}
