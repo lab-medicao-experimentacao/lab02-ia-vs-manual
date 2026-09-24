@@ -11,10 +11,6 @@ results/*
 results/**/*
 !results/**/
 
-# CSVs consolidados (evidência de análise); após results/**/* para não serem reignorados.
-!results/consolidado.csv
-!results/descritiva.csv
-
 # Metadados e registros de cada trial.
 !results/*/trial.json
 !results/*/environment.json
