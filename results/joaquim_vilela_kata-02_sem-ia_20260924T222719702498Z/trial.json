@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "trial_id": "joaquim_vilela_kata-02_sem-ia_20260924T222719702498Z",
+  "participant": "joaquim_vilela",
+  "kata": "kata-02",
+  "treatment": "sem-ia",
+  "practice": false,
+  "limit_seconds": 2100,
+  "status": "completed",
+  "started_at": "2026-09-24T22:27:19.703846+00:00",
+  "ended_at": "2026-09-24T22:43:58.777812+00:00",
+  "elapsed_seconds": 999.0512910699999,
+  "censored": false,
+  "time_to_green_seconds": 999.0512910699999,
+  "runs": [
+    {
+      "exit_code": 1,
+      "tests": {
+        "total": 8,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 7,
+        "failed": 1,
+        "success_percent": 87.5
+      },
+      "classification": "tests_failed",
+      "elapsed_seconds": 680.883362025,
+      "snapshot": "runs/001/katas/kata-02"
+    },
+    {
+      "exit_code": 0,
+      "tests": {
+        "total": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 8,
+        "failed": 0,
+        "success_percent": 100.0
+      },
+      "classification": "success",
+      "elapsed_seconds": 999.0512910699999,
+      "snapshot": "runs/002/katas/kata-02"
+    }
+  ],
+  "final_evaluation": {
+    "exit_code": 0,
+    "tests": {
+      "total": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "failed": 0,
+      "success_percent": 100.0
+    },
+    "classification": "success",
+    "elapsed_seconds": 999.0512910699999,
+    "snapshot": "runs/002/katas/kata-02"
+  },
+  "incident": null
+}
