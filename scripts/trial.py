@@ -317,6 +317,21 @@ def export(args):
                 for k in ("total", "passed", "failed", "skipped", "success_percent")
             }
         )
+        # Métricas estruturais (scripts/metrics.py); ausentes ficam vazias, não zero.
+        metrics_path = path.parent / "metrics.json"
+        metrics = json.loads(metrics_path.read_text()) if metrics_path.exists() else {}
+        loc = metrics.get("loc") or {}
+        complexity = metrics.get("complexity") or {}
+        duplication = metrics.get("duplication") or {}
+        row.update(
+            {
+                "loc_total": loc.get("total"),
+                "method_count": complexity.get("method_count"),
+                "complexity_avg": complexity.get("average"),
+                "duplicated_loc": duplication.get("duplicated_loc"),
+                "duplication_percent": duplication.get("percent"),
+            }
+        )
         rows.append(row)
     if not rows:
         raise ValueError("Nenhum registro elegível para exportação.")

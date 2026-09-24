@@ -69,7 +69,7 @@ Consolidar os trials oficiais:
 docker compose run --rm lab python scripts/trial.py export
 ```
 
-Use `--include-practice` apenas para conferir registros de prática. O CSV inclui estados e valores ausentes, sem descartar automaticamente ocorrências.
+Use `--include-practice` apenas para conferir registros de prática. O CSV inclui estados e valores ausentes, sem descartar automaticamente ocorrências. As métricas estruturais de `metrics.json` (LOC, complexidade, duplicação) entram como colunas; rode `metrics.py collect-all` antes para preenchê-las.
 
 ## Métricas estruturais
 

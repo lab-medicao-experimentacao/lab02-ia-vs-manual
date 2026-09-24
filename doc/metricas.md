@@ -77,7 +77,9 @@ trata apenas códigos fora de `{0, 4}` como falha da ferramenta.
 `final/` preservado, pulando os que ainda não têm `metrics.json` (a menos que `--force`
 seja usado) e ignorando trials sem código final localizável.
 
-## Pendências
+## Integração ao CSV consolidado
 
-- A integração desse JSON ao CSV consolidado (`scripts/trial.py export`, integrante 1)
-  ainda não foi feita — hoje os arquivos ficam paralelos por trial.
+`scripts/trial.py export` lê o `metrics.json` de cada trial e acrescenta ao CSV as colunas
+`loc_total`, `method_count`, `complexity_avg`, `duplicated_loc` e `duplication_percent`.
+Trials sem `metrics.json` ficam com essas colunas vazias (não zero); rode
+`metrics.py collect-all` antes do export para preenchê-las.

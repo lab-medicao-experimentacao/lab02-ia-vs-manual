@@ -142,6 +142,49 @@ sys.exit(1 if failures else 0)
             trial.export(args)
         self.assertIn("test,A,smoke", args.output.read_text())
 
+    def export_rows(self, metrics=None):
+        out = self.root / "results/t1"
+        out.mkdir(parents=True)
+        (out / "trial.json").write_text(
+            json.dumps({"trial_id": "t1", "practice": False, "status": "completed"})
+        )
+        if metrics is not None:
+            (out / "metrics.json").write_text(json.dumps(metrics))
+        args = SimpleNamespace(
+            input=self.root / "results",
+            output=self.root / "all.csv",
+            include_practice=False,
+        )
+        with contextlib.redirect_stdout(io.StringIO()):
+            trial.export(args)
+        with args.output.open(newline="") as file:
+            return list(trial.csv.DictReader(file))
+
+    def test_export_includes_structural_metrics(self):
+        rows = self.export_rows(
+            {
+                "loc": {"total": 40, "per_file": {"A.java": 40}},
+                "complexity": {"per_method": [12, 4], "method_count": 2, "average": 8.0},
+                "duplication": {"minimum_tokens": 50, "duplicated_loc": 3, "percent": 7.5},
+            }
+        )
+        self.assertEqual(rows[0]["loc_total"], "40")
+        self.assertEqual(rows[0]["method_count"], "2")
+        self.assertEqual(rows[0]["complexity_avg"], "8.0")
+        self.assertEqual(rows[0]["duplicated_loc"], "3")
+        self.assertEqual(rows[0]["duplication_percent"], "7.5")
+
+    def test_export_leaves_metrics_empty_without_metrics_json(self):
+        rows = self.export_rows()
+        for key in (
+            "loc_total",
+            "method_count",
+            "complexity_avg",
+            "duplicated_loc",
+            "duplication_percent",
+        ):
+            self.assertEqual(rows[0][key], "")
+
 
 if __name__ == "__main__":
     unittest.main()
