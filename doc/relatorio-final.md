@@ -17,40 +17,31 @@
 
 ## 1. Introdução
 
-Assistentes de IA baseados em modelos de linguagem se tornaram parte do fluxo diário de
-programação, com a promessa de acelerar a escrita de código e reduzir defeitos. Falta,
-porém, evidência **controlada** sobre o real impacto dessas ferramentas: quanto elas
-aceleram a resolução de uma tarefa e a que custo em qualidade estrutural do código. Este
-laboratório investiga esse impacto num experimento **crossover within-subject**, em que
-três participantes resolvem seis katas de Java 21 sob time-box de 35 minutos — metade
-**com** assistente de IA (Claude), metade **sem** — em ordem contrabalanceada.
+Assistentes de IA prometem acelerar a programação, mas o ganho de tempo precisa ser
+avaliado junto à qualidade do código produzido. Este estudo investiga essa relação
+comparando tarefas realizadas com e sem IA. A questão importa para a engenharia de
+software porque ajuda a avaliar se o uso dessas ferramentas melhora a produtividade
+sem comprometer a qualidade funcional e estrutural.
 
-Seguindo a abordagem **GQM**, o estudo responde às três Questões de Pesquisa do enunciado:
+**Questões de pesquisa.** Pela abordagem **GQM (Goal–Question–Metric)**, o objetivo
+se desdobra nas três questões do enunciado:
 
-- **RQ1 — Tempo.** O uso de assistente de IA reduz o tempo necessário para resolver uma
-  tarefa de programação?
-- **RQ2 — Defeitos.** O uso de assistente de IA reduz a quantidade de defeitos (testes que
-  falham) no código produzido?
-- **RQ3 — Estrutura.** O uso de assistente de IA altera a complexidade ciclomática ou a
-  duplicação do código produzido?
+- **RQ1 — Tempo:** o uso de IA reduz o tempo necessário para resolver uma tarefa de programação?
+- **RQ2 — Defeitos:** o uso de IA reduz a quantidade de testes de aceitação falhando no código produzido?
+- **RQ3 — Estrutura:** o uso de IA altera a complexidade ciclomática ou a duplicação do código?
 
-**Hipóteses (definidas antes da coleta), nula e alternativa por RQ:**
+**Hipóteses informais antes da coleta.** O grupo esperava redução do tempo em RQ1 e
+da quantidade de testes falhando em RQ2. Para RQ3, esperava-se investigar possíveis
+diferenças estruturais, sem prever aumento ou redução. As hipóteses nulas
+correspondem à ausência de redução em RQ1/RQ2 e à ausência de diferença em RQ3.
 
-- **RQ1:** esperávamos que a IA **reduzisse** o tempo (hipótese direcional H1₁).
-  H1₀: a IA não reduz o tempo.
-- **RQ2:** esperávamos que a IA **reduzisse** os testes falhando (hipótese direcional H2₁).
-  H2₀: a IA não reduz a proporção de testes falhando.
-- **RQ3:** sem expectativa de direção — apenas verificar se **há diferença** estrutural
-  (hipótese não direcional H3₁), com LOC como métrica de controle. H3₀: não há diferença
-  de complexidade, duplicação ou LOC entre os tratamentos.
-
-**Contribuições próprias do grupo (30% de inovação), detalhadas na Metodologia §3.6:**
-
-- (a) **Métrica de tamanho de efeito** (rank-biserial pareado) além do p-valor exigido.
-- (b) **Análise explícita da resolução do teste** para n = 3, mostrando o p-valor mínimo
-  alcançável e suas consequências de interpretação.
-- (c) **Infraestrutura própria de cronometragem e captura** em Docker (relógio monotônico,
-  preservação de código no limite), garantindo comparabilidade entre trials.
+**Complementos ao enunciado.** Não foram propostas novas RQs. A análise acrescentou
+o tamanho de efeito rank-biserial aos testes estatísticos e examinou, de forma
+exploratória, o número de execuções de testes até o verde e as falhas intermediárias.
+Também foi realizada uma leitura qualitativa dos resumos de interação com a IA,
+alinhada ao aprofundamento opcional sugerido no enunciado. Essas análises
+complementares não substituem as métricas principais nem constituem hipóteses
+confirmatórias definidas antes da coleta.
 
 ## 2. Contexto
 
@@ -86,9 +77,17 @@ sinalizados** para amostras pareadas, coerente com o desenho within-subject.
 
 ## 3. Metodologia
 
-### 3.1 Participantes e desenho
+### 3.1 Principais Desafios
 
-Três participantes resolveram seis katas cada, metade com IA e metade sem IA,
+Os principais desafios foram selecionar tarefas comparáveis, medir o tempo de forma
+consistente e interpretar uma amostra pequena. Para enfrentá-los, foram adotados
+katas autorais com critérios comuns, cronometragem automatizada e análise pareada
+por participante. A preservação do código final permitiu coletar as métricas sobre
+a solução efetivamente entregue em cada tentativa.
+
+### 3.2 Tomadas de Decisão
+
+**Desenho e distribuição.** Três participantes resolveram seis katas cada, metade com IA e metade sem IA,
 totalizando **18 trials** em um desenho *within-subject*. Cada pessoa foi comparada
 consigo mesma. A distribuição e a ordem observadas nos registros foram:
 
@@ -99,9 +98,7 @@ Cada kata teve ambos os tratamentos, na proporção 2:1. A alternância planejad
 foi integralmente cumprida; efeitos de ordem e aprendizado não foram completamente
 controlados.
 
-### 3.2 Katas
-
-Os seis exercícios autorais foram considerados comparáveis por exigirem lógica,
+**Seleção dos exercícios.** Os seis exercícios autorais foram considerados comparáveis por exigirem lógica,
 strings e coleções, poucas regras e soluções compatíveis com 35 minutos, sem
 frameworks ou algoritmos especializados. Cada módulo possuía **oito testes JUnit
 de aceitação**, visíveis desde o início, iguais para todos e sem permissão de alteração.
@@ -115,61 +112,7 @@ de aceitação**, visíveis desde o início, iguais para todos e sem permissão 
 | K5 | Mascarador de Contatos | Validação e mascaramento de strings |
 | K6 | Encadeador de Trechos | Encadeamento e detecção de ciclos |
 
-### 3.3 Ambiente
-
-Docker Compose padronizou a execução da compilação, dos testes e da coleta. As
-ferramentas e bibliotecas utilizadas foram:
-
-- **Linguagens:** Java 21 (Temurin 21.0.7) para os katas e Python 3.12.11 para os scripts.
-- **Compilação e testes:** Maven 3.9.9, JUnit 5.13.4 e Surefire 3.5.4.
-- **Métricas estáticas:** PMD/CPD 7.17.0 para complexidade e duplicação; script próprio para LOC.
-- **Análise de dados:** pandas 2.2.3, NumPy 2.1.3 e SciPy 1.14.1.
-- **Visualização:** Matplotlib 3.9.2 e Seaborn 0.13.2.
-- **IDE:** livre escolha
-
-### 3.4 Assistente de IA
-
-Foi utilizado **Claude**, com modelo e configuração declarados pelo grupo como
-**Sonnet 5, esforço High**. O protocolo previa acesso pelo navegador, nova conversa
-por trial e prompt inicial padronizado, seguido de interação livre. Os registros de
-um participante documentam Claude Code pelo terminal, inclusive com edição direta
-dos arquivos; portanto, a interface de acesso não foi uniforme.
-
-As solicitações foram resumidas em `perguntas.md`. No tratamento sem IA, os
-assistentes ficaram desativados. Documentação, fóruns e tutoriais eram permitidos
-nos dois tratamentos, mas consultas a soluções específicas dos katas eram proibidas.
-
-### 3.5 Procedimento
-
-1. **Preparação:** baixar dependências e validar o ambiente offline com `prepare.py`.
-   O protocolo previa familiarização com o módulo `smoke`, fora da amostra.
-2. **Início:** executar `trial.py start`, que iniciava o relógio monotônico e exibia
-   o enunciado. Leitura, implementação e testes integravam os **35 minutos**.
-3. **Testes:** pressionar Enter no terminal para executar a suíte sobre uma cópia
-   da solução. O tempo até verde era registrado ao concluir todos os testes com sucesso.
-4. **Encerramento:** concluir no sucesso dentro do prazo ou ao atingir o limite.
-   No limite, a edição deveria cessar e o código era preservado para avaliação final;
-   sucesso posterior não contava como conclusão no prazo.
-
-### 3.6 Coleta
-
-A coleta reuniu três dimensões, com métricas estruturais calculadas apenas sobre o
-código final da solução, excluindo testes e infraestrutura:
-
-- **Tempo:** tempo até verde e estado da tentativa.
-- **Qualidade funcional:** testes passando e falhando, incluindo erros, e taxa de sucesso.
-- **Estrutura:** complexidade ciclomática média por método (PMD, `methodReportLevel=1`),
-  duplicação (CPD, mínimo de 50 tokens) e LOC, sem linhas vazias ou apenas comentários.
-  A duplicação corresponde às linhas de código duplicadas, sem contar sobreposições,
-  divididas pelo LOC total.
-
-Cada trial preservou `trial.json`, `environment.json`, código final e `metrics.json`
-em pasta própria. O comando `trial.py export` reuniu os trials oficiais em
-`results/consolidado.csv`, base para as análises e o dashboard.
-
-### 3.7 Análise
-
-A descritiva utilizou **mediana e IQR por tratamento**. Para inferência, os três trials
+**Critérios de análise.** A descritiva utilizou **mediana e IQR por tratamento**. Para inferência, os três trials
 de cada participante e tratamento foram agregados pela mediana, formando **três pares**.
 Aplicou-se Wilcoxon pareado exato, com α = 0,05: unilateral para redução de tempo e
 defeitos, bilateral para métricas estruturais. O tamanho de efeito rank-biserial
@@ -186,6 +129,77 @@ O tratamento dos dados seguiu os critérios abaixo:
   avaliações finais e métricas válidas continuariam elegíveis para RQ2 e RQ3.
 
 A interpretação permaneceu exploratória, dado o número reduzido de participantes.
+
+### 3.3 Etapas
+
+O trabalho foi organizado em três sprints: preparação do experimento (S01), execução
+e coleta (S02) e análise e apresentação dos resultados (S03). O procedimento de cada
+trial seguiu estas etapas:
+
+1. **Preparação:** baixar dependências e validar o ambiente offline com `prepare.py`.
+   O protocolo previa familiarização com o módulo `smoke`, fora da amostra.
+2. **Início:** executar `trial.py start`, que iniciava o relógio monotônico e exibia
+   o enunciado. Leitura, implementação e testes integravam os **35 minutos**.
+3. **Testes:** pressionar Enter no terminal para executar a suíte sobre uma cópia
+   da solução. O tempo até verde era registrado ao concluir todos os testes com sucesso.
+4. **Encerramento:** concluir no sucesso dentro do prazo ou ao atingir o limite.
+   No limite, a edição deveria cessar e o código era preservado para avaliação final;
+   sucesso posterior não contava como conclusão no prazo.
+
+Após a execução, as métricas foram coletadas sobre o código final. Cada trial
+preservou `trial.json`, `environment.json`, código final e `metrics.json` em pasta
+própria. O comando `trial.py export` reuniu os trials oficiais em
+`results/consolidado.csv`, base para as análises e o dashboard.
+
+### 3.4 Ferramentas
+
+Docker Compose padronizou a execução da compilação, dos testes e da coleta. As
+ferramentas e bibliotecas utilizadas foram:
+
+- **Linguagens:** Java 21 (Temurin 21.0.7) para os katas e Python 3.12.11 para os scripts.
+- **Compilação e testes:** Maven 3.9.9, JUnit 5.13.4 e Surefire 3.5.4.
+- **Métricas estáticas:** PMD/CPD 7.17.0 para complexidade e duplicação; script próprio para LOC.
+- **Análise de dados:** pandas 2.2.3, NumPy 2.1.3 e SciPy 1.14.1.
+- **Visualização:** Matplotlib 3.9.2 e Seaborn 0.13.2.
+- **IDE:** livre escolha
+
+**Assistente de IA e regras de uso.** Foi utilizado **Claude**, com modelo e configuração declarados pelo grupo como
+**Sonnet 5, esforço High**. O protocolo previa acesso pelo navegador, nova conversa
+por trial e prompt inicial padronizado, seguido de interação livre. Os registros de
+um participante documentam Claude Code pelo terminal, inclusive com edição direta
+dos arquivos; portanto, a interface de acesso não foi uniforme.
+
+As solicitações foram resumidas em `perguntas.md`. No tratamento sem IA, os
+assistentes ficaram desativados. Documentação, fóruns e tutoriais eram permitidos
+nos dois tratamentos, mas consultas a soluções específicas dos katas eram proibidas.
+
+### 3.5 Tabela de Métricas
+
+As métricas estruturais consideraram apenas o código final da solução, excluindo
+testes e infraestrutura. LOC foi utilizado como controle para interpretar o tamanho
+das soluções e como denominador da duplicação.
+
+| RQ | Métrica | Definição operacional | Unidade | Fonte |
+|---|---|---|---|---|
+| RQ1 | Tempo até verde | Do início do trial ao término dos testes aprovados dentro do prazo, medido com relógio monotônico | Segundos | `trial.py` |
+| RQ1 | Estado da tentativa | Conclusão, censura ou interrupção; distingue sucesso no prazo de esgotamento do limite | Categoria | `trial.json` |
+| RQ2 | Testes passando/falhando | Contagens na avaliação final; falhas incluem erros | Contagem | JUnit/Surefire via `trial.py` |
+| RQ2 | Taxa de sucesso | Testes passando ÷ total × 100 | % | `trial.py` |
+| RQ3 | Complexidade média por método | Média das complexidades reportadas com `methodReportLevel=1` | — | PMD |
+| RQ3 | Duplicação | Linhas de código duplicadas ÷ LOC × 100, sem contar sobreposições; limiar de 50 tokens | % | CPD |
+| RQ3 | LOC (controle) | Linhas de código, excluindo vazias e apenas comentários | Contagem | `metrics.py` |
+
+### 3.6 Inovações Propostas pelo Grupo
+
+O grupo complementou a comparação dos tratamentos com três recursos:
+
+- **Tamanho de efeito:** rank-biserial pareado, para descrever a direção e a intensidade
+  das diferenças além do p-valor.
+- **Resolução do teste:** explicitação dos menores p-valores do Wilcoxon exato com
+  três pares não nulos — 0,125 no unilateral e 0,25 no bilateral — para orientar a
+  interpretação exploratória.
+- **Coleta automatizada:** scripts próprios para cronometrar, testar, preservar o
+  código final e consolidar os registros, mantendo a rastreabilidade entre trial e análise.
 
 ## 4. Resultados
 
