@@ -59,8 +59,7 @@ validação dos katas, ambiente e scripts), **S02** (execução dos 18 trials of
 **S03** (análise estatística, dashboard e este relatório).
 
 O **objeto de estudo** é o processo de resolução de katas de programação, comparando dois
-tratamentos: `com-ia` (Claude, Sonnet 5, esforço High, acessado pelo navegador; um
-participante usou o Claude Code no terminal, ver §4.3) e
+tratamentos: `com-ia` (Claude, Sonnet 5, esforço High, acessado pelo navegador) e
 `sem-ia` (assistentes de IA desativados). Cada participante resolve os seis katas uma vez,
 três por tratamento, sob time-box fixo de **35 minutos** por trial. Os katas são
 **autorais e de baixa indexação**, para reduzir o risco de a IA reproduzir uma solução
@@ -311,8 +310,7 @@ IA, o participante registrou um resumo das perguntas feitas ao assistente
   correspondendo a uma etapa da implementação: criar a lista de resultado, tratar `null`
   e vazio, montar o laço e aplicar as regras. O participante decompôs o problema e a IA
   produziu cada parte.
-- **Vitor: abordagem proposta pela IA, aprovada e escrita direto no arquivo** (Claude
-  Code no terminal). Nos katas 01 e 03 houve um único ciclo: a IA propôs, o participante
+- **Vitor: abordagem proposta pela IA, aprovada e escrita direto no arquivo**. Nos katas 01 e 03 houve um único ciclo: a IA propôs, o participante
   aprovou e a IA escreveu, com 99,6 s e 21,2 s até o verde. No kata-05, o participante
   discutiu cerca de sete decisões de desenho antes de pedir o código (corte no primeiro
   `:`, `split("@", -1)`, métodos auxiliares), e o tempo subiu para 410,8 s.
@@ -364,8 +362,7 @@ A principal **limitação** é o tamanho amostral: com três participantes, o te
 Wilcoxon não alcança significância a 5% em nenhuma RQ (o p mínimo é 0,125 nos testes
 unilaterais de RQ1/RQ2 e 0,25 nos bilaterais de RQ3), de modo que
 todos os achados são **exploratórios**. Somam-se as ameaças de contrabalanceamento
-incompleto (2:1), possível memorização pela IA, interface da IA não uniforme (navegador
-versus Claude Code) e a exposição do integrante que preparou os
+incompleto (2:1), possível memorização pela IA e a exposição do integrante que preparou os
 katas.
 
 **O que faríamos diferente com mais tempo/recursos:** ampliar substancialmente o número de
