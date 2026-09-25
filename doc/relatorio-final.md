@@ -23,8 +23,16 @@ comparando tarefas realizadas com e sem IA. A questão importa para a engenharia
 software porque ajuda a avaliar se o uso dessas ferramentas melhora a produtividade
 sem comprometer a qualidade funcional e estrutural.
 
-**Questões de pesquisa.** Pela abordagem **GQM (Goal–Question–Metric)**, o objetivo
-se desdobra nas três questões do enunciado:
+**Objetivo (GQM).** Pela abordagem **GQM (Goal–Question–Metric)**, o objetivo é
+*analisar o uso de um assistente de IA generativa (Claude) na resolução de katas de
+programação em Java, com o propósito de compará-lo à codificação manual, com respeito
+ao tempo de resolução, à qualidade funcional (testes falhando) e à qualidade estrutural
+(complexidade ciclomática e duplicação) do código produzido, do ponto de vista do grupo
+pesquisador, no contexto de seis katas autorais de dificuldade equivalente resolvidos
+por três estudantes de graduação em desenho crossover within-subject com time-box de
+35 minutos.*
+
+**Questões de pesquisa.** O objetivo se desdobra nas três questões do enunciado:
 
 - **RQ1 — Tempo:** o uso de IA reduz o tempo necessário para resolver uma tarefa de programação?
 - **RQ2 — Defeitos:** o uso de IA reduz a quantidade de testes de aceitação falhando no código produzido?
@@ -51,7 +59,7 @@ validação dos katas, ambiente e scripts), **S02** (execução dos 18 trials of
 **S03** (análise estatística, dashboard e este relatório).
 
 O **objeto de estudo** é o processo de resolução de katas de programação, comparando dois
-tratamentos: `com-ia` (Claude, Sonnet 5, esforço High, acessado pelo navegador) e
+tratamentos: `com-ia` (Claude, Sonnet 5, esforço High) e
 `sem-ia` (assistentes de IA desativados). Cada participante resolve os seis katas uma vez,
 três por tratamento, sob time-box fixo de **35 minutos** por trial. Os katas são
 **autorais e de baixa indexação**, para reduzir o risco de a IA reproduzir uma solução
@@ -144,12 +152,6 @@ preservou `trial.json`, `environment.json`, código final e `metrics.json` em pa
 própria. O comando `trial.py export` reuniu os trials oficiais em
 `results/consolidado.csv`, base para as análises e o dashboard.
 
-| Sprint | Entregas | Responsável(is) | Issues (nº) |
-|---|---|---|---|
-| S01 — Desenho | Decisões do experimento, seleção/validação dos 6 katas, ameaças à validade | Gabriel (katas, hipóteses, ameaças); Joaquim (cronômetro); Vitor (Docker/métricas) | #3–#21 |
-| S02 — Execução | 18 trials oficiais (9 com-ia + 9 sem-ia), perguntas.md, métricas | Cada integrante executa seus trials | #43–#60, #63, #70 |
-| S03 — Análise | Protocolo estatístico, descritiva, Wilcoxon RQ1/RQ2 e RQ3, outliers, dashboard, relatório | Gabriel (#30/#31/#32/#35/#37/#39/#40/#64); Vitor (#33/#34/#36/#65); Joaquim (#38/#41/#61/#62/#76) | #30–#41, #61–#65, #76 |
-
 **Configuração do processo.** Colunas do board: Backlog → To Do → Doing → Review → Done;
 limite de WIP = 3 em Doing. Cada trial oficial tem uma Issue individual atribuída ao
 responsável, e os commits referenciam a Issue correspondente. Quadro no GitHub Projects:
@@ -171,9 +173,7 @@ ferramentas e bibliotecas utilizadas foram:
 
 **Assistente de IA e regras de uso.** Foi utilizado **Claude**, com modelo e configuração declarados pelo grupo como
 **Sonnet 5, esforço High**. O protocolo previa acesso pelo navegador, nova conversa
-por trial e prompt inicial padronizado, seguido de interação livre. Os registros de
-um participante documentam Claude Code pelo terminal, inclusive com edição direta
-dos arquivos; portanto, a interface de acesso não foi uniforme.
+por trial e prompt inicial padronizado, seguido de interação livre.
 
 As solicitações foram resumidas em `perguntas.md`. No tratamento sem IA, os
 assistentes ficaram desativados. Documentação, fóruns e tutoriais eram permitidos
@@ -183,7 +183,10 @@ nos dois tratamentos, mas consultas a soluções específicas dos katas eram pro
 
 As métricas estruturais consideraram apenas o código final da solução, excluindo
 testes e infraestrutura. LOC foi utilizado como controle para interpretar o tamanho
-das soluções e como denominador da duplicação.
+das soluções e como denominador da duplicação. Para RQ2, a taxa de sucesso foi
+escolhida como métrica principal por normalizar o resultado pelo total de testes,
+permitindo comparar katas com quantidades diferentes de testes; a contagem de testes
+falhando é reportada como complemento, por ser mais direta de interpretar.
 
 | RQ | Métrica | Definição operacional | Unidade | Fonte |
 |---|---|---|---|---|
@@ -396,8 +399,8 @@ katas.
 participantes (ou de réplicas independentes por condição) para obter poder estatístico
 real; usar katas maiores, em que duplicação e complexidade tenham variância suficiente
 para discriminar; e adotar métricas de qualidade mais sensíveis que a contagem de testes
-verdes. Entre as inovações (§3.6), o **tamanho de efeito** e a **análise de poder para n
-pequeno** são as que mais valeria expandir — juntas, permitem interpretar corretamente
+verdes. Entre as inovações (§3.6), o **tamanho de efeito** e a **análise da resolução do
+teste** são as que mais valeria expandir — juntas, permitem interpretar corretamente
 experimentos com amostras reduzidas, comuns em estudos com participantes humanos.
 
 ## Referências
