@@ -37,9 +37,12 @@ Seguindo a abordagem **GQM**, o estudo responde às três Questões de Pesquisa 
 **Hipóteses informais do grupo (antes da coleta):**
 
 - **RQ1:** esperávamos que a IA **reduzisse** o tempo (hipótese direcional H1₁).
+  H1₀: a IA não reduz o tempo.
 - **RQ2:** esperávamos que a IA **reduzisse** os testes falhando (hipótese direcional H2₁).
+  H2₀: a IA não reduz a proporção de testes falhando.
 - **RQ3:** sem expectativa de direção — apenas verificar se **há diferença** estrutural
-  (hipótese não direcional H3₁), com LOC como métrica de controle.
+  (hipótese não direcional H3₁), com LOC como métrica de controle. H3₀: não há diferença
+  de complexidade, duplicação ou LOC entre os tratamentos.
 
 **Contribuições próprias do grupo (30% de inovação), detalhadas na Metodologia §3.6:**
 
@@ -306,7 +309,11 @@ também foi o único a passar de primeira nos trials sem IA. (v) *Interface da I
 uniforme* — o protocolo previa o Claude pelo navegador, mas o Vitor usou o Claude Code
 no terminal, que escreve o código direto no arquivo. O modelo e o esforço são os mesmos
 (Sonnet 5, High), mas a interface elimina o tempo de copiar e colar, o que pode ter
-favorecido os tempos dele com IA (a mediana mais baixa do grupo, 99,6 s).
+favorecido os tempos dele com IA (a mediana mais baixa do grupo, 99,6 s). (vi)
+*Registro de tempo* — no trial `A_kata-05_semia` (Gabriel), o tempo gravado é 550,5 s,
+mas o intervalo entre `started_at` e `ended_at` é de 693,5 s. Usamos o valor gravado,
+como nos demais trials; com qualquer um dos dois, esse é o maior tempo sem IA do Gabriel,
+então a mediana dele (238,7 s) e os resultados de RQ1 não mudam.
 
 **Contribuição das inovações (§3.6).** O tamanho de efeito (a) foi decisivo para mostrar
 que RQ1, apesar do p não significativo, tem efeito consistente e máximo; a análise de
