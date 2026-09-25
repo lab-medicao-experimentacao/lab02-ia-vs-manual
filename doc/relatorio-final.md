@@ -87,111 +87,106 @@ sinalizados** para amostras pareadas, coerente com o desenho within-subject.
 
 ## 3. Metodologia
 
-### 3.1 Principais Desafios
+### 3.1 Participantes e desenho
 
-- **Padronizar katas de dificuldade equivalente e evitar memorização pela IA.** Foi o
-  desafio central de desenho: katas muito conhecidos (LeetCode/HackerRank) permitiriam à
-  IA reproduzir soluções prontas, inflando o efeito do tratamento. Resolvemos com seis
-  katas **autorais**, com regras e contratos de I/O próprios, mesmo quando a ideia
-  subjacente é conhecida (ex.: run-length no kata-03 com regra própria).
-- **Capturar o código exatamente no limite de tempo** sem contar uma execução posterior
-  como conclusão dentro do prazo. Exigiu um cronômetro com relógio monotônico que preserva
-  o código ao atingir 35 min e avalia a cópia final separadamente.
-- **Poder estatístico com apenas 3 participantes.** O desenho de três participantes impõe
-  n = 3 pares no teste pareado; enfrentamos isso definindo um protocolo estatístico
-  explícito (§3.2) e assumindo o caráter exploratório dos resultados.
-- **Integrar dados heterogêneos** (tempos/testes do cronômetro + métricas estruturais do
-  PMD/CPD) num único CSV consolidado para análise reprodutível.
+Três participantes resolveram seis katas cada, metade com IA e metade sem IA,
+totalizando **18 trials** em um desenho *within-subject*. Cada pessoa foi comparada
+consigo mesma. A distribuição e a ordem observadas nos registros foram:
 
-### 3.2 Tomadas de Decisão
+- **Um participante:** K1–K6 em sequência, alternando sem IA nos ímpares e com IA nos pares.
+- **Dois participantes:** K1, K3 e K5 com IA, seguidos de K2, K4 e K6 sem IA.
 
-- **Assistente de IA:** Claude (Sonnet 5, esforço High), acessado pelo navegador,
-  disponível no plano gratuito para os três integrantes (exceção: um participante usou o
-  Claude Code no terminal, com o mesmo modelo; ver ameaça (v) em §4.3). Mesmo modelo, configuração e
-  **prompt inicial padronizado** em todos os trials com IA; nova conversa por trial, sem
-  histórico. Escolha por padronização e comparabilidade.
-- **Linguagem Java 21 + PMD/CPD:** os katas são em Java para permitir métricas estáticas
-  com CK/PMD (CK exige Java); usamos **PMD** para complexidade e **CPD** para duplicação.
-- **Time-box de 35 min, fixo:** conforme o enunciado (só pode ser reduzido, nunca
-  aumentado). Mantivemos os 35 min em todos os trials para comparabilidade máxima.
-- **Métrica de defeitos:** número de testes falhando ao final (e taxa de sucesso), sobre
-  suites de 8 testes de aceitação idênticas para todos no mesmo kata.
-- **Estatística com mediana/IQR e Wilcoxon pareado:** dado o n pequeno, preferimos mediana
-  e IQR à média/desvio, e o teste não paramétrico de Wilcoxon, coerente com o desenho.
-  **Agregação:** a mediana dos 3 trials de cada participante × tratamento forma um par, de
-  modo que a **unidade de análise é o participante** (n = 3 pares), não o trial.
-- **Tratamento de outliers:** identificados pela regra de Tukey (1.5×IQR), mas **mantidos
-  sem descarte** — são valores plausíveis dos katas mais difíceis, e remover agravaria o
-  baixo poder.
-- **Configuração do processo (WIP):** board no GitHub Projects (v2) com o fluxo
-  Backlog → To Do → Doing → Review → Done e **limite de WIP = 3** na coluna Doing (um item
-  ativo por integrante), evitando trabalho em paralelo excessivo num trio.
+Cada kata teve ambos os tratamentos, na proporção 2:1. A alternância planejada não
+foi integralmente cumprida; efeitos de ordem e aprendizado não foram completamente
+controlados.
 
-### 3.3 Etapas
+### 3.2 Katas
 
-O trabalho seguiu três sprints; a divisão reflete os *Assignees* reais das Issues no
-GitHub Projects (não apenas narrativa).
+Os seis exercícios autorais foram considerados comparáveis por exigirem lógica,
+strings e coleções, poucas regras e soluções compatíveis com 35 minutos, sem
+frameworks ou algoritmos especializados. Cada módulo possuía **oito testes JUnit
+de aceitação**, visíveis desde o início, iguais para todos e sem permissão de alteração.
 
-| Sprint | Entregas | Responsável(is) | Issues (nº) |
-|---|---|---|---|
-| S01 — Desenho | Decisões do experimento, seleção/validação dos 6 katas, ameaças à validade | Gabriel (katas, hipóteses, ameaças); Joaquim (cronômetro); Vitor (Docker/métricas) | #3–#21 |
-| S02 — Execução | 18 trials oficiais (9 com-ia + 9 sem-ia), perguntas.md, métricas | Cada integrante executa seus trials | #43–#60, #63, #70 |
-| S03 — Análise | Protocolo estatístico, descritiva, Wilcoxon RQ1/RQ2 e RQ3, outliers, dashboard, relatório | Gabriel (#30/#31/#32/#35/#37/#39/#40/#64); Vitor (#33/#34/#36/#65); Joaquim (#38/#41/#61/#62) | #30–#41, #61–#65 |
+| Kata | Exercício | Conteúdo principal |
+|---|---|---|
+| K1 | Normalizador de Etiquetas | Normalização e deduplicação de strings |
+| K2 | Agrupador de Extrato | Agregação por chave e ordenação |
+| K3 | Compressor de Corridas | Codificação de sequências consecutivas |
+| K4 | Validador de Agenda | Horários e sobreposição de intervalos |
+| K5 | Mascarador de Contatos | Validação e mascaramento de strings |
+| K6 | Encadeador de Trechos | Encadeamento e detecção de ciclos |
 
-**Configuração do processo.** Colunas do board: Backlog → To Do → Doing → Review → Done;
-limite de WIP = 3 em Doing. Cada trial oficial tem uma Issue individual atribuída ao
-responsável, e os commits referenciam a Issue correspondente.
+### 3.3 Ambiente
 
-> _Sugestão de anexo: inserir aqui o print do quadro Kanban (GitHub Projects) ao final do
-> laboratório, mostrando o fluxo real de trabalho._
+Docker Compose padronizou a execução da compilação, dos testes e da coleta. As
+ferramentas e bibliotecas utilizadas foram:
 
-### 3.4 Ferramentas
+- **Linguagens:** Java 21 (Temurin 21.0.7) para os katas e Python 3.12.11 para os scripts.
+- **Compilação e testes:** Maven 3.9.9, JUnit 5.13.4 e Surefire 3.5.4.
+- **Métricas estáticas:** PMD/CPD 7.17.0 para complexidade e duplicação; script próprio para LOC.
+- **Análise de dados:** pandas 2.2.3, NumPy 2.1.3 e SciPy 1.14.1.
+- **Visualização:** Matplotlib 3.9.2 e Seaborn 0.13.2.
+- **IDE:** livre escolha
 
-- **Java 21 (Temurin 21.0.7) + Maven 3.9.9 + JUnit 5.13.4** — implementação e testes de
-  aceitação dos katas.
-- **Docker + Docker Compose** — ambiente padronizado com versões fixadas por digest,
-  garantindo reprodutibilidade da compilação, testes e coleta.
-- **Python 3.12** com scripts próprios do grupo:
-  - `scripts/trial.py` — cronômetro (relógio monotônico), execução dos testes e export CSV.
-  - `scripts/metrics.py` — coleta de métricas estruturais.
-  - `scripts/dataset.py` — carga/união do CSV num DataFrame de análise.
-  - `scripts/descriptive_stats.py`, `scripts/rq1_rq2.py`, `scripts/rq3.py`,
-    `scripts/outliers.py`, `scripts/dashboard.py` — análise e visualização.
-- **PMD / CPD 7.17.0** — complexidade ciclomática (regra `CyclomaticComplexity`) e
-  duplicação (`cpd --minimum-tokens 50`).
-- **pandas 2.2.3, numpy 2.1.3, scipy 1.14.1** — manipulação e testes estatísticos
-  (`scipy.stats.wilcoxon`, `method="exact"`); **matplotlib 3.9.2 / seaborn 0.13.2** —
-  gráficos do dashboard.
-- **GitHub Projects (v2)** — ferramenta de processo (board do grupo, link na capa).
+### 3.4 Assistente de IA
 
-### 3.5 Tabela de Métricas
+Foi utilizado **Claude**, com modelo e configuração declarados pelo grupo como
+**Sonnet 5, esforço High**. O protocolo previa acesso pelo navegador, nova conversa
+por trial e prompt inicial padronizado, seguido de interação livre. Os registros de
+um participante documentam Claude Code pelo terminal, inclusive com edição direta
+dos arquivos; portanto, a interface de acesso não foi uniforme.
 
-| RQ | Métrica | Definição operacional | Unidade | Ferramenta / Fonte |
-|---|---|---|---|---|
-| RQ1 | Tempo até verde | Tempo (relógio monotônico) do início do trial até todos os testes passarem, se dentro do time-box | Segundos | `scripts/trial.py` |
-| RQ2 | Testes falhando | Nº de testes de aceitação com falha/erro na avaliação final (total − passando) | Contagem | JUnit/Surefire via `trial.py` |
-| RQ2 | Taxa de sucesso | Testes passando ÷ total × 100 | % | JUnit/Surefire via `trial.py` |
-| RQ3a | Complexidade ciclomática média/método | Média aritmética da complexidade (McCabe) por método reportada pelo PMD | — | PMD 7.17.0 (`CyclomaticComplexity`) |
-| RQ3b | Duplicação de linhas | Linhas duplicadas (CPD, ≥ 50 tokens, sem sobreposição) ÷ LOC × 100 | % | CPD 7.17.0 |
-| RQ3c | LOC (controle) | Linhas de código não vazias/não comentário em `src/main/java` | Contagem | `scripts/metrics.py` |
+As solicitações foram resumidas em `perguntas.md`. No tratamento sem IA, os
+assistentes ficaram desativados. Documentação, fóruns e tutoriais eram permitidos
+nos dois tratamentos, mas consultas a soluções específicas dos katas eram proibidas.
 
-### 3.6 Inovações Propostas pelo Grupo (30% da nota)
+### 3.5 Procedimento
 
-- **(a) Tamanho de efeito (rank-biserial pareado).** Além do p-valor exigido, cada teste
-  reporta `r = (W⁺ − W⁻)/(W⁺ + W⁻)`, de −1 a +1. Isso permite descrever a **magnitude e a
-  direção** do efeito mesmo quando o p-valor não é significativo — essencial neste
-  experimento, em que o poder é baixo. **Onde aparece:** §4.3 (RQ1 com r = −1,00).
-- **(b) Análise da resolução do teste para n = 3.** Demonstramos, com verificação
-  numérica, que o menor p-valor alcançável é **0,125** (unilateral) e **0,25** (bilateral)
-  com três pares — logo, nenhum resultado pode ser significativo a α = 0,05 neste desenho.
-  Isso reposiciona a leitura: os testes são reportados por rigor, mas a conclusão se apoia
-  na direção dos pares e na descritiva. **Onde aparece:** §4.3 e §5, documentado em
-  `doc/limitacao-inferencial.md`.
-- **(c) Infraestrutura própria de cronometragem e captura em Docker.** Em vez de
-  cronometrar manualmente, construímos um cronômetro com relógio monotônico que executa os
-  testes pelo Maven, detecta o "verde", encerra a edição no limite e preserva o código
-  final para avaliação separada — controlando a ameaça de contar uma execução tardia como
-  conclusão no prazo. **Onde aparece:** confiabilidade dos tempos de RQ1 em §4.
+1. **Preparação:** baixar dependências e validar o ambiente offline com `prepare.py`.
+   O protocolo previa familiarização com o módulo `smoke`, fora da amostra.
+2. **Início:** executar `trial.py start`, que iniciava o relógio monotônico e exibia
+   o enunciado. Leitura, implementação e testes integravam os **35 minutos**.
+3. **Testes:** pressionar Enter no terminal para executar a suíte sobre uma cópia
+   da solução. O tempo até verde era registrado ao concluir todos os testes com sucesso.
+4. **Encerramento:** concluir no sucesso dentro do prazo ou ao atingir o limite.
+   No limite, a edição deveria cessar e o código era preservado para avaliação final;
+   sucesso posterior não contava como conclusão no prazo.
+
+### 3.6 Coleta
+
+A coleta reuniu três dimensões, com métricas estruturais calculadas apenas sobre o
+código final da solução, excluindo testes e infraestrutura:
+
+- **Tempo:** tempo até verde e estado da tentativa.
+- **Qualidade funcional:** testes passando e falhando, incluindo erros, e taxa de sucesso.
+- **Estrutura:** complexidade ciclomática média por método (PMD, `methodReportLevel=1`),
+  duplicação (CPD, mínimo de 50 tokens) e LOC, sem linhas vazias ou apenas comentários.
+  A duplicação corresponde às linhas de código duplicadas, sem contar sobreposições,
+  divididas pelo LOC total.
+
+Cada trial preservou `trial.json`, `environment.json`, código final e `metrics.json`
+em pasta própria. O comando `trial.py export` reuniu os trials oficiais em
+`results/consolidado.csv`, base para as análises e o dashboard.
+
+### 3.7 Análise
+
+A descritiva utilizou **mediana e IQR por tratamento**. Para inferência, os três trials
+de cada participante e tratamento foram agregados pela mediana, formando **três pares**.
+Aplicou-se Wilcoxon pareado exato, com α = 0,05: unilateral para redução de tempo e
+defeitos, bilateral para métricas estruturais. O tamanho de efeito rank-biserial
+complementou os p-valores.
+
+O tratamento dos dados seguiu os critérios abaixo:
+
+- **Diferenças nulas:** removidas do Wilcoxon; se todas fossem zero, o teste seria não aplicável.
+- **Outliers:** identificados pela regra de Tukey (1,5 × IQR) e mantidos por serem plausíveis.
+- **Dados ausentes e ocorrências técnicas:** sem imputação de zero; registros técnicos
+  separados das comparações e dados ausentes excluídos da métrica correspondente.
+- **Censura:** reportada separadamente, sem converter o limite em tempo de conclusão.
+  O protocolo previa suspender o teste de tempo se a censura afetasse os pares;
+  avaliações finais e métricas válidas continuariam elegíveis para RQ2 e RQ3.
+
+A interpretação permaneceu exploratória, dado o número reduzido de participantes.
 
 ## 4. Resultados
 

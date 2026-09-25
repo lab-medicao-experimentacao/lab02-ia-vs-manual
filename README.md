@@ -2,6 +2,12 @@
 
 Estrutura inicial da S01: cronômetro Python, registros JSON/CSV e ambiente Docker com Java 21, Maven, JUnit e PMD/CPD. O protocolo está em [doc/decisoes.md](doc/decisoes.md).
 
+## Kanban do projeto
+
+O planejamento e o acompanhamento das atividades estão no [GitHub Projects — Kanban/Lab02](https://github.com/orgs/lab-medicao-experimentacao/projects/2/views/1).
+
+![Quadro Kanban do Lab02 no GitHub Projects, com as atividades na coluna Done](doc/printkanban.jpeg)
+
 ## Preparação
 
 Instale Docker com Docker Compose. Java, Maven e Python não precisam ser instalados na máquina. Execute os comandos abaixo na raiz do repositório.
