@@ -1,253 +1,293 @@
-# Relatório Final — LAB02: IA vs. codificação manual
+# Relatório de Laboratório
 
-Estudo experimental within-subject comparando a resolução de katas de programação em
-Java **com** e **sem** assistente de IA (Claude), medindo tempo, qualidade funcional e
-métricas estruturais do código produzido.
+**Laboratório de Experimentação de Software**
 
-> Estrutura conforme o Passo 5 do [enunciado](enunciado.md): (i) introdução com as
-> hipóteses; (ii) metodologia reprodutível; (iii) resultados por RQ; (iv) discussão
-> final; (v) link do repositório/GitHub Projects. Este documento é montado em partes por
-> issue: **§1 (Issue #37)**, §2 (#38), §3 (#39), §4 (#40) e §5 (#41).
+| | |
+|---|---|
+| **Curso** | Engenharia de Software |
+| **Disciplina** | Laboratório de Experimentação de Software |
+| **Turno / Período** | Noite / 6º |
+| **Professor(a)** | Danilo Maia |
+| **Laboratório** | Lab02 — IA vs. codificação manual |
+| **Grupo (trio)** | Joaquim Guilherme de Carvalho Vilela Silva · Vitor Costa Vianna · Gabriel Nogueira Vieira Resende |
+| **Link do repositório / GitHub Projects** | https://github.com/lab-medicao-experimentacao/lab02-ia-vs-manual |
+| **Data de entrega** | 24/09/2026 |
 
-## 1. Introdução e hipóteses
+---
 
-### 1.1 Contexto e objetivo
+## 1. Introdução
 
-Assistentes de IA baseados em modelos de linguagem passaram a fazer parte do fluxo de
-programação, com a promessa de acelerar a escrita de código e reduzir defeitos. Resta a
-questão empírica de **quanto**, e a **que custo** em qualidade estrutural, esse ganho se
-concretiza em tarefas curtas e bem delimitadas. Este experimento investiga o efeito do
-uso de um assistente de IA (Claude, Sonnet 5, esforço High) na resolução de **katas** de
-Java 21 sob time-box de 35 minutos, num desenho **within-subject (crossover)** com três
-participantes, cada um resolvendo seis katas — metade com IA, metade sem — em ordem
-contrabalanceada (ver [doc/decisoes.md](decisoes.md) §4).
+Assistentes de IA baseados em modelos de linguagem se tornaram parte do fluxo diário de
+programação, com a promessa de acelerar a escrita de código e reduzir defeitos. Falta,
+porém, evidência **controlada** sobre o real impacto dessas ferramentas: quanto elas
+aceleram a resolução de uma tarefa e a que custo em qualidade estrutural do código. Este
+laboratório investiga esse impacto num experimento **crossover within-subject**, em que
+três participantes resolvem seis katas de Java 21 sob time-box de 35 minutos — metade
+**com** assistente de IA (Claude), metade **sem** — em ordem contrabalanceada.
 
-O objetivo, seguindo a abordagem **GQM**, é responder a três questões de pesquisa sobre o
-efeito do tratamento (uso ou não do assistente de IA) em três dimensões: **tempo**,
-**qualidade funcional** e **estrutura do código**.
+Seguindo a abordagem **GQM**, o estudo responde às três Questões de Pesquisa do enunciado:
 
-### 1.2 Variáveis
+- **RQ1 — Tempo.** O uso de assistente de IA reduz o tempo necessário para resolver uma
+  tarefa de programação?
+- **RQ2 — Defeitos.** O uso de assistente de IA reduz a quantidade de defeitos (testes que
+  falham) no código produzido?
+- **RQ3 — Estrutura.** O uso de assistente de IA altera a complexidade ciclomática ou a
+  duplicação do código produzido?
 
-- **Variável independente (tratamento):** uso do assistente de IA — dois níveis,
-  `com-ia` e `sem-ia`.
-- **Variáveis dependentes:**
-  - Tempo até passar nos testes de aceitação (*time-to-green*), em segundos.
-  - Número de testes de aceitação passando/falhando ao final do trial.
-  - Métricas estruturais: complexidade ciclomática média por método, percentual de
-    linhas duplicadas e LOC (métrica de controle).
-- **Controles:** mesmo conjunto de katas e testes para todos; mesmo ambiente Docker
-  (versões fixadas); mesmo assistente, modelo e configuração; time-box fixo de 35 min;
-  ordem de tratamento contrabalanceada entre participantes.
+**Hipóteses informais do grupo (antes da coleta):**
 
-### 1.3 Questões de pesquisa e hipóteses
+- **RQ1:** esperávamos que a IA **reduzisse** o tempo (hipótese direcional H1₁).
+- **RQ2:** esperávamos que a IA **reduzisse** os testes falhando (hipótese direcional H2₁).
+- **RQ3:** sem expectativa de direção — apenas verificar se **há diferença** estrutural
+  (hipótese não direcional H3₁), com LOC como métrica de controle.
 
-As hipóteses conceituais foram definidas no desenho do experimento
-([decisoes.md](decisoes.md) §6). RQ1 e RQ2 têm hipóteses **direcionais** (esperamos que a
-IA reduza tempo e defeitos); RQ3 tem hipóteses **não direcionais** (investigamos se há
-diferença estrutural, sem prever o sentido).
+**Contribuições próprias do grupo (30% de inovação), detalhadas na Metodologia §3.6:**
 
-**RQ1 — Tempo.** O uso do assistente de IA reduz o tempo até passar nos testes de
-aceitação?
+- (a) **Métrica de tamanho de efeito** (rank-biserial pareado) além do p-valor exigido.
+- (b) **Análise explícita da resolução do teste** para n = 3, mostrando o p-valor mínimo
+  alcançável e suas consequências de interpretação.
+- (c) **Infraestrutura própria de cronometragem e captura** em Docker (relógio monotônico,
+  preservação de código no limite), garantindo comparabilidade entre trials.
 
-- **H1₀:** o uso de IA **não reduz** o tempo até verde (mediana com-ia ≥ mediana sem-ia).
-- **H1₁:** o uso de IA **reduz** o tempo até verde (mediana com-ia < mediana sem-ia).
+## 2. Contexto
 
-**RQ2 — Qualidade funcional.** O uso do assistente de IA reduz a proporção de testes de
-aceitação falhando ao final do trial?
+Este é o **Lab02** da disciplina, o primeiro com desenho experimental controlado (os
+demais laboratórios giram em torno de mineração de repositórios e do Kanban do próprio
+grupo). Foi conduzido em três sprints: **S01** (desenho do experimento, seleção e
+validação dos katas, ambiente e scripts), **S02** (execução dos 18 trials oficiais) e
+**S03** (análise estatística, dashboard e este relatório).
 
-- **H2₀:** o uso de IA **não reduz** o número de testes falhando.
-- **H2₁:** o uso de IA **reduz** o número de testes falhando.
+O **objeto de estudo** é o processo de resolução de katas de programação, comparando dois
+tratamentos: `com-ia` (Claude, Sonnet 5, esforço High, acessado pelo navegador) e
+`sem-ia` (assistentes de IA desativados). Cada participante resolve os seis katas uma vez,
+três por tratamento, sob time-box fixo de **35 minutos** por trial. Os katas são
+**autorais e de baixa indexação**, para reduzir o risco de a IA reproduzir uma solução
+memorizada em vez de auxiliar de fato.
 
-**RQ3 — Estrutura do código.** O uso do assistente de IA altera as métricas estruturais
-do código produzido (complexidade ciclomática, duplicação, LOC)?
+**Base conceitual:** o método **GQM** (Basili, Caldiera & Rombach) estrutura a ligação
+entre objetivo, questões (RQ1–RQ3) e métricas; a complexidade ciclomática segue a
+definição de **McCabe**; a análise estatística usa o teste **de Wilcoxon dos postos
+sinalizados** para amostras pareadas, coerente com o desenho within-subject.
 
-- **H3₀:** **não há diferença** entre tratamentos na métrica estrutural considerada.
-- **H3₁:** **há diferença** entre tratamentos na métrica estrutural considerada.
+## 3. Metodologia
 
-RQ3 é avaliada por métrica (complexidade, duplicação e LOC), cada uma com seu par
-H₀/H₁. LOC é interpretada como métrica de **controle** para leitura de complexidade e
-duplicação, não como desfecho de qualidade em si.
+### 3.1 Principais Desafios
 
-### 1.4 Análise e limitações previstas
+- **Padronizar katas de dificuldade equivalente e evitar memorização pela IA.** Foi o
+  desafio central de desenho: katas muito conhecidos (LeetCode/HackerRank) permitiriam à
+  IA reproduzir soluções prontas, inflando o efeito do tratamento. Resolvemos com seis
+  katas **autorais**, com regras e contratos de I/O próprios, mesmo quando a ideia
+  subjacente é conhecida (ex.: run-length no kata-03 com regra própria).
+- **Capturar o código exatamente no limite de tempo** sem contar uma execução posterior
+  como conclusão dentro do prazo. Exigiu um cronômetro com relógio monotônico que preserva
+  o código ao atingir 35 min e avalia a cópia final separadamente.
+- **Poder estatístico com apenas 3 participantes.** O desenho de três participantes impõe
+  n = 3 pares no teste pareado; enfrentamos isso definindo um protocolo estatístico
+  explícito (§3.2) e assumindo o caráter exploratório dos resultados.
+- **Integrar dados heterogêneos** (tempos/testes do cronômetro + métricas estruturais do
+  PMD/CPD) num único CSV consolidado para análise reprodutível.
 
-As hipóteses são testadas com o **teste de Wilcoxon pareado** sobre valores agregados por
-participante (unilateral para RQ1/RQ2, bilateral para RQ3; α = 0,05), conforme o
-[protocolo estatístico](protocolo-estatistico.md) (Issue #30). Com **três participantes**,
-o poder estatístico é muito baixo e os resultados têm caráter **exploratório**: ausência
-de significância não será interpretada como equivalência entre os tratamentos (§4 e
-[decisoes.md](decisoes.md) §7–§8).
+### 3.2 Tomadas de Decisão
 
-## 2. Metodologia
+- **Assistente de IA:** Claude (Sonnet 5, esforço High), acessado pelo navegador,
+  disponível no plano gratuito para os três integrantes. Mesmo modelo, configuração e
+  **prompt inicial padronizado** em todos os trials com IA; nova conversa por trial, sem
+  histórico. Escolha por padronização e comparabilidade.
+- **Linguagem Java 21 + PMD/CPD:** os katas são em Java para permitir métricas estáticas
+  com CK/PMD (CK exige Java); usamos **PMD** para complexidade e **CPD** para duplicação.
+- **Time-box de 35 min, fixo:** conforme o enunciado (só pode ser reduzido, nunca
+  aumentado). Mantivemos os 35 min em todos os trials para comparabilidade máxima.
+- **Métrica de defeitos:** número de testes falhando ao final (e taxa de sucesso), sobre
+  suites de 8 testes de aceitação idênticas para todos no mesmo kata.
+- **Estatística com mediana/IQR e Wilcoxon pareado:** dado o n pequeno, preferimos mediana
+  e IQR à média/desvio, e o teste não paramétrico de Wilcoxon, coerente com o desenho.
+  **Agregação:** a mediana dos 3 trials de cada participante × tratamento forma um par, de
+  modo que a **unidade de análise é o participante** (n = 3 pares), não o trial.
+- **Tratamento de outliers:** identificados pela regra de Tukey (1.5×IQR), mas **mantidos
+  sem descarte** — são valores plausíveis dos katas mais difíceis, e remover agravaria o
+  baixo poder.
+- **Configuração do processo (WIP):** board no GitHub Projects (v2) com o fluxo
+  Backlog → To Do → Doing → Review → Done e **limite de WIP = 3** na coluna Doing (um item
+  ativo por integrante), evitando trabalho em paralelo excessivo num trio.
 
-> A preencher — Issue #38 (ambiente, katas usados, assistente de IA e versão, protocolo
-> experimental, com detalhe suficiente para reprodução/replicação).
+### 3.3 Etapas
 
-## 3. Resultados por questão de pesquisa
+O trabalho seguiu três sprints; a divisão reflete os *Assignees* reais das Issues no
+GitHub Projects (não apenas narrativa).
 
-Base de dados: **18 trials oficiais** (3 participantes × 6 katas), todos `completed` e com
-8/8 testes passando, com métricas estruturais coletadas. A análise segue o
-[protocolo estatístico](protocolo-estatistico.md) (Issue #30): agregação por **mediana**
-dos 3 trials de cada participante × tratamento (**n = 3 pares**) e **Wilcoxon pareado**
-(unilateral para RQ1/RQ2, bilateral para RQ3; α = 0,05). Detalhes e reprodução em
-[rq1-rq2.md](rq1-rq2.md) (Issue #32), [rq3.md](rq3.md) (Issue #33),
-[descritiva.md](descritiva.md) (Issue #31) e [outliers.md](outliers.md) (Issue #64).
-
-**Nota sobre poder estatístico.** Com n = 3 pares, o menor p-valor alcançável é **0,125**
-(unilateral, RQ1/RQ2) e **0,25** (bilateral, RQ3). Logo, **nenhum** resultado consegue ser
-significativo a α = 0,05 neste desenho: os testes são reportados por rigor de protocolo, e
-a leitura se apoia na direção/magnitude dos pares e na descritiva
-([limitacao-inferencial.md](limitacao-inferencial.md), Issue #35). Não houve trials
-censurados nem interrompidos; nenhum outlier foi descartado (Issue #64).
-
-### 3.1 RQ1 — Tempo até verde
-
-| Participante | sem-ia (s) | com-ia (s) | Diferença (com − sem) |
+| Sprint | Entregas | Responsável(is) | Issues (nº) |
 |---|---|---|---|
-| gabriel | 238,71 | 183,16 | −55,55 |
-| joaquim_vilela | 999,05 | 290,67 | −708,38 |
-| vitor | 1163,67 | 99,62 | −1064,05 |
+| S01 — Desenho | Decisões do experimento, seleção/validação dos 6 katas, ameaças à validade | Gabriel (katas, hipóteses, ameaças); Joaquim (cronômetro); Vitor (Docker/métricas) | #3–#21 |
+| S02 — Execução | 18 trials oficiais (9 com-ia + 9 sem-ia), perguntas.md, métricas | Cada integrante executa seus trials | #43–#60, #63, #70 |
+| S03 — Análise | Protocolo estatístico, descritiva, Wilcoxon RQ1/RQ2 e RQ3, outliers, dashboard, relatório | Gabriel (#30/#31/#32/#35/#37/#39/#40/#64); Vitor (#33/#34/#36/#65); Joaquim (#38/#41/#61/#62) | #30–#41, #61–#65 |
 
-**Wilcoxon pareado unilateral (H₁: IA reduz):** W = 0, **p = 0,125**, r_rb = **−1,00**,
-mediana das diferenças = **−708,38 s**. Não rejeita H1₀ a α = 0,05.
+**Configuração do processo.** Colunas do board: Backlog → To Do → Doing → Review → Done;
+limite de WIP = 3 em Doing. Cada trial oficial tem uma Issue individual atribuída ao
+responsável, e os commits referenciam a Issue correspondente.
 
-Os **três** participantes foram mais rápidos com IA (direção 100% consistente, efeito
-máximo r = −1,00). O p = 0,125 é o mínimo possível com n = 3 unilateral — ou seja, há uma
-**tendência forte e uniforme** de redução de tempo, sem poder para confirmá-la
-estatisticamente. A magnitude cresce com a dificuldade do kata: nos katas mais longos sem
-IA (kata-04 e kata-06, medianas > 1170 s), o tratamento com IA cai para 180–240 s. A única
-inversão pontual é o kata-01 (curto), em que o tempo com IA ficou acima do sem-ia.
+> _Sugestão de anexo: inserir aqui o print do quadro Kanban (GitHub Projects) ao final do
+> laboratório, mostrando o fluxo real de trabalho._
 
-### 3.2 RQ2 — Testes falhando
+### 3.4 Ferramentas
 
-Todos os 18 trials terminaram com **8/8 testes passando** (0 falhando) nos dois
-tratamentos. As três diferenças pareadas são zero, todos os pares são descartados e o
-**teste não é aplicável**. A qualidade funcional foi **máxima** em ambas as condições
-dentro do time-box; a métrica **não discrimina** neste experimento — a diferença entre
-tratamentos apareceu no tempo (RQ1), não no acerto final.
+- **Java 21 (Temurin 21.0.7) + Maven 3.9.9 + JUnit 5.13.4** — implementação e testes de
+  aceitação dos katas.
+- **Docker + Docker Compose** — ambiente padronizado com versões fixadas por digest,
+  garantindo reprodutibilidade da compilação, testes e coleta.
+- **Python 3.12** com scripts próprios do grupo:
+  - `scripts/trial.py` — cronômetro (relógio monotônico), execução dos testes e export CSV.
+  - `scripts/metrics.py` — coleta de métricas estruturais.
+  - `scripts/dataset.py` — carga/união do CSV num DataFrame de análise.
+  - `scripts/descriptive_stats.py`, `scripts/rq1_rq2.py`, `scripts/rq3.py`,
+    `scripts/outliers.py`, `scripts/dashboard.py` — análise e visualização.
+- **PMD / CPD 7.17.0** — complexidade ciclomática (regra `CyclomaticComplexity`) e
+  duplicação (`cpd --minimum-tokens 50`).
+- **pandas 2.2.3, numpy 2.1.3, scipy 1.14.1** — manipulação e testes estatísticos
+  (`scipy.stats.wilcoxon`, `method="exact"`); **matplotlib 3.9.2 / seaborn 0.13.2** —
+  gráficos do dashboard.
+- **GitHub Projects (v2)** — ferramenta de processo (board do grupo, link na capa).
 
-### 3.3 RQ3 — Estrutura do código
+### 3.5 Tabela de Métricas
 
-| Métrica | Participante | sem-ia | com-ia | Diferença |
+| RQ | Métrica | Definição operacional | Unidade | Ferramenta / Fonte |
 |---|---|---|---|---|
-| Complexidade média/método (RQ3a) | gabriel | 6,67 | 11,00 | +4,33 |
-| | joaquim_vilela | 11,00 | 7,00 | −4,00 |
-| | vitor | 10,00 | 4,67 | −5,33 |
-| LOC — controle (RQ3c) | gabriel | 24 | 70 | +46 |
-| | joaquim_vilela | 59 | 26 | −33 |
-| | vitor | 40 | 26 | −14 |
+| RQ1 | Tempo até verde | Tempo (relógio monotônico) do início do trial até todos os testes passarem, se dentro do time-box | Segundos | `scripts/trial.py` |
+| RQ2 | Testes falhando | Nº de testes de aceitação com falha/erro na avaliação final (total − passando) | Contagem | JUnit/Surefire via `trial.py` |
+| RQ2 | Taxa de sucesso | Testes passando ÷ total × 100 | % | JUnit/Surefire via `trial.py` |
+| RQ3a | Complexidade ciclomática média/método | Média aritmética da complexidade (McCabe) por método reportada pelo PMD | — | PMD 7.17.0 (`CyclomaticComplexity`) |
+| RQ3b | Duplicação de linhas | Linhas duplicadas (CPD, ≥ 50 tokens, sem sobreposição) ÷ LOC × 100 | % | CPD 7.17.0 |
+| RQ3c | LOC (controle) | Linhas de código não vazias/não comentário em `src/main/java` | Contagem | `scripts/metrics.py` |
 
-**Testes (Wilcoxon pareado bilateral):**
+### 3.6 Inovações Propostas pelo Grupo (30% da nota)
 
-| RQ | Métrica | Pares (efetivos) | Mediana das dif. | W | p | r_rb | Decisão |
-|---|---|---|---|---|---|---|---|
-| RQ3a | Complexidade média/método | 3 (3) | −4,00 | 2 | 0,75 | −0,33 | Não rejeita H₀ |
-| RQ3b | Duplicação (%) | 3 (0) | 0 | — | — | — | Não aplicável |
-| RQ3c | LOC (controle) | 3 (3) | −14 | 3 | 1,00 | 0,00 | Não rejeita H₀ |
+- **(a) Tamanho de efeito (rank-biserial pareado).** Além do p-valor exigido, cada teste
+  reporta `r = (W⁺ − W⁻)/(W⁺ + W⁻)`, de −1 a +1. Isso permite descrever a **magnitude e a
+  direção** do efeito mesmo quando o p-valor não é significativo — essencial neste
+  experimento, em que o poder é baixo. **Onde aparece:** §4.3 (RQ1 com r = −1,00).
+- **(b) Análise da resolução do teste para n = 3.** Demonstramos, com verificação
+  numérica, que o menor p-valor alcançável é **0,125** (unilateral) e **0,25** (bilateral)
+  com três pares — logo, nenhum resultado pode ser significativo a α = 0,05 neste desenho.
+  Isso reposiciona a leitura: os testes são reportados por rigor, mas a conclusão se apoia
+  na direção dos pares e na descritiva. **Onde aparece:** §4.3 e §5, documentado em
+  `doc/limitacao-inferencial.md`.
+- **(c) Infraestrutura própria de cronometragem e captura em Docker.** Em vez de
+  cronometrar manualmente, construímos um cronômetro com relógio monotônico que executa os
+  testes pelo Maven, detecta o "verde", encerra a edição no limite e preserva o código
+  final para avaliação separada — controlando a ameaça de contar uma execução tardia como
+  conclusão no prazo. **Onde aparece:** confiabilidade dos tempos de RQ1 em §4.
 
-- **Complexidade (RQ3a):** sem direção consistente — Joaquim e Vitor produziram código
-  **menos** complexo com IA; Gabriel, **mais**. Efeito fraco (r = −0,33), p = 0,75.
-- **Duplicação (RQ3b):** o CPD não detectou duplicação em **nenhum** trial (0% em todos);
-  a métrica não varia neste conjunto de katas curtos e não discrimina.
-- **LOC (RQ3c, controle):** acompanha a complexidade — Gabriel escreveu mais código com
-  IA (+46), os outros dois menos, indicando que a variação de complexidade está ligada ao
-  tamanho da solução de cada participante, não a um efeito isolado do tratamento.
+## 4. Resultados
 
-Os três outliers identificados (todos no kata-06, o mais complexo) foram mantidos, sem
-afetar a leitura (Issue #64).
+### 4.1 Coleta de Dados
 
-### 3.4 Síntese
+Foram concluídos os **18 trials oficiais** planejados (3 participantes × 6 katas, 9 por
+tratamento). **Todos** terminaram com estado `completed`, dentro do time-box de 35 min —
+nenhum censurado (esgotamento do tempo) e nenhum interrompido por ocorrência técnica.
+Todos os 18 trials passaram **8/8** testes de aceitação. As métricas estruturais foram
+coletadas para os 18 trials sobre o código final preservado.
 
-| RQ | Resultado | Direção | Significância (α = 0,05) |
-|---|---|---|---|
-| RQ1 — Tempo | IA reduz o tempo nos 3 participantes (mediana −708 s) | Consistente com H₁ | Não significativo (p = 0,125; piso do n=3) |
-| RQ2 — Defeitos | 8/8 em todos os trials nos dois tratamentos | Sem variância | Teste não aplicável |
-| RQ3 — Estrutura | Sem diferença consistente; duplicação sempre 0% | Não direcional | Não significativo / não aplicável |
+**Outliers.** Pela regra de Tukey (1.5×IQR), foram identificados **3 outliers**, todos no
+**kata-06** (o mais complexo, com detecção de ciclo): complexidade de 18 (Joaquim, sem-ia)
+e 23 (Gabriel, com-ia) e LOC de 79 (Gabriel, com-ia). São valores plausíveis do problema,
+não erros de medição; foram **mantidos**, sem descarte (documentado em `doc/outliers.md`).
 
-O achado central é de **RQ1**: uma redução de tempo forte e uniforme com IA, que o
-desenho de três participantes descreve mas não confirma estatisticamente. RQ2 e RQ3 não
-distinguem os tratamentos com os katas e o instrumento usados.
+### 4.2 Visualização Gráfica
 
-## 4. Discussão final
+Os gráficos abaixo são gerados por `scripts/dashboard.py` (dashboard completo em
+`doc/dashboard/index.html`). Como há n pequeno e distribuição assimétrica, usa-se
+**mediana** como tendência central.
 
-### 4.1 Achados principais
+**RQ1 — O uso de IA reduz o tempo de resolução?**
 
-O resultado mais nítido do experimento é o de **RQ1 (tempo)**: os três participantes
-resolveram os katas mais rápido **com** o assistente de IA, sem exceção, com uma redução
-mediana de cerca de **708 s (≈ 12 min)** por participante e efeito na direção máxima
-possível (r_rb = −1,00). A magnitude cresce com a dificuldade do kata — nos exercícios
-mais longos sem IA (kata-04 e kata-06, medianas acima de 1170 s), o tratamento com IA cai
-para a faixa de 180–240 s. A leitura prática é que o ganho de tempo do assistente tende a
-ser **maior justamente nos problemas mais custosos**, enquanto no kata mais curto
-(kata-01) a IA não trouxe vantagem e chegou a ser ligeiramente mais lenta — coerente com a
-ideia de que, em tarefas triviais, o custo de formular o prompt e ler a resposta compete
-com o de simplesmente escrever a solução.
+![Tempo por participante e tratamento](dashboard/tempo_participante.png)
 
-Apesar dessa consistência, o teste **não** alcançou significância (p = 0,125). Isso não
-enfraquece o achado: é uma **limitação de desenho**, não um sinal contrário. Com três
-participantes, 0,125 é o menor p-valor que um teste unilateral pode produzir, então o
-resultado observado (3 de 3 no mesmo sentido) é literalmente o mais forte que este
-experimento é capaz de gerar. A evidência é, portanto, **sugestiva e uniforme**, e o valor
-está na descrição do efeito, não na sua confirmação inferencial.
+Pontos conectados (before/after) por participante: os três reduzem o tempo com IA. As
+medianas por participante caem de 238,7 → 183,2 s (Gabriel), 999,1 → 290,7 s (Joaquim) e
+1163,7 → 99,6 s (Vitor).
 
-Em **RQ2 (defeitos)**, os dois tratamentos atingiram qualidade funcional **máxima** (8/8
-em todos os 18 trials). Isso indica que o time-box de 35 min foi suficiente para chegar ao
-"verde" nas duas condições, e que a diferença entre tratar com ou sem IA se manifestou
-sobretudo em **quão rápido** se chega ao resultado, não em **se** se chega. Como
-consequência, a métrica de defeitos não discrimina os tratamentos neste conjunto de katas.
+![Tempo por kata e tratamento](dashboard/tempo_kata.png)
 
-Em **RQ3 (estrutura)**, não há diferença consistente. A complexidade caiu com IA para
-dois participantes e subiu para um; a LOC acompanhou o mesmo padrão, sugerindo que a
-variação estrutural reflete mais o **estilo e o tamanho da solução de cada participante**
-do que um efeito do tratamento. A duplicação foi 0% em todos os trials — os katas são
-curtos demais para o CPD detectar blocos repetidos acima de 50 tokens, então a métrica não
-contribui para a comparação.
+Por kata, a vantagem da IA é maior nos exercícios mais longos (kata-04 e kata-06); no
+kata-01, curto, o tempo com IA foi ligeiramente maior.
 
-### 4.2 Interpretação conjunta
+**RQ2 — O uso de IA reduz os defeitos?**
 
-Somando as três RQs, o retrato é: **a IA acelerou o trabalho sem custo mensurável em
-qualidade funcional nem em estrutura**. Não houve o trade-off "mais rápido, porém pior"
-que às vezes se teme — mas também não se pode afirmar que a IA melhora a estrutura, apenas
-que não a piorou de forma detectável aqui. Vale reforçar que "sem diferença detectável"
-com n = 3 **não** é o mesmo que "equivalência comprovada"
-([limitacao-inferencial.md](limitacao-inferencial.md)).
+![Distribuição dos tempos / taxa de sucesso](dashboard/tempo_distribuicao.png)
 
-### 4.3 Ameaças à validade à luz dos resultados
+Não há variação a exibir em defeitos: a **taxa de sucesso foi 100% (8/8) em todos os 18
+trials**, nos dois tratamentos. A figura de distribuição resume os tempos; a taxa de
+sucesso é constante.
 
-Retomando as ameaças do desenho ([decisoes.md](decisoes.md) §8) e como os resultados as
-iluminam:
+**RQ3 — O uso de IA altera a estrutura do código?**
 
-- **Poder estatístico (conclusão).** É a limitação dominante: n = 3 pares impede
-  significância a 5% em qualquer RQ. Todas as conclusões são **exploratórias**. (§8.6)
-- **Aprendizado entre katas e confusão com o participante (interna).** Como o
-  contrabalanceamento é 2:1, dentro de cada kata o tratamento coincide com o participante;
-  as diferenças por kata em RQ3 misturam efeito do tratamento com estilo individual. O
-  desenho crossover e a familiarização mitigam, mas não eliminam. (§8.3)
-- **Memorização pela IA (interna).** Katas autorais de baixa indexação reduzem o risco; o
-  ganho de tempo concentrado nos katas mais difíceis é compatível com auxílio genuíno de
-  raciocínio/implementação, não com reprodução de solução pronta — mas o resumo de
-  perguntas por trial deve ser inspecionado para descartar respostas memorizadas. (§8.1)
-- **Exposição de quem preparou os katas (interna).** O integrante que redigiu os katas
-  (Gabriel) é também o único cujo tempo com IA **não** caiu de forma expressiva e cujo
-  código com IA ficou maior/mais complexo; a leitura individual dele deve considerar essa
-  exposição prévia. (§8.2)
-- **Familiaridade prévia com a IA (construção).** Diferenças de experiência com o Claude
-  entre participantes afetam o tratamento com IA; a padronização de modelo, prompt e
-  familiarização reduz, mas não uniformiza. (§8.4)
-- **Instrumento de qualidade (construção).** RQ2 e RQ3 tiveram baixa capacidade de
-  discriminar (piso/teto em defeitos, 0% de duplicação); em parte é característica dos
-  katas curtos, não necessariamente ausência de efeito.
+![Métricas estruturais por tratamento](dashboard/estrutura.png)
 
-### 4.4 Conclusão e trabalhos futuros
+Complexidade e LOC não têm direção consistente entre tratamentos; a duplicação é 0% em
+todos os trials.
+
+### 4.3 Discussão
+
+**RQ1 — Tempo. Hipótese parcialmente confirmada.** Os três participantes foram mais
+rápidos com IA (diferenças de −55,6 s, −708,4 s e −1064,1 s; mediana −708 s), com direção
+100% consistente e tamanho de efeito máximo (rank-biserial = −1,00). O **Wilcoxon pareado
+unilateral** deu **W = 0, p = 0,125** — não significativo a α = 0,05. Em linguagem
+acessível: *todos* melhoraram com IA e na maior intensidade que o teste consegue captar,
+mas com três participantes o p-valor não consegue descer abaixo de 0,125, então a
+tendência é **forte e uniforme, porém não confirmável estatisticamente**. A hipótese H1₁
+é apoiada pela direção dos dados, sem significância formal.
+
+**RQ2 — Defeitos. Hipótese não testável.** Como todos os trials atingiram 8/8, as
+diferenças pareadas são zero e o teste não se aplica. A qualidade funcional foi **máxima**
+nos dois tratamentos dentro do time-box; a diferença entre tratar com ou sem IA apareceu
+no **tempo** (RQ1), não no acerto final. Não confirma nem refuta H2₁ — a métrica não
+discrimina com estes katas.
+
+**RQ3 — Estrutura. Sem diferença consistente.** Complexidade caiu com IA para dois
+participantes e subiu para um (p = 0,75); LOC seguiu o mesmo padrão (p = 1,00); duplicação
+foi 0% em todos. A variação estrutural reflete mais o estilo/tamanho da solução de cada
+participante do que o tratamento. Não se rejeita H3₀ — lembrando que, com n = 3, "sem
+diferença detectável" **não** equivale a "equivalência comprovada".
+
+**Ameaças à validade.** (i) *Poder estatístico* — dominante: n = 3 impede significância a
+5% (inovação (b)); conclusões exploratórias. (ii) *Efeito de aprendizado e confusão
+tratamento/participante* — o contrabalanceamento 2:1 faz o tratamento coincidir com o
+participante dentro de cada kata. (iii) *Memorização pela IA* — mitigada por katas
+autorais; o ganho concentrado nos katas difíceis é compatível com auxílio genuíno. (iv)
+*Exposição de quem preparou os katas* — Gabriel, autor dos katas, foi justamente o de
+menor ganho com IA e maior complexidade/LOC com IA, o que deve ser considerado.
+
+**Contribuição das inovações (§3.6).** O tamanho de efeito (a) foi decisivo para mostrar
+que RQ1, apesar do p não significativo, tem efeito consistente e máximo; a análise de
+resolução do teste (b) explicou *por que* nenhum p seria significativo, evitando a leitura
+equivocada de "IA não faz diferença"; a infraestrutura de cronometragem (c) sustenta a
+confiabilidade dos tempos que embasam o achado de RQ1.
+
+## 5. Conclusão
 
 O experimento sugere que o assistente de IA **reduz o tempo** de resolução de katas de
-Java sob time-box, de forma consistente entre participantes e mais acentuada nos problemas
-mais difíceis, **sem degradar** a corretude funcional nem a estrutura do código — dentro
-dos limites de um estudo com três participantes, cujas conclusões são exploratórias. Para
-uma verificação com poder adequado, uma replicação deveria ampliar substancialmente o
-número de participantes (ou de réplicas independentes por condição), usar katas de tamanho
-suficiente para que duplicação e complexidade variem, e considerar métricas de qualidade
-mais sensíveis que a simples contagem de testes verdes.
+Java sob time-box, de forma consistente entre os três participantes e mais acentuada nos
+problemas mais difíceis, **sem degradar** a corretude funcional (todos os trials chegaram
+a 8/8) nem a estrutura do código (sem diferença consistente em complexidade, duplicação ou
+LOC). Não observamos o trade-off "mais rápido, porém pior".
 
-## 5. Repositório e GitHub Projects
+A principal **limitação** é o tamanho amostral: com três participantes, o teste de
+Wilcoxon não alcança significância a 5% em nenhuma RQ (o p mínimo é 0,125), de modo que
+todos os achados são **exploratórios**. Somam-se as ameaças de contrabalanceamento
+incompleto (2:1), possível memorização pela IA e a exposição do integrante que preparou os
+katas.
 
-> A preencher — Issue #41 (link do repositório e do GitHub Projects do grupo).
+**O que faríamos diferente com mais tempo/recursos:** ampliar substancialmente o número de
+participantes (ou de réplicas independentes por condição) para obter poder estatístico
+real; usar katas maiores, em que duplicação e complexidade tenham variância suficiente
+para discriminar; e adotar métricas de qualidade mais sensíveis que a contagem de testes
+verdes. Entre as inovações (§3.6), o **tamanho de efeito** e a **análise de poder para n
+pequeno** são as que mais valeria expandir — juntas, permitem interpretar corretamente
+experimentos com amostras reduzidas, comuns em estudos com participantes humanos.
+
+## Referências
+
+- BASILI, V. R.; CALDIERA, G.; ROMBACH, H. D. *The Goal Question Metric Approach.* 1994.
+- McCABE, T. J. *A Complexity Measure.* IEEE Transactions on Software Engineering, 1976.
+- ZUSE, Horst. *A framework of software measurement.* Walter de Gruyter, 2013.
+- PMD. *PMD Source Code Analyzer — CyclomaticComplexity e CPD (v7).* https://pmd.github.io/
+- Vídeo: https://www.youtube.com/shorts/YwnaeO95AN8
