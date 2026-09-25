@@ -231,6 +231,8 @@ enunciado; detalhes em `doc/descritiva.md`):
 |---|---|---|---:|---:|---:|---:|
 | RQ1 | Tempo até verde (s) | sem-ia | 820,4 | 550,5 | 1163,7 | 613,2 |
 | RQ1 | Tempo até verde (s) | com-ia | 221,9 | 99,6 | 290,7 | 191,1 |
+| RQ2 | Taxa de sucesso (%) | sem-ia | 100 | 100 | 100 | 0 |
+| RQ2 | Taxa de sucesso (%) | com-ia | 100 | 100 | 100 | 0 |
 | RQ2 | Testes falhando (nº) | sem-ia | 0 | 0 | 0 | 0 |
 | RQ2 | Testes falhando (nº) | com-ia | 0 | 0 | 0 | 0 |
 | RQ3 | Complexidade média/método | sem-ia | 8,33 | 7 | 11 | 4 |
@@ -289,7 +291,7 @@ participante, n = 3 pares; detalhes em `doc/rq1-rq2.md` e `doc/rq3.md`):
 | RQ | Métrica | Pares efetivos | Mediana das dif. (com − sem) | W | p | r (rank-biserial) | Decisão |
 |---|---|---:|---:|---:|---:|---:|---|
 | RQ1 | Tempo até verde (s) | 3 | −708,4 | 0 | 0,125 (unilateral) | −1,00 | Não rejeita H1₀ |
-| RQ2 | Testes falhando | 0 | 0 | — | — | — | Teste não aplicável (sem variação) |
+| RQ2 | Taxa de sucesso (%) / testes falhando | 0 | 0 | — | — | — | Teste não aplicável (sem variação) |
 | RQ3a | Complexidade média/método | 3 | −4,00 | 2 | 0,75 (bilateral) | −0,33 | Não rejeita H3₀ |
 | RQ3b | Duplicação (%) | 0 | 0 | — | — | — | Teste não aplicável (sem variação) |
 | RQ3c | LOC (controle) | 3 | −14 | 3 | 1,00 (bilateral) | 0,00 | Não rejeita H3₀ |
