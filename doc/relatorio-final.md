@@ -169,7 +169,84 @@ distinguem os tratamentos com os katas e o instrumento usados.
 
 ## 4. Discussão final
 
-> A preencher — Issue #40 (achados, limitações e ameaças à validade à luz dos resultados).
+### 4.1 Achados principais
+
+O resultado mais nítido do experimento é o de **RQ1 (tempo)**: os três participantes
+resolveram os katas mais rápido **com** o assistente de IA, sem exceção, com uma redução
+mediana de cerca de **708 s (≈ 12 min)** por participante e efeito na direção máxima
+possível (r_rb = −1,00). A magnitude cresce com a dificuldade do kata — nos exercícios
+mais longos sem IA (kata-04 e kata-06, medianas acima de 1170 s), o tratamento com IA cai
+para a faixa de 180–240 s. A leitura prática é que o ganho de tempo do assistente tende a
+ser **maior justamente nos problemas mais custosos**, enquanto no kata mais curto
+(kata-01) a IA não trouxe vantagem e chegou a ser ligeiramente mais lenta — coerente com a
+ideia de que, em tarefas triviais, o custo de formular o prompt e ler a resposta compete
+com o de simplesmente escrever a solução.
+
+Apesar dessa consistência, o teste **não** alcançou significância (p = 0,125). Isso não
+enfraquece o achado: é uma **limitação de desenho**, não um sinal contrário. Com três
+participantes, 0,125 é o menor p-valor que um teste unilateral pode produzir, então o
+resultado observado (3 de 3 no mesmo sentido) é literalmente o mais forte que este
+experimento é capaz de gerar. A evidência é, portanto, **sugestiva e uniforme**, e o valor
+está na descrição do efeito, não na sua confirmação inferencial.
+
+Em **RQ2 (defeitos)**, os dois tratamentos atingiram qualidade funcional **máxima** (8/8
+em todos os 18 trials). Isso indica que o time-box de 35 min foi suficiente para chegar ao
+"verde" nas duas condições, e que a diferença entre tratar com ou sem IA se manifestou
+sobretudo em **quão rápido** se chega ao resultado, não em **se** se chega. Como
+consequência, a métrica de defeitos não discrimina os tratamentos neste conjunto de katas.
+
+Em **RQ3 (estrutura)**, não há diferença consistente. A complexidade caiu com IA para
+dois participantes e subiu para um; a LOC acompanhou o mesmo padrão, sugerindo que a
+variação estrutural reflete mais o **estilo e o tamanho da solução de cada participante**
+do que um efeito do tratamento. A duplicação foi 0% em todos os trials — os katas são
+curtos demais para o CPD detectar blocos repetidos acima de 50 tokens, então a métrica não
+contribui para a comparação.
+
+### 4.2 Interpretação conjunta
+
+Somando as três RQs, o retrato é: **a IA acelerou o trabalho sem custo mensurável em
+qualidade funcional nem em estrutura**. Não houve o trade-off "mais rápido, porém pior"
+que às vezes se teme — mas também não se pode afirmar que a IA melhora a estrutura, apenas
+que não a piorou de forma detectável aqui. Vale reforçar que "sem diferença detectável"
+com n = 3 **não** é o mesmo que "equivalência comprovada"
+([limitacao-inferencial.md](limitacao-inferencial.md)).
+
+### 4.3 Ameaças à validade à luz dos resultados
+
+Retomando as ameaças do desenho ([decisoes.md](decisoes.md) §8) e como os resultados as
+iluminam:
+
+- **Poder estatístico (conclusão).** É a limitação dominante: n = 3 pares impede
+  significância a 5% em qualquer RQ. Todas as conclusões são **exploratórias**. (§8.6)
+- **Aprendizado entre katas e confusão com o participante (interna).** Como o
+  contrabalanceamento é 2:1, dentro de cada kata o tratamento coincide com o participante;
+  as diferenças por kata em RQ3 misturam efeito do tratamento com estilo individual. O
+  desenho crossover e a familiarização mitigam, mas não eliminam. (§8.3)
+- **Memorização pela IA (interna).** Katas autorais de baixa indexação reduzem o risco; o
+  ganho de tempo concentrado nos katas mais difíceis é compatível com auxílio genuíno de
+  raciocínio/implementação, não com reprodução de solução pronta — mas o resumo de
+  perguntas por trial deve ser inspecionado para descartar respostas memorizadas. (§8.1)
+- **Exposição de quem preparou os katas (interna).** O integrante que redigiu os katas
+  (Gabriel) é também o único cujo tempo com IA **não** caiu de forma expressiva e cujo
+  código com IA ficou maior/mais complexo; a leitura individual dele deve considerar essa
+  exposição prévia. (§8.2)
+- **Familiaridade prévia com a IA (construção).** Diferenças de experiência com o Claude
+  entre participantes afetam o tratamento com IA; a padronização de modelo, prompt e
+  familiarização reduz, mas não uniformiza. (§8.4)
+- **Instrumento de qualidade (construção).** RQ2 e RQ3 tiveram baixa capacidade de
+  discriminar (piso/teto em defeitos, 0% de duplicação); em parte é característica dos
+  katas curtos, não necessariamente ausência de efeito.
+
+### 4.4 Conclusão e trabalhos futuros
+
+O experimento sugere que o assistente de IA **reduz o tempo** de resolução de katas de
+Java sob time-box, de forma consistente entre participantes e mais acentuada nos problemas
+mais difíceis, **sem degradar** a corretude funcional nem a estrutura do código — dentro
+dos limites de um estudo com três participantes, cujas conclusões são exploratórias. Para
+uma verificação com poder adequado, uma replicação deveria ampliar substancialmente o
+número de participantes (ou de réplicas independentes por condição), usar katas de tamanho
+suficiente para que duplicação e complexidade variem, e considerar métricas de qualidade
+mais sensíveis que a simples contagem de testes verdes.
 
 ## 5. Repositório e GitHub Projects
 
