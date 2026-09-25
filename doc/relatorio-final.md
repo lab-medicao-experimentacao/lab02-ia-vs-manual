@@ -84,9 +84,88 @@ de significância não será interpretada como equivalência entre os tratamento
 
 ## 3. Resultados por questão de pesquisa
 
-> A preencher — Issue #39 (resultados de RQ1, RQ2 e RQ3 com as respostas estatísticas
-> obtidas). Base: [estatística descritiva](descritiva.md) (Issue #31) e testes de
-> Wilcoxon (Issue #32).
+Base de dados: **18 trials oficiais** (3 participantes × 6 katas), todos `completed` e com
+8/8 testes passando, com métricas estruturais coletadas. A análise segue o
+[protocolo estatístico](protocolo-estatistico.md) (Issue #30): agregação por **mediana**
+dos 3 trials de cada participante × tratamento (**n = 3 pares**) e **Wilcoxon pareado**
+(unilateral para RQ1/RQ2, bilateral para RQ3; α = 0,05). Detalhes e reprodução em
+[rq1-rq2.md](rq1-rq2.md) (Issue #32), [rq3.md](rq3.md) (Issue #33),
+[descritiva.md](descritiva.md) (Issue #31) e [outliers.md](outliers.md) (Issue #64).
+
+**Nota sobre poder estatístico.** Com n = 3 pares, o menor p-valor alcançável é **0,125**
+(unilateral, RQ1/RQ2) e **0,25** (bilateral, RQ3). Logo, **nenhum** resultado consegue ser
+significativo a α = 0,05 neste desenho: os testes são reportados por rigor de protocolo, e
+a leitura se apoia na direção/magnitude dos pares e na descritiva
+([limitacao-inferencial.md](limitacao-inferencial.md), Issue #35). Não houve trials
+censurados nem interrompidos; nenhum outlier foi descartado (Issue #64).
+
+### 3.1 RQ1 — Tempo até verde
+
+| Participante | sem-ia (s) | com-ia (s) | Diferença (com − sem) |
+|---|---|---|---|
+| gabriel | 238,71 | 183,16 | −55,55 |
+| joaquim_vilela | 999,05 | 290,67 | −708,38 |
+| vitor | 1163,67 | 99,62 | −1064,05 |
+
+**Wilcoxon pareado unilateral (H₁: IA reduz):** W = 0, **p = 0,125**, r_rb = **−1,00**,
+mediana das diferenças = **−708,38 s**. Não rejeita H1₀ a α = 0,05.
+
+Os **três** participantes foram mais rápidos com IA (direção 100% consistente, efeito
+máximo r = −1,00). O p = 0,125 é o mínimo possível com n = 3 unilateral — ou seja, há uma
+**tendência forte e uniforme** de redução de tempo, sem poder para confirmá-la
+estatisticamente. A magnitude cresce com a dificuldade do kata: nos katas mais longos sem
+IA (kata-04 e kata-06, medianas > 1170 s), o tratamento com IA cai para 180–240 s. A única
+inversão pontual é o kata-01 (curto), em que o tempo com IA ficou acima do sem-ia.
+
+### 3.2 RQ2 — Testes falhando
+
+Todos os 18 trials terminaram com **8/8 testes passando** (0 falhando) nos dois
+tratamentos. As três diferenças pareadas são zero, todos os pares são descartados e o
+**teste não é aplicável**. A qualidade funcional foi **máxima** em ambas as condições
+dentro do time-box; a métrica **não discrimina** neste experimento — a diferença entre
+tratamentos apareceu no tempo (RQ1), não no acerto final.
+
+### 3.3 RQ3 — Estrutura do código
+
+| Métrica | Participante | sem-ia | com-ia | Diferença |
+|---|---|---|---|---|
+| Complexidade média/método (RQ3a) | gabriel | 6,67 | 11,00 | +4,33 |
+| | joaquim_vilela | 11,00 | 7,00 | −4,00 |
+| | vitor | 10,00 | 4,67 | −5,33 |
+| LOC — controle (RQ3c) | gabriel | 24 | 70 | +46 |
+| | joaquim_vilela | 59 | 26 | −33 |
+| | vitor | 40 | 26 | −14 |
+
+**Testes (Wilcoxon pareado bilateral):**
+
+| RQ | Métrica | Pares (efetivos) | Mediana das dif. | W | p | r_rb | Decisão |
+|---|---|---|---|---|---|---|---|
+| RQ3a | Complexidade média/método | 3 (3) | −4,00 | 2 | 0,75 | −0,33 | Não rejeita H₀ |
+| RQ3b | Duplicação (%) | 3 (0) | 0 | — | — | — | Não aplicável |
+| RQ3c | LOC (controle) | 3 (3) | −14 | 3 | 1,00 | 0,00 | Não rejeita H₀ |
+
+- **Complexidade (RQ3a):** sem direção consistente — Joaquim e Vitor produziram código
+  **menos** complexo com IA; Gabriel, **mais**. Efeito fraco (r = −0,33), p = 0,75.
+- **Duplicação (RQ3b):** o CPD não detectou duplicação em **nenhum** trial (0% em todos);
+  a métrica não varia neste conjunto de katas curtos e não discrimina.
+- **LOC (RQ3c, controle):** acompanha a complexidade — Gabriel escreveu mais código com
+  IA (+46), os outros dois menos, indicando que a variação de complexidade está ligada ao
+  tamanho da solução de cada participante, não a um efeito isolado do tratamento.
+
+Os três outliers identificados (todos no kata-06, o mais complexo) foram mantidos, sem
+afetar a leitura (Issue #64).
+
+### 3.4 Síntese
+
+| RQ | Resultado | Direção | Significância (α = 0,05) |
+|---|---|---|---|
+| RQ1 — Tempo | IA reduz o tempo nos 3 participantes (mediana −708 s) | Consistente com H₁ | Não significativo (p = 0,125; piso do n=3) |
+| RQ2 — Defeitos | 8/8 em todos os trials nos dois tratamentos | Sem variância | Teste não aplicável |
+| RQ3 — Estrutura | Sem diferença consistente; duplicação sempre 0% | Não direcional | Não significativo / não aplicável |
+
+O achado central é de **RQ1**: uma redução de tempo forte e uniforme com IA, que o
+desenho de três participantes descreve mas não confirma estatisticamente. RQ2 e RQ3 não
+distinguem os tratamentos com os katas e o instrumento usados.
 
 ## 4. Discussão final
 
