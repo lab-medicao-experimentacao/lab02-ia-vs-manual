@@ -34,50 +34,50 @@ Entradas: `results/consolidado.csv` (tempos, estados e contagens de teste) e os
 - A censura é reportada por tratamento (concluídos / censurados / interrompidos); um
   registro de 35 min sem sucesso não representa tempo de conclusão (§7).
 
-## Resultados atuais (parciais)
+## Resultados (18 trials)
 
-Executado sobre os **12 trials coletados até agora** (dos 18 planejados). Os números
-mudam à medida que os trials pendentes forem executados; basta rerodar os dois comandos.
+Executado sobre os **18 trials oficiais** (3 participantes × 6 katas, 9 por tratamento),
+todos com `metrics.json`.
 
-Censura por tratamento: `sem-ia` 3/3 concluídos; `com-ia` 9/9 concluídos. Nenhum
+Censura por tratamento: `sem-ia` 9/9 concluídos; `com-ia` 9/9 concluídos. Nenhum
 censurado ou interrompido.
 
 | RQ | Métrica | Tratamento | n | Mediana | Q1 | Q3 | IQR | Outliers |
 |---|---|---|---|---|---|---|---|---|
-| RQ1 | Tempo até verde (s) | sem-ia | 3 | 238.71 | 167.39 | 394.60 | 227.21 | 0 |
+| RQ1 | Tempo até verde (s) | sem-ia | 9 | 820.35 | 550.49 | 1163.67 | 613.18 | 0 |
 | RQ1 | Tempo até verde (s) | com-ia | 9 | 221.91 | 99.62 | 290.67 | 191.05 | 0 |
-| RQ2 | Testes falhando (nº) | sem-ia | 3 | 0 | 0 | 0 | 0 | 0 |
+| RQ2 | Testes falhando (nº) | sem-ia | 9 | 0 | 0 | 0 | 0 | 0 |
 | RQ2 | Testes falhando (nº) | com-ia | 9 | 0 | 0 | 0 | 0 | 0 |
-| RQ3 | Complexidade ciclomática média/método | sem-ia | 0 | — | — | — | — | 0 |
-| RQ3 | Complexidade ciclomática média/método | com-ia | 6 | 6.50 | 5.00 | 7.00 | 2.00 | 1 |
-| RQ3 | Duplicação de linhas (%) | sem-ia | 0 | — | — | — | — | 0 |
-| RQ3 | Duplicação de linhas (%) | com-ia | 6 | 0 | 0 | 0 | 0 | 0 |
-| RQ3 | LOC (código do participante) | sem-ia | 0 | — | — | — | — | 0 |
-| RQ3 | LOC (código do participante) | com-ia | 6 | 26 | 22.25 | 35 | 12.75 | 0 |
+| RQ3 | Complexidade ciclomática média/método | sem-ia | 9 | 8.33 | 7 | 11 | 4 | 1 |
+| RQ3 | Complexidade ciclomática média/método | com-ia | 9 | 7 | 6 | 11 | 5 | 1 |
+| RQ3 | Duplicação de linhas (%) | sem-ia | 9 | 0 | 0 | 0 | 0 | 0 |
+| RQ3 | Duplicação de linhas (%) | com-ia | 9 | 0 | 0 | 0 | 0 | 0 |
+| RQ3 | LOC (código do participante) | sem-ia | 9 | 47 | 37 | 59 | 22 | 0 |
+| RQ3 | LOC (código do participante) | com-ia | 9 | 38 | 26 | 45 | 19 | 1 |
 
-**Outlier identificado** (RQ3, complexidade, com-ia): o trial
-`joaquim_vilela_kata-05_com-ia` tem complexidade média 13, fora da cerca `[2, 10]`. É o
-kata-05 (Mascarador de Contatos), com solução de método único e muitas ramificações de
-validação; o valor deve ser considerado na leitura de RQ3 e na decisão de tratamento de
-outliers (Issue #64).
+Leitura descritiva:
 
-## Lacunas de dados (afetam a interpretação)
+- **RQ1:** a mediana com IA é cerca de 3,7× menor (222 s contra 820 s), e o Q3 com IA
+  (291 s) fica abaixo do Q1 sem IA (550 s).
+- **RQ2:** todos os 18 trials terminaram com 8/8 testes passando; não há variação.
+- **RQ3:** complexidade e LOC são um pouco menores com IA, com IQRs sobrepostos.
+  Duplicação é 0% em todos os trials.
 
-Estes vazios **não** são resultados nulos; são dados ainda não coletados. Precisam ser
-preenchidos antes da análise inferencial (Issue #32) e da leitura final de RQ3.
+**Outliers identificados** (regra de Tukey), todos no kata-06 (Encadeador de Trechos):
 
-1. **Tratamento `sem-ia` incompleto.** Só há trials `sem-ia` do participante A (Gabriel).
-   Joaquim e Vitor ainda não executaram seus trials `sem-ia` (Issues #44/#46/#48 e
-   #56/#59/#60). Sem eles não há pares `com-ia`/`sem-ia` por participante para o Wilcoxon.
-2. **Métricas estruturais parciais.** Há `metrics.json` para 6 dos 12 trials, todos
-   `com-ia`. Faltam as métricas dos 6 trials do participante A (Issue #63) e de todos os
-   trials `sem-ia`. Por isso as linhas de RQ3 em `sem-ia` aparecem com `n = 0`.
+| Métrica | Tratamento | Trial | Valor | Cerca |
+|---|---|---|---|---|
+| Complexidade média/método | sem-ia | joaquim_vilela/kata-06 | 18 | [1, 17] |
+| Complexidade média/método | com-ia | A/kata-06 | 23 | [−1.5, 18.5] |
+| LOC | com-ia | A/kata-06 | 79 | [−2.5, 73.5] |
 
-Enquanto as lacunas existirem, a comparação descritiva entre tratamentos para RQ3 não é
-possível, e a de RQ1/RQ2 fica limitada ao desbalanceamento 3 (`sem-ia`) × 9 (`com-ia`).
+A análise e a decisão de tratamento desses outliers estão em [outliers.md](outliers.md)
+(Issue #64).
 
 ## Limitações
 
 Com três participantes e o desenho within-subject, a leitura é exploratória (§7, §8.6).
-Os 12 (futuros 18) trials não devem ser tratados como observações independentes; a
-agregação por participante e o tratamento de censura seguem o protocolo da Issue #30.
+Os 18 trials não devem ser tratados como observações independentes: a agregação por
+participante, o tratamento de censura e os testes de hipótese seguem o
+[protocolo estatístico](protocolo-estatistico.md) (Issue #30) e estão em
+[rq1-rq2.md](rq1-rq2.md) (Issue #32) e [rq3.md](rq3.md) (Issue #33).

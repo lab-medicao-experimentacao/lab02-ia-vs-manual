@@ -85,7 +85,10 @@ def iqr_outliers(values):
 
 
 def summarize(df, metrics_df):
-    merged = df.merge(metrics_df, on="trial_id", how="left")
+    # O consolidado.csv já traz as métricas estruturais (Issue #36); mantém só as dos
+    # metrics.json para o merge não gerar colunas duplicadas (_x/_y).
+    overlap = [c for c in metrics_df.columns if c != "trial_id" and c in df.columns]
+    merged = df.drop(columns=overlap).merge(metrics_df, on="trial_id", how="left")
     treatments = ["sem-ia", "com-ia"]
     summary_rows = []
     outlier_notes = []
