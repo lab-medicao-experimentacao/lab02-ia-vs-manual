@@ -223,8 +223,12 @@ medianas por participante caem de 238,7 → 183,2 s (Gabriel), 999,1 → 290,7 s
 
 ![Tempo por kata e tratamento](dashboard/tempo_kata.png)
 
-Por kata, a vantagem da IA é maior nos exercícios mais longos (kata-04 e kata-06); no
-kata-01, o mais curto, o tempo com IA foi maior (mediana de ~213 s contra ~96 s sem IA).
+Por kata, os maiores ganhos com IA aparecem no kata-02, no kata-04 e no kata-06, com
+diferenças de ≈815 s a ≈1000 s nas medianas (kata-02: ~43 s com IA contra ~858 s sem IA;
+kata-04: ~183 s contra ~1172 s; kata-06: ~238 s contra ~1241 s). Nesses katas, porém, o
+lado com IA tem um único trial (Gabriel), então a comparação por kata mistura o efeito do
+kata com o do participante e deve ser lida como descritiva. No kata-01, o mais curto, o
+tempo com IA foi maior (mediana de ~213 s contra ~96 s sem IA).
 
 **RQ2 — O uso de IA reduz os defeitos?**
 
