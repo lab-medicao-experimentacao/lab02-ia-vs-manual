@@ -469,7 +469,7 @@ def build(df, out=DEFAULT_OUT):
         charts["rq2"]
         if show_rq2
         else '<p class="empty">Todos os trials terminaram com todos os testes passando: '
-        "não há diferença de defeitos a desenhar por enquanto.</p>"
+        "a taxa de sucesso foi 100% nos dois tratamentos, então não há diferença de defeitos a desenhar.</p>"
     )
     skipped = [label for c, label in STRUCTURE if (c, label) not in structure_panels(df)]
     rq3_note = (

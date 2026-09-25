@@ -56,11 +56,26 @@ validação dos katas, ambiente e scripts), **S02** (execução dos 18 trials of
 **S03** (análise estatística, dashboard e este relatório).
 
 O **objeto de estudo** é o processo de resolução de katas de programação, comparando dois
-tratamentos: `com-ia` (Claude, Sonnet 5, esforço High, acessado pelo navegador) e
+tratamentos: `com-ia` (Claude, Sonnet 5, esforço High, acessado pelo navegador; um
+participante usou o Claude Code no terminal, ver §4.3) e
 `sem-ia` (assistentes de IA desativados). Cada participante resolve os seis katas uma vez,
 três por tratamento, sob time-box fixo de **35 minutos** por trial. Os katas são
 **autorais e de baixa indexação**, para reduzir o risco de a IA reproduzir uma solução
 memorizada em vez de auxiliar de fato.
+
+**Objetos experimentais.** Os seis katas estão em `katas/kata-0N/`, cada um com enunciado
+(`README.md`), código inicial e 8 testes de aceitação JUnit 5. A tabela resume o enunciado
+e cita os trials de cada kata, com o tempo até verde. Os registros completos estão em
+`results/<trial_id>/` (`trial.json`, código final e, nos trials com IA, `perguntas.md`).
+
+| Kata | Nome | Enunciado (resumo) | Trials com IA | Trials sem IA |
+|---|---|---|---|---|
+| [kata-01](../katas/kata-01/README.md) | Normalizador de Etiquetas | `TagNormalizer.normalize`: separar etiquetas por vírgula, aparar, converter para minúsculas, colapsar espaços internos, descartar vazias e remover duplicatas preservando a primeira ocorrência | Joaquim (326,5 s), Vitor (99,6 s) | Gabriel (96,1 s) |
+| [kata-02](../katas/kata-02/README.md) | Agrupador de Extrato | `LedgerGrouper.group`: somar lançamentos `categoria:valor` por categoria, ignorar entradas inválidas e ordenar por total decrescente, com desempate alfabético | Gabriel (43,3 s) | Joaquim (999,1 s), Vitor (717,5 s) |
+| [kata-03](../katas/kata-03/README.md) | Compressor de Corridas | `RunCompressor.compress`: run-length com regra própria, em que corridas de tamanho 1 ficam sem contagem (`"aaabccccd"` → `"3ab4cd"`) | Joaquim (290,7 s), Vitor (21,2 s) | Gabriel (238,7 s) |
+| [kata-04](../katas/kata-04/README.md) | Validador de Agenda | `ScheduleValidator.conflicts`: detectar pares de reuniões `nome HH:MM-HH:MM` sobrepostas (fim exclusivo), com pares e lista em ordem alfabética | Gabriel (183,2 s) | Joaquim (820,4 s), Vitor (1523,7 s) |
+| [kata-05](../katas/kata-05/README.md) | Mascarador de Contatos | `ContactMasker.mask`: validar e mascarar contatos `tipo:valor` (e-mail → `a***@dominio`; telefone → só os 4 últimos dígitos), descartando inválidos | Joaquim (221,9 s), Vitor (410,8 s) | Gabriel (550,5 s) |
+| [kata-06](../katas/kata-06/README.md) | Encadeador de Trechos | `RouteChainer.chain`: encadear trechos `origem-destino` em itinerários, descartando ramificações, convergências e ciclos, com ordenação pela cidade inicial | Gabriel (238,3 s) | Joaquim (1318,9 s), Vitor (1163,7 s) |
 
 **Base conceitual:** o método **GQM** (Basili, Caldiera & Rombach) estrutura a ligação
 entre objetivo, questões (RQ1–RQ3) e métricas; a complexidade ciclomática segue a
@@ -238,11 +253,47 @@ nos dois tratamentos dentro do time-box; a diferença entre tratar com ou sem IA
 no **tempo** (RQ1), não no acerto final. Não confirma nem refuta H2₁ — a métrica não
 discrimina com estes katas.
 
+Olhando o caminho até o verde, e não só o resultado final, surge uma diferença. Os
+`trial.json` registram cada execução dos testes. Os **9 trials com IA passaram na primeira
+execução**. Sem IA, o Gabriel também passou de primeira nos três katas, mas o Joaquim
+precisou de 2, 3 e 5 execuções e o Vitor de 3, 5 e 7. Foram 19 execuções intermediárias
+sem sucesso: 17 com testes falhando (até 7 de 8) e 2 com erro de compilação. Isso sugere
+que a IA reduz os defeitos *durante* a resolução, embora não no código final. É uma
+leitura exploratória, fora da métrica planejada para RQ2 e sem teste estatístico.
+
 **RQ3 — Estrutura. Sem diferença consistente.** Complexidade caiu com IA para dois
 participantes e subiu para um (p = 0,75); LOC seguiu o mesmo padrão (p = 1,00); duplicação
 foi 0% em todos. A variação estrutural reflete mais o estilo/tamanho da solução de cada
 participante do que o tratamento. Não se rejeita H3₀ — lembrando que, com n = 3, "sem
 diferença detectável" **não** equivale a "equivalência comprovada".
+
+**Interação com a IA (análise qualitativa dos `perguntas.md`).** Ao fim de cada trial com
+IA, o participante registrou um resumo das perguntas feitas ao assistente
+(`results/<trial_id>/perguntas.md`). Os nove resumos mostram três estilos de uso:
+
+- **Gabriel: enunciado completo, IA como solucionadora.** No kata-02, o Claude pediu a
+  assinatura e o código atual e entregou a implementação completa, verde em 43 s. Nos
+  katas 04 e 06, as perguntas foram sobre regras e casos-limite (bordas de intervalos,
+  formato `HH:MM`, reuniões em vários conflitos) ou sobre a estrutura da solução. No
+  kata-06, o Claude modelou o problema como um grafo com grau máximo 1 e propôs um
+  algoritmo em quatro passos.
+- **Joaquim: IA guiada passo a passo.** De 4 a 5 instruções por kata, cada uma
+  correspondendo a uma etapa da implementação: criar a lista de resultado, tratar `null`
+  e vazio, montar o laço e aplicar as regras. O participante decompôs o problema e a IA
+  produziu cada parte.
+- **Vitor: abordagem proposta pela IA, aprovada e escrita direto no arquivo** (Claude
+  Code no terminal). Nos katas 01 e 03 houve um único ciclo: a IA propôs, o participante
+  aprovou e a IA escreveu, com 99,6 s e 21,2 s até o verde. No kata-05, o participante
+  discutiu cerca de sete decisões de desenho antes de pedir o código (corte no primeiro
+  `:`, `split("@", -1)`, métodos auxiliares), e o tempo subiu para 410,8 s.
+
+Em todos os estilos, a IA acertou as regras na primeira tentativa, o que é coerente com
+as execuções de teste únicas vistas em RQ2. O tempo com IA dependeu mais de quanto o
+participante deliberou do que da dificuldade do kata. O trial mais longo com IA (Vitor,
+kata-05) foi o de mais interações, e o mais curto (Vitor, kata-03, 21 s) foi o de uma
+só. O Joaquim registrou um incidente operacional no kata-05: no início da interação o
+kata foi tratado como kata-06, e uma alteração provisória no arquivo do kata-06 foi
+revertida antes da execução dos testes, sem efeito no código avaliado.
 
 **Ameaças à validade.** (i) *Poder estatístico* — dominante: n = 3 impede significância a
 5% (inovação (b)); conclusões exploratórias. (ii) *Efeito de aprendizado e confusão
@@ -250,7 +301,12 @@ tratamento/participante* — o contrabalanceamento 2:1 faz o tratamento coincidi
 participante dentro de cada kata. (iii) *Memorização pela IA* — mitigada por katas
 autorais; o ganho concentrado nos katas difíceis é compatível com auxílio genuíno. (iv)
 *Exposição de quem preparou os katas* — Gabriel, autor dos katas, foi justamente o de
-menor ganho com IA e maior complexidade/LOC com IA, o que deve ser considerado.
+menor ganho com IA e maior complexidade/LOC com IA, o que deve ser considerado. Ele
+também foi o único a passar de primeira nos trials sem IA. (v) *Interface da IA não
+uniforme* — o protocolo previa o Claude pelo navegador, mas o Vitor usou o Claude Code
+no terminal, que escreve o código direto no arquivo. O modelo e o esforço são os mesmos
+(Sonnet 5, High), mas a interface elimina o tempo de copiar e colar, o que pode ter
+favorecido os tempos dele com IA (a mediana mais baixa do grupo, 99,6 s).
 
 **Contribuição das inovações (§3.6).** O tamanho de efeito (a) foi decisivo para mostrar
 que RQ1, apesar do p não significativo, tem efeito consistente e máximo; a análise de
@@ -265,13 +321,17 @@ Java sob time-box, de forma consistente entre os três participantes e mais acen
 problemas mais difíceis, **sem degradar** a corretude funcional (todos os trials chegaram
 a 8/8) e **sem diferença estrutural detectável** (complexidade, duplicação e LOC sem
 direção consistente). Não observamos o trade-off "mais rápido, porém pior" — o que, com
-n = 3, não equivale a demonstrar que ele não existe.
+n = 3, não equivale a demonstrar que ele não existe. De forma exploratória, a IA também
+reduziu as tentativas até o verde: todos os trials com IA passaram na primeira execução
+dos testes. Os registros de interação (`perguntas.md`) mostram que isso ocorreu com
+estilos de uso bem diferentes entre os participantes.
 
 A principal **limitação** é o tamanho amostral: com três participantes, o teste de
 Wilcoxon não alcança significância a 5% em nenhuma RQ (o p mínimo é 0,125 nos testes
 unilaterais de RQ1/RQ2 e 0,25 nos bilaterais de RQ3), de modo que
 todos os achados são **exploratórios**. Somam-se as ameaças de contrabalanceamento
-incompleto (2:1), possível memorização pela IA e a exposição do integrante que preparou os
+incompleto (2:1), possível memorização pela IA, interface da IA não uniforme (navegador
+versus Claude Code) e a exposição do integrante que preparou os
 katas.
 
 **O que faríamos diferente com mais tempo/recursos:** ampliar substancialmente o número de
