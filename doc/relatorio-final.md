@@ -10,7 +10,7 @@
 | **Professor(a)** | Danilo Maia |
 | **Laboratório** | Lab02 — IA vs. codificação manual |
 | **Grupo (trio)** | Joaquim Guilherme de Carvalho Vilela Silva · Vitor Costa Vianna · Gabriel Nogueira Vieira Resende |
-| **Link do repositório / GitHub Projects** | https://github.com/lab-medicao-experimentacao/lab02-ia-vs-manual |
+| **Link do repositório / GitHub Projects** | https://github.com/lab-medicao-experimentacao/lab02-ia-vs-manual · https://github.com/orgs/lab-medicao-experimentacao/projects/2/views/1 |
 | **Data de entrega** | 24/09/2026 |
 
 ---
@@ -32,8 +32,9 @@ se desdobra nas três questões do enunciado:
 
 **Hipóteses informais antes da coleta.** O grupo esperava redução do tempo em RQ1 e
 da quantidade de testes falhando em RQ2. Para RQ3, esperava-se investigar possíveis
-diferenças estruturais, sem prever aumento ou redução. As hipóteses nulas
-correspondem à ausência de redução em RQ1/RQ2 e à ausência de diferença em RQ3.
+diferenças estruturais, sem prever aumento ou redução. Formalmente:
+H1₀/H2₀ — a IA não reduz o tempo/os testes falhando; H1₁/H2₁ — reduz; H3₀ — não há
+diferença estrutural; H3₁ — há diferença.
 
 **Complementos ao enunciado.** Não foram propostas novas RQs. A análise acrescentou
 o tamanho de efeito rank-biserial aos testes estatísticos e examinou, de forma
@@ -102,15 +103,7 @@ controlados.
 strings e coleções, poucas regras e soluções compatíveis com 35 minutos, sem
 frameworks ou algoritmos especializados. Cada módulo possuía **oito testes JUnit
 de aceitação**, visíveis desde o início, iguais para todos e sem permissão de alteração.
-
-| Kata | Exercício | Conteúdo principal |
-|---|---|---|
-| K1 | Normalizador de Etiquetas | Normalização e deduplicação de strings |
-| K2 | Agrupador de Extrato | Agregação por chave e ordenação |
-| K3 | Compressor de Corridas | Codificação de sequências consecutivas |
-| K4 | Validador de Agenda | Horários e sobreposição de intervalos |
-| K5 | Mascarador de Contatos | Validação e mascaramento de strings |
-| K6 | Encadeador de Trechos | Encadeamento e detecção de ciclos |
+A lista dos katas, com o enunciado resumido e os trials de cada um, está na tabela da §2.
 
 **Critérios de análise.** A descritiva utilizou **mediana e IQR por tratamento**. Para inferência, os três trials
 de cada participante e tratamento foram agregados pela mediana, formando **três pares**.
@@ -150,6 +143,19 @@ Após a execução, as métricas foram coletadas sobre o código final. Cada tri
 preservou `trial.json`, `environment.json`, código final e `metrics.json` em pasta
 própria. O comando `trial.py export` reuniu os trials oficiais em
 `results/consolidado.csv`, base para as análises e o dashboard.
+
+| Sprint | Entregas | Responsável(is) | Issues (nº) |
+|---|---|---|---|
+| S01 — Desenho | Decisões do experimento, seleção/validação dos 6 katas, ameaças à validade | Gabriel (katas, hipóteses, ameaças); Joaquim (cronômetro); Vitor (Docker/métricas) | #3–#21 |
+| S02 — Execução | 18 trials oficiais (9 com-ia + 9 sem-ia), perguntas.md, métricas | Cada integrante executa seus trials | #43–#60, #63, #70 |
+| S03 — Análise | Protocolo estatístico, descritiva, Wilcoxon RQ1/RQ2 e RQ3, outliers, dashboard, relatório | Gabriel (#30/#31/#32/#35/#37/#39/#40/#64); Vitor (#33/#34/#36/#65); Joaquim (#38/#41/#61/#62/#76) | #30–#41, #61–#65, #76 |
+
+**Configuração do processo.** Colunas do board: Backlog → To Do → Doing → Review → Done;
+limite de WIP = 3 em Doing. Cada trial oficial tem uma Issue individual atribuída ao
+responsável, e os commits referenciam a Issue correspondente. Quadro no GitHub Projects:
+https://github.com/orgs/lab-medicao-experimentacao/projects/2/views/1
+
+![Quadro Kanban do Lab02 no GitHub Projects](printkanban.jpeg)
 
 ### 3.4 Ferramentas
 
@@ -191,15 +197,19 @@ das soluções e como denominador da duplicação.
 
 ### 3.6 Inovações Propostas pelo Grupo
 
-O grupo complementou a comparação dos tratamentos com três recursos:
+O grupo complementou a comparação dos tratamentos com quatro recursos:
 
-- **Tamanho de efeito:** rank-biserial pareado, para descrever a direção e a intensidade
+- **(a) Tamanho de efeito:** rank-biserial pareado, para descrever a direção e a intensidade
   das diferenças além do p-valor.
-- **Resolução do teste:** explicitação dos menores p-valores do Wilcoxon exato com
+- **(b) Resolução do teste:** explicitação dos menores p-valores do Wilcoxon exato com
   três pares não nulos — 0,125 no unilateral e 0,25 no bilateral — para orientar a
   interpretação exploratória.
-- **Coleta automatizada:** scripts próprios para cronometrar, testar, preservar o
+- **(c) Coleta automatizada:** scripts próprios para cronometrar, testar, preservar o
   código final e consolidar os registros, mantendo a rastreabilidade entre trial e análise.
+- **(d) Dashboard em HTML:** `scripts/dashboard.py` gera `doc/dashboard/index.html`, uma
+  página única e autocontida com os gráficos de cada RQ (tempo, taxa de sucesso e
+  métricas estruturais), em que cada ponto identifica o trial de origem. É regerada com
+  um comando a partir do `consolidado.csv`.
 
 ## 4. Resultados
 
@@ -227,7 +237,7 @@ enunciado; detalhes em `doc/descritiva.md`):
 | RQ3 | LOC (controle) | sem-ia | 47 | 37 | 59 | 22 |
 | RQ3 | LOC (controle) | com-ia | 38 | 26 | 45 | 19 |
 
-**Outliers.** Pela regra de Tukey (1.5×IQR), foram identificados **3 outliers**, todos no
+**Outliers.** Pela regra de Tukey (1,5 × IQR), foram identificados **3 outliers**, todos no
 **kata-06** (o mais complexo, com detecção de ciclo): complexidade de 18 (Joaquim, sem-ia)
 e 23 (Gabriel, com-ia) e LOC de 79 (Gabriel, com-ia). São valores plausíveis do problema,
 não erros de medição; foram **mantidos**, sem descarte (documentado em `doc/outliers.md`).
@@ -324,8 +334,9 @@ IA, o participante registrou um resumo das perguntas feitas ao assistente
   correspondendo a uma etapa da implementação: criar a lista de resultado, tratar `null`
   e vazio, montar o laço e aplicar as regras. O participante decompôs o problema e a IA
   produziu cada parte.
-- **Vitor: abordagem proposta pela IA, aprovada e escrita direto no arquivo**. Nos katas 01 e 03 houve um único ciclo: a IA propôs, o participante
-  aprovou e a IA escreveu, com 99,6 s e 21,2 s até o verde. No kata-05, o participante
+- **Vitor: abordagem proposta pela IA, aprovada e escrita direto no arquivo**. Nos katas 01 e 03
+  houve um único ciclo: a IA propôs, o participante aprovou e a IA escreveu, com 99,6 s e
+  21,2 s até o verde. No kata-05, o participante
   discutiu cerca de sete decisões de desenho antes de pedir o código (corte no primeiro
   `:`, `split("@", -1)`, métodos auxiliares), e o tempo subiu para 410,8 s.
 
@@ -341,7 +352,8 @@ revertida antes da execução dos testes, sem efeito no código avaliado.
 5% (inovação (b)); conclusões exploratórias. (ii) *Efeito de aprendizado e confusão
 tratamento/participante* — o contrabalanceamento 2:1 faz o tratamento coincidir com o
 participante dentro de cada kata. (iii) *Memorização pela IA* — mitigada por katas
-autorais; o ganho concentrado nos katas difíceis é compatível com auxílio genuíno. (iv)
+autorais; a direção do ganho foi a mesma para os três participantes, o que é compatível com o
+auxílio da IA, embora a comparação por kata seja apenas descritiva (§4.2). (iv)
 *Exposição de quem preparou os katas* — Gabriel, autor dos katas, foi justamente o de
 menor ganho com IA e maior complexidade/LOC com IA, o que deve ser considerado. Ele
 também foi o único a passar de primeira nos trials sem IA. (v) *Interface da IA não
@@ -358,7 +370,8 @@ então a mediana dele (238,7 s) e os resultados de RQ1 não mudam.
 que RQ1, apesar do p não significativo, tem efeito consistente e máximo; a análise de
 resolução do teste (b) explicou *por que* nenhum p seria significativo, evitando a leitura
 equivocada de "IA não faz diferença"; a infraestrutura de cronometragem (c) sustenta a
-confiabilidade dos tempos que embasam o achado de RQ1.
+confiabilidade dos tempos que embasam o achado de RQ1; e o dashboard em HTML (d) reúne os
+resultados das três RQs numa página que qualquer pessoa pode abrir e regerar.
 
 ## 5. Conclusão
 
