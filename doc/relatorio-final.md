@@ -34,7 +34,7 @@ Seguindo a abordagem **GQM**, o estudo responde às três Questões de Pesquisa 
 - **RQ3 — Estrutura.** O uso de assistente de IA altera a complexidade ciclomática ou a
   duplicação do código produzido?
 
-**Hipóteses informais do grupo (antes da coleta):**
+**Hipóteses (definidas antes da coleta), nula e alternativa por RQ:**
 
 - **RQ1:** esperávamos que a IA **reduzisse** o tempo (hipótese direcional H1₁).
   H1₀: a IA não reduz o tempo.
@@ -106,7 +106,8 @@ sinalizados** para amostras pareadas, coerente com o desenho within-subject.
 ### 3.2 Tomadas de Decisão
 
 - **Assistente de IA:** Claude (Sonnet 5, esforço High), acessado pelo navegador,
-  disponível no plano gratuito para os três integrantes. Mesmo modelo, configuração e
+  disponível no plano gratuito para os três integrantes (exceção: um participante usou o
+  Claude Code no terminal, com o mesmo modelo; ver ameaça (v) em §4.3). Mesmo modelo, configuração e
   **prompt inicial padronizado** em todos os trials com IA; nova conversa por trial, sem
   histórico. Escolha por padronização e comparabilidade.
 - **Linguagem Java 21 + PMD/CPD:** os katas são em Java para permitir métricas estáticas
@@ -202,6 +203,22 @@ nenhum censurado (esgotamento do tempo) e nenhum interrompido por ocorrência t�
 Todos os 18 trials passaram **8/8** testes de aceitação. As métricas estruturais foram
 coletadas para os 18 trials sobre o código final preservado.
 
+**Estatística descritiva por tratamento** (9 trials cada; mediana e IQR, conforme o
+enunciado; detalhes em `doc/descritiva.md`):
+
+| RQ | Métrica | Tratamento | Mediana | Q1 | Q3 | IQR |
+|---|---|---|---:|---:|---:|---:|
+| RQ1 | Tempo até verde (s) | sem-ia | 820,4 | 550,5 | 1163,7 | 613,2 |
+| RQ1 | Tempo até verde (s) | com-ia | 221,9 | 99,6 | 290,7 | 191,1 |
+| RQ2 | Testes falhando (nº) | sem-ia | 0 | 0 | 0 | 0 |
+| RQ2 | Testes falhando (nº) | com-ia | 0 | 0 | 0 | 0 |
+| RQ3 | Complexidade média/método | sem-ia | 8,33 | 7 | 11 | 4 |
+| RQ3 | Complexidade média/método | com-ia | 7 | 6 | 11 | 5 |
+| RQ3 | Duplicação (%) | sem-ia | 0 | 0 | 0 | 0 |
+| RQ3 | Duplicação (%) | com-ia | 0 | 0 | 0 | 0 |
+| RQ3 | LOC (controle) | sem-ia | 47 | 37 | 59 | 22 |
+| RQ3 | LOC (controle) | com-ia | 38 | 26 | 45 | 19 |
+
 **Outliers.** Pela regra de Tukey (1.5×IQR), foram identificados **3 outliers**, todos no
 **kata-06** (o mais complexo, com detecção de ciclo): complexidade de 18 (Joaquim, sem-ia)
 e 23 (Gabriel, com-ia) e LOC de 79 (Gabriel, com-ia). São valores plausíveis do problema,
@@ -244,6 +261,17 @@ Complexidade e LOC não têm direção consistente entre tratamentos; a duplica�
 todos os trials.
 
 ### 4.3 Discussão
+
+**Respostas estatísticas por RQ** (Wilcoxon pareado sobre as medianas de cada
+participante, n = 3 pares; detalhes em `doc/rq1-rq2.md` e `doc/rq3.md`):
+
+| RQ | Métrica | Pares efetivos | Mediana das dif. (com − sem) | W | p | r (rank-biserial) | Decisão |
+|---|---|---:|---:|---:|---:|---:|---|
+| RQ1 | Tempo até verde (s) | 3 | −708,4 | 0 | 0,125 (unilateral) | −1,00 | Não rejeita H1₀ |
+| RQ2 | Testes falhando | 0 | 0 | — | — | — | Teste não aplicável (sem variação) |
+| RQ3a | Complexidade média/método | 3 | −4,00 | 2 | 0,75 (bilateral) | −0,33 | Não rejeita H3₀ |
+| RQ3b | Duplicação (%) | 0 | 0 | — | — | — | Teste não aplicável (sem variação) |
+| RQ3c | LOC (controle) | 3 | −14 | 3 | 1,00 (bilateral) | 0,00 | Não rejeita H3₀ |
 
 **RQ1 — Tempo. Hipótese apoiada pela direção dos dados, sem significância estatística.** Os três participantes foram mais
 rápidos com IA (diferenças de −55,6 s, −708,4 s e −1064,1 s; mediana −708 s), com direção
@@ -328,8 +356,8 @@ confiabilidade dos tempos que embasam o achado de RQ1.
 ## 5. Conclusão
 
 O experimento sugere que o assistente de IA **reduz o tempo** de resolução de katas de
-Java sob time-box, de forma consistente entre os três participantes e mais acentuada nos
-problemas mais difíceis, **sem degradar** a corretude funcional (todos os trials chegaram
+Java sob time-box, de forma consistente entre os três participantes (com os maiores
+ganhos descritivos nos katas 02, 04 e 06), **sem degradar** a corretude funcional (todos os trials chegaram
 a 8/8) e **sem diferença estrutural detectável** (complexidade, duplicação e LOC sem
 direção consistente). Não observamos o trade-off "mais rápido, porém pior" — o que, com
 n = 3, não equivale a demonstrar que ele não existe. De forma exploratória, a IA também
