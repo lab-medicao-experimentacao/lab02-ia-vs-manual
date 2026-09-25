@@ -289,4 +289,3 @@ experimentos com amostras reduzidas, comuns em estudos com participantes humanos
 - WILCOXON, F. *Individual Comparisons by Ranking Methods.* Biometrics Bulletin, v. 1,
   n. 6, p. 80–83, 1945.
 - PMD. *PMD Source Code Analyzer — CyclomaticComplexity e CPD (v7).* https://pmd.github.io/
-- Vídeo: https://www.youtube.com/shorts/YwnaeO95AN8
