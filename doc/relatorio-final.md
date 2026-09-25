@@ -51,9 +51,7 @@ Seguindo a abordagem **GQM**, o estudo responde às três Questões de Pesquisa 
 
 ## 2. Contexto
 
-Este é o **Lab02** da disciplina, o primeiro com desenho experimental controlado (os
-demais laboratórios giram em torno de mineração de repositórios e do Kanban do próprio
-grupo). Foi conduzido em três sprints: **S01** (desenho do experimento, seleção e
+Este é o **Lab02** da disciplina, com desenho experimental controlado. Foi conduzido em três sprints: **S01** (desenho do experimento, seleção e
 validação dos katas, ambiente e scripts), **S02** (execução dos 18 trials oficiais) e
 **S03** (análise estatística, dashboard e este relatório).
 
@@ -208,15 +206,13 @@ medianas por participante caem de 238,7 → 183,2 s (Gabriel), 999,1 → 290,7 s
 ![Tempo por kata e tratamento](dashboard/tempo_kata.png)
 
 Por kata, a vantagem da IA é maior nos exercícios mais longos (kata-04 e kata-06); no
-kata-01, curto, o tempo com IA foi ligeiramente maior.
+kata-01, o mais curto, o tempo com IA foi maior (mediana de ~213 s contra ~96 s sem IA).
 
 **RQ2 — O uso de IA reduz os defeitos?**
 
-![Distribuição dos tempos / taxa de sucesso](dashboard/tempo_distribuicao.png)
-
 Não há variação a exibir em defeitos: a **taxa de sucesso foi 100% (8/8) em todos os 18
-trials**, nos dois tratamentos. A figura de distribuição resume os tempos; a taxa de
-sucesso é constante.
+trials**, nos dois tratamentos, por isso não há gráfico para RQ2 (o dashboard mostra uma
+nota no lugar do gráfico vazio).
 
 **RQ3 — O uso de IA altera a estrutura do código?**
 
@@ -227,7 +223,7 @@ todos os trials.
 
 ### 4.3 Discussão
 
-**RQ1 — Tempo. Hipótese parcialmente confirmada.** Os três participantes foram mais
+**RQ1 — Tempo. Hipótese apoiada pela direção dos dados, sem significância estatística.** Os três participantes foram mais
 rápidos com IA (diferenças de −55,6 s, −708,4 s e −1064,1 s; mediana −708 s), com direção
 100% consistente e tamanho de efeito máximo (rank-biserial = −1,00). O **Wilcoxon pareado
 unilateral** deu **W = 0, p = 0,125** — não significativo a α = 0,05. Em linguagem
@@ -267,11 +263,13 @@ confiabilidade dos tempos que embasam o achado de RQ1.
 O experimento sugere que o assistente de IA **reduz o tempo** de resolução de katas de
 Java sob time-box, de forma consistente entre os três participantes e mais acentuada nos
 problemas mais difíceis, **sem degradar** a corretude funcional (todos os trials chegaram
-a 8/8) nem a estrutura do código (sem diferença consistente em complexidade, duplicação ou
-LOC). Não observamos o trade-off "mais rápido, porém pior".
+a 8/8) e **sem diferença estrutural detectável** (complexidade, duplicação e LOC sem
+direção consistente). Não observamos o trade-off "mais rápido, porém pior" — o que, com
+n = 3, não equivale a demonstrar que ele não existe.
 
 A principal **limitação** é o tamanho amostral: com três participantes, o teste de
-Wilcoxon não alcança significância a 5% em nenhuma RQ (o p mínimo é 0,125), de modo que
+Wilcoxon não alcança significância a 5% em nenhuma RQ (o p mínimo é 0,125 nos testes
+unilaterais de RQ1/RQ2 e 0,25 nos bilaterais de RQ3), de modo que
 todos os achados são **exploratórios**. Somam-se as ameaças de contrabalanceamento
 incompleto (2:1), possível memorização pela IA e a exposição do integrante que preparou os
 katas.
@@ -288,6 +286,7 @@ experimentos com amostras reduzidas, comuns em estudos com participantes humanos
 
 - BASILI, V. R.; CALDIERA, G.; ROMBACH, H. D. *The Goal Question Metric Approach.* 1994.
 - McCABE, T. J. *A Complexity Measure.* IEEE Transactions on Software Engineering, 1976.
-- ZUSE, Horst. *A framework of software measurement.* Walter de Gruyter, 2013.
+- WILCOXON, F. *Individual Comparisons by Ranking Methods.* Biometrics Bulletin, v. 1,
+  n. 6, p. 80–83, 1945.
 - PMD. *PMD Source Code Analyzer — CyclomaticComplexity e CPD (v7).* https://pmd.github.io/
 - Vídeo: https://www.youtube.com/shorts/YwnaeO95AN8
